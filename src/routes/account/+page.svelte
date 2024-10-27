@@ -32,9 +32,9 @@
 
 <div class="account-page p-3">
   {#if sessionStore.user}
-    <div class="mt-3 flex w-full gap-6">
+    <div class="mt-3 flex w-full flex-col gap-6 md:flex-row">
       <div class="sidemenu">
-        <ul class="menu w-56 gap-3 rounded-box bg-base-200">
+        <ul class="menu w-full flex-row flex-nowrap gap-3 overflow-x-auto rounded-box bg-base-200 md:w-56 md:flex-col">
           <li>
             <button onclick={() => changeViewComponent('user')}>User</button>
           </li>
