@@ -106,7 +106,7 @@
         </a>
       </div>
       {#if $page.url.pathname === '/'}
-        <label class="input input-bordered mr-3 flex items-center gap-2">
+        <label class="input input-bordered mr-3 hidden items-center gap-2 md:flex">
           <input
             type="text"
             class="grow"
