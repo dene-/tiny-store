@@ -2,7 +2,8 @@
   import { onMount, type Component } from 'svelte';
   import { sessionStore } from '@/stores/sessionStore.store.svelte';
   import { loginModalStore } from '@/stores/loginModal.store.svelte';
-  import { fade } from 'svelte/transition';
+
+  import { account } from '@/lib/appwrite.lib';
 
   let ViewComponent: Component | null = $state(null);
 
@@ -23,7 +24,8 @@
     }
   }
 
-  onMount(() => {
+  onMount(async () => {
+    sessionStore.user = await account.get();
     changeViewComponent('user');
   });
 </script>

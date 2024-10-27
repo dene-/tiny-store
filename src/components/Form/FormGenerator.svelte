@@ -1,15 +1,30 @@
 <!-- FormGenerator.svelte -->
 <script lang="ts">
   import type { InputField } from '@/interfaces/forms.interfaces';
+  import { onMount } from 'svelte';
 
-  let { fields = [], onSubmit } = $props<{
+  interface Props {
+    formName: string;
+    buttonText?: string;
     fields: InputField[];
     onSubmit: (formData: Record<string, any>) => void;
-  }>();
+  }
+
+  let { formName, buttonText = 'Submit', fields = [], onSubmit }: Props = $props();
 
   const formData = $state<Record<string, any>>({});
 
-  // Initialize form data with default values
+  function handleSubmit(event: Event) {
+    event.preventDefault();
+
+    onSubmit(formData);
+  }
+
+  function handleInput(field: InputField, event: Event) {
+    const target = event.target as HTMLInputElement;
+    formData[field.id] = field.type === 'checkbox' ? target.checked : target.value;
+  }
+
   $effect(() => {
     fields.forEach((field: InputField) => {
       if (!(field.id in formData)) {
@@ -18,18 +33,31 @@
     });
   });
 
-  function handleSubmit(event: Event) {
-    event.preventDefault();
-    onSubmit(formData);
-  }
+  onMount(() => {
+    const query = `.${formName} input, .${formName} select, .${formName} textarea`;
 
-  function handleInput(field: InputField, event: Event) {
-    const target = event.target as HTMLInputElement;
-    formData[field.id] = field.type === 'checkbox' ? target.checked : target.value;
-  }
+    document.querySelectorAll(query).forEach((input: Element) => {
+      input.addEventListener('invalid', () => {
+        input.classList.add('input-error');
+      });
+
+      input.addEventListener('input', () => {
+        input.classList.remove('input-error');
+      });
+    });
+  });
+
+  fields.forEach((field: InputField) => {
+    if (!(field.id in formData)) {
+      formData[field.id] = field.value ?? '';
+    }
+  });
 </script>
 
-<form onsubmit={handleSubmit}>
+<form
+  class={formName}
+  onsubmit={handleSubmit}
+>
   <div class="grid grid-cols-2 gap-x-3">
     {#each fields as field}
       <div class="form-control {field.fullWidth ? 'col-span-2' : 'col-span-1'}">
@@ -38,7 +66,7 @@
             for={field.id}
             class="label"
           >
-            <span class="label-text text-xs">{field.label}</span>
+            <span class="label-text text-xs">{field.label} {field.required ? '*' : ''}</span>
           </label>
         {/if}
 
@@ -67,7 +95,7 @@
         {:else if field.type === 'checkbox'}
           <div class="form-control">
             <label class="label cursor-pointer">
-              <span class="label-text text-xs">{field.label}</span>
+              <span class="label-text text-xs">{field.label} {field.required ? '*' : ''}</span>
               <input
                 type="checkbox"
                 class="checkbox"
@@ -90,6 +118,7 @@
             maxlength={field.validation?.maxLength}
             min={field.validation?.min}
             max={field.validation?.max}
+            autocomplete={'new-password'}
             class="input input-bordered w-full"
             bind:value={formData[field.id]}
           />
@@ -98,10 +127,10 @@
     {/each}
   </div>
 
-  <div class="mt-6 flex justify-end">
+  <div class="mt-6 flex justify-center">
     <button
       type="submit"
-      class="btn btn-primary">Submit</button
+      class="btn btn-primary btn-wide">{buttonText}</button
     >
   </div>
 </form>

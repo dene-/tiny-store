@@ -33,14 +33,6 @@ class UseSessionStore {
     }
   }
 
-  async updateAccount(name: string, email: string) {
-    try {
-      await account.updateEmail(name, email);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   async verifyEmail() {
     try {
       await account.createVerification('https://localhost:5173/account');

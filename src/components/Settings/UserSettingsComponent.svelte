@@ -7,9 +7,11 @@
   import { sessionStore } from '@/stores/sessionStore.store.svelte';
   import { userStore } from '@/stores/userStore.store.svelte';
 
-  import { page } from '$app/stores';
+  import FormGenerator from '../Form/FormGenerator.svelte';
+  import type { InputField } from '@/interfaces/forms.interfaces';
 
   let avatarFileInput: HTMLInputElement | null = $state(null);
+  let formFieldsLoaded = $state(false);
   let userForm = $state({
     name: '',
     prefs: {
@@ -19,24 +21,63 @@
     password: '',
   });
 
+  const formFields: InputField[] = $derived([
+    {
+      id: 'name',
+      label: 'Name',
+      type: 'text',
+      required: true,
+      value: userForm.name,
+      placeholder: 'Enter your name',
+    },
+    {
+      id: 'username',
+      label: 'Username',
+      type: 'text',
+      required: true,
+      value: userForm.prefs.username,
+      placeholder: 'Enter your username',
+    },
+    {
+      id: 'email',
+      label: 'Email Address',
+      type: 'email',
+      required: true,
+      fullWidth: true,
+      value: userForm.email,
+      placeholder: 'Enter your email',
+    },
+    {
+      id: 'password',
+      label: 'Password',
+      type: 'password',
+      required: true,
+      value: userForm.password,
+      placeholder: 'Enter your password',
+    },
+  ]);
+
   async function handleAvatarUpload() {
     if (avatarFileInput?.files && avatarFileInput.files[0]) {
-      const avatar = avatarFileInput.files[0];
-      await userStore.uploadAvatar(avatar);
+      await userStore.uploadAvatar(avatarFileInput.files[0]);
     }
+  }
+
+  async function handleFormSubmit(formData: Record<string, any>) {
+    await userStore.updateAccount(formData.name, formData.email, formData.password, {
+      username: formData.username,
+    });
   }
 
   onMount(async () => {
     if (sessionStore.user) {
-      userForm = {
-        name: sessionStore.user.name,
-        prefs: {
-          username: sessionStore.user.prefs.username,
-        },
-        email: sessionStore.user.email,
-        password: sessionStore.user.password as string,
-      };
+      userForm.name = sessionStore.user.name;
+      userForm.prefs.username = sessionStore.user.prefs.username;
+      userForm.email = sessionStore.user.email;
+      userForm.password = sessionStore.user.password as string;
     }
+
+    formFieldsLoaded = true;
 
     const urlSearchParams = new URLSearchParams(location.search);
 
@@ -73,45 +114,13 @@
     class="btn btn-ghost btn-sm mt-3"
     onclick={() => avatarFileInput?.click()}>Upload avatar</button
   >
-  <label class="form-control w-full max-w-xs">
-    <div class="label">
-      <span class="label-text text-xs">Name</span>
-    </div>
-    <input
-      type="text"
-      class="input input-bordered"
-      bind:value={userForm.name}
+  {#if formFieldsLoaded}
+    <FormGenerator
+      formName="user-form"
+      buttonText="Save"
+      fields={formFields}
+      onSubmit={handleFormSubmit}
     />
-  </label>
-  <label class="form-control w-full max-w-xs">
-    <div class="label">
-      <span class="label-text text-xs">Username</span>
-    </div>
-    <input
-      type="text"
-      class="input input-bordered"
-      bind:value={userForm.prefs.username}
-    />
-  </label>
-  <label class="form-control w-full max-w-xs">
-    <div class="label">
-      <span class="label-text text-xs">Email</span>
-    </div>
-    <input
-      type="text"
-      class="input input-bordered"
-      bind:value={userForm.email}
-    />
-  </label>
-  <label class="form-control w-full max-w-xs">
-    <div class="label">
-      <span class="label-text text-xs">Password</span>
-    </div>
-    <input
-      type="password"
-      class="input input-bordered"
-      bind:value={userForm.password}
-    />
-  </label>
-  <button class="btn btn-primary mt-5 w-full max-w-xs">Save</button>
+  {/if}
+  <!-- <button class="btn btn-primary mt-5 w-full max-w-xs">Save</button> -->
 {/if}
