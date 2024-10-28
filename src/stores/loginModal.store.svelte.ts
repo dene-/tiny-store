@@ -2,17 +2,17 @@ import { userStore } from './userStore.store.svelte';
 import { sessionStore } from './sessionStore.store.svelte';
 
 class UseLoginModalStore {
-  isOpen = $state(false);
+  modal: HTMLDialogElement | null = $state(null);
 
   isLoading = $state(false);
   error = $state('');
 
   open = () => {
-    this.isOpen = true;
+    this.modal?.showModal();
   };
 
   close = () => {
-    this.isOpen = false;
+    this.modal?.close();
   };
 
   async logIn(email: string, password: string) {

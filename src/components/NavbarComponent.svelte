@@ -4,6 +4,7 @@
   import { sessionStore } from '@/stores/sessionStore.store.svelte';
   import { loginModalStore } from '@/stores/loginModal.store.svelte';
   import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
 
   import UserAvatarComponent from './User/UserAvatarComponent.svelte';
   import SearchIcon from './Icons/SearchIcon.svelte';
@@ -15,26 +16,24 @@
     } else {
       goto('/account');
     }
-    loginModalStore.close();
+    (document.getElementById('drawer') as HTMLInputElement).checked = false;
   }
+
+  onMount(() => {
+    document.querySelectorAll('.menu li').forEach(el => {
+      el.addEventListener('click', () => {
+        (document.getElementById('drawer') as HTMLInputElement).checked = false;
+      });
+    });
+  });
 </script>
 
-{#snippet navbarLinks()}
+{#snippet navbarLinks(showAvatar: boolean = true)}
   <li>
-    <a
-      href="/"
-      class:active={$page.url.pathname === '/'}
-      onclick={() => loginModalStore.close()}
-    >
-      Shop
-    </a>
+    <a href="/">Shop</a>
   </li>
   <li>
-    <a
-      href="/cart"
-      class:active={$page.url.pathname === '/cart'}
-      onclick={() => loginModalStore.close()}
-    >
+    <a href="/cart">
       Cart
       {#if cartStore.items.length > 0}
         <span class="badge badge-primary font-bold">{cartStore.items.length}</span>
@@ -42,22 +41,24 @@
     </a>
   </li>
   {#if sessionStore.isLoggedIn}
-    <li>
-      <button
-        class="rounded-full p-0"
-        onclick={handleAccountClick}
-      >
-        <div class="avatar placeholder transition hover:brightness-125">
-          <div class="w-10 rounded-full bg-neutral text-neutral-content">
-            <UserAvatarComponent />
+    {#if showAvatar}
+      <li>
+        <button
+          class="rounded-full p-0"
+          onclick={handleAccountClick}
+        >
+          <div class="avatar placeholder transition hover:brightness-125">
+            <div class="w-10 rounded-full bg-neutral text-neutral-content">
+              <UserAvatarComponent />
+            </div>
           </div>
-        </div>
-      </button>
-    </li>
+        </button>
+      </li>
+    {/if}
     <li>
       <button
         class="text-sm text-gray-500"
-        onclick={() => (sessionStore.logout(), loginModalStore.close())}
+        onclick={() => sessionStore.logout()}
       >
         Log out
       </button>
@@ -71,7 +72,7 @@
 
 <div class="drawer sticky top-0 z-40">
   <input
-    id="my-drawer-3"
+    id="drawer"
     type="checkbox"
     class="drawer-toggle"
   />
@@ -80,7 +81,7 @@
     <div class="navbar w-full bg-base-300">
       <div class="flex-none lg:hidden">
         <label
-          for="my-drawer-3"
+          for="drawer"
           aria-label="open sidebar"
           class="btn btn-square btn-ghost"
         >
@@ -128,18 +129,30 @@
   </div>
   <div class="drawer-side z-50">
     <label
-      for="my-drawer-3"
+      for="drawer"
       aria-label="close sidebar"
       class="drawer-overlay"
     ></label>
     <ul class="menu min-h-full w-80 bg-base-200 p-4">
-      {@render navbarLinks()}
+      {#if sessionStore.isLoggedIn}
+        <button
+          class="rounded-full p-0"
+          onclick={handleAccountClick}
+        >
+          <div class="avatar placeholder transition hover:brightness-125">
+            <div class="w-24 rounded-full bg-neutral text-neutral-content">
+              <UserAvatarComponent />
+            </div>
+          </div>
+        </button>
+      {/if}
+      {@render navbarLinks(false)}
     </ul>
   </div>
 </div>
 
 <style lang="scss">
-  .navbar {
+  .drawer {
     view-transition-name: navbar;
   }
 </style>

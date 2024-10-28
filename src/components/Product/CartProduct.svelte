@@ -29,9 +29,13 @@
   <div class="join">
     <button
       onclick={() => cartStore.decreaseItemQuantity(cartItem)}
-      class="btn btn-secondary join-item aspect-square text-white"
+      class="btn btn-secondary join-item aspect-square p-0 text-white"
     >
-      <MinusIcon />
+      {#if cartItem.quantity === 1}
+        <TrashBinIcon />
+      {:else}
+        <MinusIcon />
+      {/if}
     </button>
     <input
       type="number"
@@ -42,17 +46,11 @@
     />
     <button
       onclick={() => cartStore.increaseItemQuantity(cartItem)}
-      class="btn btn-primary join-item aspect-square"
+      class="btn btn-primary join-item aspect-square p-0"
     >
       <PlusIcon />
     </button>
   </div>
-  <button
-    onclick={() => cartStore.removeItem(cartItem)}
-    class="btn btn-secondary h-12 w-12 rounded-xl p-2 uppercase"
-  >
-    <TrashBinIcon />
-  </button>
 </div>
 
 <style lang="scss">

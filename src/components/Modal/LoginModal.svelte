@@ -1,5 +1,6 @@
 <script lang="ts">
   import { loginModalStore } from '@/stores/loginModal.store.svelte';
+  import { onMount } from 'svelte';
 
   let email = $state('');
   let password = $state('');
@@ -26,18 +27,8 @@
     }
   }
 
-  $effect(() => {
-    const loginModal = document.getElementById('loginModal') as HTMLDialogElement;
-
-    if (!loginModal) return;
-
-    if (loginModalStore.isOpen) {
-      loginModal.showModal();
-    } else {
-      loginModal.close();
-    }
-
-    console.log('Login modal effect called.');
+  onMount(() => {
+    loginModalStore.modal = document.getElementById('loginModal') as HTMLDialogElement;
   });
 </script>
 

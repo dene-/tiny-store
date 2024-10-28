@@ -26,6 +26,7 @@
 
   onMount(async () => {
     sessionStore.user = await account.get();
+    console.log(sessionStore.user);
     changeViewComponent('user');
   });
 </script>
@@ -44,9 +45,11 @@
           <li>
             <button onclick={() => changeViewComponent('shippingAddress')}>Shipping address</button>
           </li>
-          <li>
-            <button onclick={() => changeViewComponent('products')}>Products</button>
-          </li>
+          {#if sessionStore.user.labels.includes('admin')}
+            <li>
+              <button onclick={() => changeViewComponent('products')}>Products</button>
+            </li>
+          {/if}
           <li>
             <button onclick={() => sessionStore.logout()}>Log out</button>
           </li>

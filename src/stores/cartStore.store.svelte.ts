@@ -66,6 +66,10 @@ class UseCartStore {
   };
 
   decreaseItemQuantity = (item: Item) => {
+    if (item.quantity === this.minItems) {
+      this.removeItem(item);
+    }
+
     this.items = this.items.map(i => {
       if (i.$id === item.$id && i.quantity > this.minItems) {
         i.quantity -= 1;
