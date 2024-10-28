@@ -93,7 +93,7 @@
 
 <dialog
   id="loginModal"
-  class="modal modal-bottom sm:modal-middle"
+  class="modal sm:modal-middle"
   onclose={() => loginModalStore.close()}
 >
   <div class="modal-box">

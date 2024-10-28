@@ -13,7 +13,7 @@
 </script>
 
 <h1 class="mb-3 p-3 text-2xl font-bold">Products</h1>
-<div class="flex h-full w-full items-start gap-3 p-3">
+<div class="grid h-full w-full grid-cols-2 flex-wrap content-start items-start gap-3 p-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
   {#if !itemStore.items.length}
     <div class="flex h-[50vh] w-full items-center justify-center">
       <span class="loading loading-spinner loading-lg"></span>

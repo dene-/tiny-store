@@ -15,7 +15,7 @@
   });
 </script>
 
-<div class="mt-12 flex items-stretch p-3">
+<div class="mt-12 flex flex-col items-stretch p-3 md:flex-row">
   <figure>
     <img
       src={item.image_url}
@@ -34,33 +34,36 @@
       {item.price} €
     </div>
     <div class="card-actions mt-3 justify-end">
-      <button
-        onclick={() => {
-          if (cartItem.quantity > cartStore.minItems) {
-            cartItem.quantity--;
-          }
-        }}
-        class="btn btn-secondary join-item aspect-square"
-      >
-        <MinusIcon />
-      </button>
-      <input
-        type="number"
-        min="1"
-        max="999"
-        bind:value={cartItem.quantity}
-        class="input join-item input-bordered input-secondary w-16 text-right"
-      />
-      <button
-        onclick={() => {
-          if (cartItem.quantity < cartStore.maxItems) {
-            cartItem.quantity++;
-          }
-        }}
-        class="btn btn-primary join-item aspect-square"
-      >
-        <PlusIcon />
-      </button>
+      <div class="join">
+        <button
+          onclick={() => {
+            if (cartItem.quantity > cartStore.minItems) {
+              cartItem.quantity--;
+            }
+          }}
+          class="btn btn-secondary join-item aspect-square"
+        >
+          <MinusIcon />
+        </button>
+        <input
+          type="number"
+          min="1"
+          max="999"
+          bind:value={cartItem.quantity}
+          class="input join-item input-bordered input-secondary w-16"
+        />
+        <button
+          onclick={() => {
+            if (cartItem.quantity < cartStore.maxItems) {
+              cartItem.quantity++;
+            }
+          }}
+          class="btn btn-primary join-item aspect-square"
+        >
+          <PlusIcon />
+        </button>
+      </div>
+
       <button
         onclick={() => cartStore.addItem(cartItem)}
         class="btn btn-secondary rounded-xl uppercase"

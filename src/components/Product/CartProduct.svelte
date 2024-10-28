@@ -8,7 +8,10 @@
 </script>
 
 <div class="flex items-center p-5 text-left">
-  <a href={`/products/${cartItem.product_url}`}>
+  <a
+    href={`/products/${cartItem.product_url}`}
+    class="hidden md:block"
+  >
     <img
       class="w-[150px] rounded-xl bg-white"
       src={cartItem.image_url}
@@ -17,14 +20,10 @@
     />
   </a>
 </div>
-<div class="grid-cell text-left">
-  <div>
-    <span class="text-xl font-bold">
-      {cartItem.name}
-    </span>
-    <br />
-    <!-- {cartItem.description} -->
-  </div>
+<div class="grid-cell w-full text-left md:w-auto">
+  <span class="text-xl font-bold">
+    {cartItem.name}
+  </span>
 </div>
 <div class="grid-cell justify-end">{cartItem.price * cartItem.quantity} €</div>
 <div class="grid-cell justify-end">
@@ -40,7 +39,7 @@
       min="1"
       max="999"
       bind:value={cartItem.quantity}
-      class="input join-item input-bordered input-secondary w-16 text-right"
+      class="input join-item input-bordered input-secondary w-16"
     />
     <button
       onclick={() => cartStore.increaseItemQuantity(cartItem)}

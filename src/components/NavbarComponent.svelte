@@ -15,6 +15,7 @@
     } else {
       goto('/account');
     }
+    loginModalStore.close();
   }
 </script>
 
@@ -23,6 +24,7 @@
     <a
       href="/"
       class:active={$page.url.pathname === '/'}
+      onclick={() => loginModalStore.close()}
     >
       Shop
     </a>
@@ -31,6 +33,7 @@
     <a
       href="/cart"
       class:active={$page.url.pathname === '/cart'}
+      onclick={() => loginModalStore.close()}
     >
       Cart
       {#if cartStore.items.length > 0}
@@ -54,7 +57,7 @@
     <li>
       <button
         class="text-sm text-gray-500"
-        onclick={() => sessionStore.logout()}
+        onclick={() => (sessionStore.logout(), loginModalStore.close())}
       >
         Log out
       </button>
