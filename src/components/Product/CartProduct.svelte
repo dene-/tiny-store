@@ -7,11 +7,8 @@
   const { item: cartItem }: { item: CartItem } = $props();
 </script>
 
-<div class="flex items-center p-5 text-left">
-  <a
-    href={`/products/${cartItem.product_url}`}
-    class="hidden md:block"
-  >
+<div class="hidden items-center p-5 text-left md:flex">
+  <a href={`/products/${cartItem.product_url}`}>
     <img
       class="w-[150px] rounded-xl bg-white"
       src={cartItem.image_url}
@@ -21,12 +18,14 @@
   </a>
 </div>
 <div class="grid-cell w-full text-left md:w-auto">
-  <span class="text-xl font-bold">
-    {cartItem.name}
-  </span>
+  <a href={`/products/${cartItem.product_url}`}>
+    <span class="text-sm font-bold md:text-xl">
+      {cartItem.name}
+    </span>
+  </a>
 </div>
 <div class="grid-cell justify-end">{cartItem.price * cartItem.quantity} €</div>
-<div class="grid-cell justify-end">
+<div class="grid-cell flex-col !items-end gap-2 md:flex-row md:!items-center">
   <div class="join">
     <button
       onclick={() => cartStore.decreaseItemQuantity(cartItem)}
@@ -48,8 +47,6 @@
       <PlusIcon />
     </button>
   </div>
-</div>
-<div class="grid-cell justify-end">
   <button
     onclick={() => cartStore.removeItem(cartItem)}
     class="btn btn-secondary h-12 w-12 rounded-xl p-2 uppercase"

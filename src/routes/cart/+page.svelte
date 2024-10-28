@@ -15,7 +15,6 @@
       <div class="grid-header name text-left">Name</div>
       <div class="grid-header price text-right">Price</div>
       <div class="grid-header quantity text-right">Quantity</div>
-      <div class="grid-header trash text-right"></div>
 
       {#each cartStore.items as item (item.$id)}
         <CartProduct {item} />
@@ -41,46 +40,14 @@
 <style lang="scss">
   .grid-header {
     @apply border-b-2 border-secondary p-3 font-bold;
-
-    &.photo {
-      grid-area: header-ph;
-    }
-
-    &.name {
-      grid-area: header-nm;
-    }
-
-    &.price {
-      grid-area: header-p;
-    }
-
-    &.quantity {
-      grid-area: header-q;
-    }
-
-    &.trash {
-      grid-area: header-t;
-    }
   }
 
   .custom-grid {
     display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
-    grid-template-areas:
-      'header-ph header-nm header-p header-q header-t'
-      'photo name price quantity trash';
+    grid-template-columns: auto 1fr auto auto;
 
-    @media (max-width: 640px) {
-      grid-template-columns: auto 1fr auto auto;
-      grid-template-areas:
-        'header-nm header-p header-q header-t'
-        'name name name name'
-        'price price price price'
-        '. . quantity trash';
-
-      .photo {
-        display: none;
-      }
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr auto auto;
     }
   }
 </style>
