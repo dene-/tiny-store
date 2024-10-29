@@ -34,12 +34,21 @@ class UseUserStore {
     }
   }
 
+  async updatPrefs() {
+    try {
+      await account.updatePrefs(sessionStore.user?.prefs || {});
+      sessionStore.user = await account.get();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   async updateAccount(name: string, email: string, password: string, prefs: Record<string, unknown>) {
     try {
       if (email !== sessionStore.user?.email) {
         await account.updateEmail(email, password);
       }
-      console.log(prefs);
+
       await account.updateName(name);
       await account.updatePrefs({
         ...sessionStore.user?.prefs,

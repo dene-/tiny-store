@@ -56,14 +56,6 @@
         </button>
       </li>
     {/if}
-    <li>
-      <button
-        class="text-sm text-gray-500"
-        onclick={() => sessionStore.logout()}
-      >
-        Log out
-      </button>
-    </li>
   {:else if sessionStore.hasSessionLoaded}
     <li>
       <button onclick={() => loginModalStore.open()}> Log in </button>

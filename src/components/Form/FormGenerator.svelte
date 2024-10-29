@@ -66,7 +66,7 @@
             for={field.id}
             class="label"
           >
-            <span class="label-text text-xs">{field.label} {field.required ? '*' : ''}</span>
+            <span class="label-text text-xs">{field.label}{field.required ? '*' : ''}</span>
           </label>
         {/if}
 
@@ -95,7 +95,7 @@
         {:else if field.type === 'checkbox'}
           <div class="form-control">
             <label class="label cursor-pointer">
-              <span class="label-text text-xs">{field.label} {field.required ? '*' : ''}</span>
+              <span class="label-text text-xs">{field.label}{field.required ? '*' : ''}</span>
               <input
                 type="checkbox"
                 class="checkbox"

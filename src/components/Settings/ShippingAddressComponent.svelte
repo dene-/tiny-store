@@ -79,7 +79,7 @@
 {#if sessionStore.user}
   {#if !sessionStore.user.prefs.shippingAddress}
     <h1 class="text-2xl font-bold">Shipping Address</h1>
-    <p class="text-sm text-gray-500">You don't have saved any shipping address, add your first one:</p>
+    <p class="mb-5 text-sm text-gray-500">You don't have saved any shipping address, add your first one:</p>
     <FormGenerator
       formName="shipping-address-form"
       buttonText="Save"

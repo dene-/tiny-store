@@ -51,11 +51,14 @@
             </li>
           {/if}
           <li>
-            <button onclick={() => sessionStore.logout()}>Log out</button>
+            <button
+              class="text-gray-500"
+              onclick={() => sessionStore.logout()}>Log out</button
+            >
           </li>
         </ul>
       </div>
-      <div class="flex flex-grow flex-col items-center gap-1 p-3 pt-0">
+      <div class="flex-grow">
         <ViewComponent />
       </div>
     </div>

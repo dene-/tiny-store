@@ -98,22 +98,24 @@
       action={() => sessionStore.verifyEmail()}
     />
   {/if}
-  <div class="avatar placeholder transition hover:brightness-125">
-    <div class="w-36 rounded-full bg-neutral text-neutral-content">
-      <UserAvatarComponent />
+  <div class="flex flex-col items-center">
+    <div class="avatar placeholder transition hover:brightness-125">
+      <div class="w-36 rounded-full bg-neutral text-neutral-content">
+        <UserAvatarComponent />
+      </div>
     </div>
+    <input
+      type="file"
+      class="hidden"
+      accept="image/jpeg, image/png, image/webp"
+      bind:this={avatarFileInput}
+      onchange={handleAvatarUpload}
+    />
+    <button
+      class="btn btn-ghost btn-sm mt-3"
+      onclick={() => avatarFileInput?.click()}>Upload avatar</button
+    >
   </div>
-  <input
-    type="file"
-    class="hidden"
-    accept="image/jpeg, image/png, image/webp"
-    bind:this={avatarFileInput}
-    onchange={handleAvatarUpload}
-  />
-  <button
-    class="btn btn-ghost btn-sm mt-3"
-    onclick={() => avatarFileInput?.click()}>Upload avatar</button
-  >
   {#if formFieldsLoaded}
     <FormGenerator
       formName="user-form"
