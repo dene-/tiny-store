@@ -10,9 +10,9 @@ html {
 
 body {
   font-family: 'MS Sans-serif', sans-serif, Georgia;
-
-  height: 100dvh;
-  width: 100dvw;
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
 }
 
 p {
@@ -53,4 +53,9 @@ p {
   --alert-bg: var(--fallback-er, oklch(var(--er) / 1));
   --alert-bg-mix: var(--fallback-b1, oklch(var(--b1) / 1));
   color: white;
+}
+
+.btn,
+.card {
+  @apply rounded-md;
 }

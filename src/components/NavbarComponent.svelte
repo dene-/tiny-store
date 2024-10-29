@@ -9,6 +9,7 @@
   import UserAvatarComponent from './User/UserAvatarComponent.svelte';
   import SearchIcon from './Icons/SearchIcon.svelte';
   import CubeIcon from './Icons/CubeIcon.svelte';
+  import CartIcon from './Icons/CartIcon.svelte';
 
   function handleAccountClick() {
     if (!sessionStore.isLoggedIn) {
@@ -119,6 +120,12 @@
           <SearchIcon />
         </label>
       {/if}
+      <!-- <div class="md:hidden">
+        <div class="indicator">
+          <CartIcon />
+          <div class="badge indicator-item badge-primary badge-sm rounded-full">{cartStore.items.length}</div>
+        </div>
+      </div> -->
       <div class="hidden flex-none lg:block">
         <ul class="menu menu-horizontal items-center gap-3 text-lg">
           <!-- Navbar menu content here -->

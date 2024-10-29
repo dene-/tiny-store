@@ -18,7 +18,7 @@
         src={item.image_url}
         alt={item.image_alt}
         title={item.image_alt}
-        class="rounded-2xl bg-white"
+        class=" bg-white"
       />
     </a>
   </figure>

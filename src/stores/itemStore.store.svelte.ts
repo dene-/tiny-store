@@ -1,4 +1,5 @@
-import { type Models } from 'appwrite';
+import type { Models } from 'appwrite';
+import { databases, ids } from '@/lib/appwrite.lib';
 
 export interface Item extends Models.Document {
   $id: string;
@@ -16,6 +17,12 @@ export interface Item extends Models.Document {
 class UseItemStore {
   items = $state<Item[]>([]);
   count = $state(0);
+
+  async getItems() {
+    const { documents, total } = await databases.listDocuments(ids.databases.STORE, ids.collections.ITEMS);
+    this.items = documents as Item[];
+    this.count = total;
+  }
 }
 
 export const itemStore = new UseItemStore();

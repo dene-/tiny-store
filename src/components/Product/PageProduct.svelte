@@ -21,7 +21,7 @@
       src={item.image_url}
       alt={item.image_alt}
       title={item.image_alt}
-      class="w-[600px] rounded-2xl bg-white"
+      class="w-[600px] rounded-md bg-white"
     />
   </figure>
 
@@ -41,7 +41,7 @@
               cartItem.quantity--;
             }
           }}
-          class="btn btn-secondary join-item aspect-square"
+          class="btn btn-secondary join-item aspect-square p-0"
         >
           <MinusIcon />
         </button>
@@ -58,7 +58,7 @@
               cartItem.quantity++;
             }
           }}
-          class="btn btn-primary join-item aspect-square"
+          class="btn btn-primary join-item aspect-square p-0"
         >
           <PlusIcon />
         </button>

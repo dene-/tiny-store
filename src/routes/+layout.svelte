@@ -43,7 +43,7 @@
 <LoginModal />
 
 {#if children}
-  <div class="container mx-auto">
+  <div class="container mx-auto flex-grow">
     {@render children()}
   </div>
 {/if}
