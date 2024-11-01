@@ -3,6 +3,12 @@
   import { sessionStore } from '@/stores/sessionStore.store.svelte';
   import { loginModalStore } from '@/stores/loginModal.store.svelte';
 
+  import LogoutIcon from '@/components/Icons/LogoutIcon.svelte';
+  import UserIcon from '@/components/Icons/UserIcon.svelte';
+  import OrdersIcon from '@/components/Icons/OrdersIcon.svelte';
+  import AddressIcon from '@/components/Icons/AddressIcon.svelte';
+  import ProductsIcon from '@/components/Icons/ProductsIcon.svelte';
+
   import { account } from '@/lib/appwrite.lib';
 
   let ViewComponent: Component | null = $state(null);
@@ -37,24 +43,39 @@
       <div class="sidemenu flex-shrink-0 flex-grow md:flex-grow-0">
         <ul class="menu w-full flex-row flex-nowrap gap-3 overflow-x-auto rounded-box bg-base-200 md:w-56 md:flex-col">
           <li>
-            <button onclick={() => changeViewComponent('user')}>User</button>
+            <button onclick={() => changeViewComponent('user')}>
+              <UserIcon />
+              User
+            </button>
           </li>
           <li>
-            <button onclick={() => changeViewComponent('orders')}>Orders</button>
+            <button onclick={() => changeViewComponent('orders')}>
+              <OrdersIcon />
+              Orders
+            </button>
           </li>
           <li>
-            <button onclick={() => changeViewComponent('shippingAddress')}>Shipping address</button>
+            <button onclick={() => changeViewComponent('shippingAddress')}>
+              <AddressIcon />
+              Shipping address
+            </button>
           </li>
           {#if sessionStore.user.labels.includes('admin')}
             <li>
-              <button onclick={() => changeViewComponent('products')}>Products</button>
+              <button onclick={() => changeViewComponent('products')}>
+                <ProductsIcon />
+                Products
+              </button>
             </li>
           {/if}
           <li>
             <button
               class="text-gray-500"
-              onclick={() => sessionStore.logout()}>Log out</button
+              onclick={() => sessionStore.logout()}
             >
+              <LogoutIcon />
+              Log out
+            </button>
           </li>
         </ul>
       </div>

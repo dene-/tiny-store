@@ -85,7 +85,6 @@
 <dialog
   id="loginModal"
   class="modal sm:modal-middle"
-  onclose={() => loginModalStore.close()}
 >
   <div class="modal-box">
     <h3 class="mb-5 text-lg font-bold">

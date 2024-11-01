@@ -2,10 +2,13 @@
   import { itemStore } from '@/stores/itemStore.store.svelte';
   import { onMount } from 'svelte';
 
+  import AddProductModal from '../Modal/AddProductModal.svelte';
   import PlusIcon from '../Icons/PlusIcon.svelte';
   import EditIcon from '../Icons/EditIcon.svelte';
   import DuplicateIcon from '../Icons/DuplicateIcon.svelte';
   import DeleteIcon from '../Icons/DeleteIcon.svelte';
+
+  import { addProductModalStore } from '@/stores/addProductModal.store.svelte';
 
   onMount(async () => {
     await itemStore.getItems();
@@ -17,9 +20,13 @@
     <span class="loading loading-spinner loading-lg"></span>
   </div>
 {:then}
+  <AddProductModal />
   <div class="mb-3 flex w-full items-center">
     <h1 class=" flex-grow text-2xl font-bold">Store Products</h1>
-    <button class="btn btn-outline btn-sm">
+    <button
+      class="btn btn-outline btn-sm"
+      onclick={() => addProductModalStore.open()}
+    >
       <PlusIcon />
       Add product
     </button>

@@ -1,20 +1,8 @@
 import { userStore } from './userStore.store.svelte';
 import { sessionStore } from './sessionStore.store.svelte';
+import { Modal } from '@/lib/modal.lib.svelte';
 
-class UseLoginModalStore {
-  modal: HTMLDialogElement | null = $state(null);
-
-  isLoading = $state(false);
-  error = $state('');
-
-  open = () => {
-    this.modal?.showModal();
-  };
-
-  close = () => {
-    this.modal?.close();
-  };
-
+class UseLoginModalStore extends Modal {
   async logIn(email: string, password: string) {
     this.isLoading = true;
     this.error = '';

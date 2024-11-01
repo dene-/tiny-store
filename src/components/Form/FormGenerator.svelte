@@ -52,6 +52,12 @@
       formData[field.id] = field.value ?? '';
     }
   });
+
+  export function clearForm() {
+    fields.forEach(field => {
+      formData[field.id] = field.value ?? (field.type === 'checkbox' ? false : '');
+    });
+  }
 </script>
 
 <form
