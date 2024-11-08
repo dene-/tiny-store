@@ -2,7 +2,6 @@ import type { Handle } from '@sveltejs/kit';
 
 const securityHeaders = {
   'Cross-Origin-Embedder-Policy': 'require-corp',
-  'Cross-Origin-Opener-Policy': 'same-origin',
   'X-XSS-Protection': '0',
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
