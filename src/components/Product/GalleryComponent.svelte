@@ -57,7 +57,7 @@
 
       <div
         bind:this={carouselRef}
-        class="hide-scrollbar flex gap-2 overflow-x-auto scroll-smooth"
+        class="hide-scrollbar flex snap-proximity gap-2 overflow-x-auto scroll-smooth"
       >
         {#each images as image}
           <div

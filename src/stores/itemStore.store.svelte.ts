@@ -1,18 +1,5 @@
-import type { Models } from 'appwrite';
 import { databases, ids } from '@/lib/appwrite.lib';
-
-export interface Item extends Models.Document {
-  $id: string;
-  name: string;
-  description: string;
-  price: number;
-  sku: string;
-  tags: string[];
-  categories: string[];
-  image_url: string;
-  image_alt: string;
-  product_url: string;
-}
+import type { Item } from '@/interfaces/appWrite.interfaces';
 
 class UseItemStore {
   items = $state<Item[]>([]);

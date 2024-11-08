@@ -1,11 +1,10 @@
-import type { Item } from './itemStore.store.svelte';
 import { loginModalStore } from './loginModal.store.svelte';
 import { sessionStore } from './sessionStore.store.svelte';
-import Toastify from 'toastify-js';
 
-export interface CartItem extends Item {
-  quantity: number;
-}
+import type { CartItem } from '@/interfaces/app.interfaces';
+import type { Item } from '@/interfaces/appWrite.interfaces';
+
+import Toastify from 'toastify-js';
 
 class UseCartStore {
   // Add your store properties here

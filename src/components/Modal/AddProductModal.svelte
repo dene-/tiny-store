@@ -61,15 +61,7 @@
       );
 
       for (let file of files) {
-        const reader = new FileReader();
-
-        reader.onload = e => {
-          if (e.target && e.target.result) {
-            images = [...images, e.target.result as string];
-          }
-        };
-
-        reader.readAsDataURL(file);
+        images.push(URL.createObjectURL(file));
       }
     }
   }
@@ -92,9 +84,7 @@
     <h3 class="text-2xl font-bold">Add product</h3>
     <div class="divider"></div>
     <div>
-      {#if images.length}
-        <GalleryComponent {images} />
-      {/if}
+      <GalleryComponent {images} />
       <input
         type="file"
         class="hidden"

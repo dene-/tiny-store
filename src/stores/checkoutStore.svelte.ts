@@ -1,4 +1,4 @@
-import type { CartItem } from './cartStore.store.svelte';
+import type { CartItem } from '@/interfaces/app.interfaces';
 
 class UseCheckoutStore {
   checkoutItems: CartItem[] = $state([]);
