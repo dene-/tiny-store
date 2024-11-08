@@ -31,7 +31,20 @@ const config = {
     },
     csp: {
       mode: 'hash',
-      directives: { 'script-src': ['self'] },
+      directives: {
+        'script-src': ['self'],
+        'object-src': ['none'],
+        'style-src': ['self'],
+        'img-src': ['self'],
+        'media-src': ['self', 'https:'],
+        'frame-src': ['none'],
+        'font-src': ['self'],
+        'connect-src': ['self'],
+        'worker-src': ['self'],
+        'manifest-src': ['self'],
+        'base-uri': ['self'],
+        'form-action': ['self'],
+      },
     },
   },
   compilerOptions: {
