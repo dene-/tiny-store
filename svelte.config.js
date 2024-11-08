@@ -32,9 +32,8 @@ const config = {
     csp: {
       mode: 'hash',
       directives: {
-        'script-src': ['self'],
         'object-src': ['none'],
-        'img-src': ['self'],
+        'img-src': ['self', 'https://aw.terminaldogma.win'],
         'media-src': ['self', 'https:'],
         'frame-src': ['none'],
         'font-src': ['self'],
@@ -44,7 +43,6 @@ const config = {
         'base-uri': ['self'],
         'form-action': ['self'],
         'frame-ancestors': ['none'],
-        'default-src': ['none'],
       },
     },
   },
