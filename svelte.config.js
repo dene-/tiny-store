@@ -44,6 +44,8 @@ const config = {
         'manifest-src': ['self'],
         'base-uri': ['self'],
         'form-action': ['self'],
+        'frame-ancestors': ['none'],
+        'default-src': ['none'],
       },
     },
   },
