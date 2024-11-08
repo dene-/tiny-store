@@ -34,7 +34,6 @@ const config = {
       directives: {
         'script-src': ['self'],
         'object-src': ['none'],
-        'style-src': ['hash'],
         'img-src': ['self'],
         'media-src': ['self', 'https:'],
         'frame-src': ['none'],
