@@ -33,7 +33,7 @@ const config = {
       mode: 'hash',
       directives: {
         'object-src': ['none'],
-        'img-src': ['self', 'https://aw.terminaldogma.win', 'http://www.w3.org'],
+        'img-src': ['self', 'https://aw.terminaldogma.win', 'data:'],
         'media-src': ['self', 'https:'],
         'frame-src': ['none'],
         'font-src': ['self'],
