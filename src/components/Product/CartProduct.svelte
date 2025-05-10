@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { cartStore, type CartItem } from '@/stores/cartStore.store.svelte';
+  import { cartStore } from '@/stores/cartStore.store.svelte';
+  import type { CartItem } from '@/interfaces/app.interfaces';
+
   import TrashBinIcon from '../Icons/TrashBinIcon.svelte';
   import MinusIcon from '../Icons/MinusIcon.svelte';
   import PlusIcon from '../Icons/PlusIcon.svelte';
