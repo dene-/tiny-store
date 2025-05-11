@@ -1,12 +1,13 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
+import tailwindcss from '@tailwindcss/vite';
 import fs from 'fs';
 
 export default defineConfig({
   build: {
     target: 'esnext',
   },
-  plugins: [sveltekit()],
+  plugins: [tailwindcss(), sveltekit()],
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}'],
   },
@@ -18,10 +19,10 @@ export default defineConfig({
     },
   },
   server: {
-    https: {
+    /*  https: {
       key: fs.readFileSync(`./cert/key.pem`),
       cert: fs.readFileSync(`./cert/cert.pem`),
-    },
+    }, */
     proxy: {},
     host: true,
   },

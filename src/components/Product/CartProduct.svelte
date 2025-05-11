@@ -55,7 +55,9 @@
   </div>
 </div>
 
-<style lang="scss">
+<style lang="postcss">
+  @reference "tailwindcss";
+
   .grid-cell {
     @apply flex items-center p-3;
   }

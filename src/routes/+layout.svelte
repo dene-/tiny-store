@@ -1,6 +1,6 @@
 <script lang="ts">
   import 'toastify-js/src/toastify.css';
-  import '../style/app.scss';
+  import '../style/app.css';
   import { onNavigate } from '$app/navigation';
   import { onMount } from 'svelte';
   import type { Snippet } from 'svelte';

@@ -1,8 +1,13 @@
-@use './variables.scss' as *;
+@import 'tailwindcss';
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: 'caramellatte';
+  default: true;
+  --color-base-300: rgb(178, 161, 148);
+  --color-base-content: rgb(75 68 63);
+}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './variables.scss';
 
 html {
   scrollbar-gutter: auto !important;
@@ -55,7 +60,6 @@ p {
   color: white;
 }
 
-.btn,
-.card {
-  @apply rounded-md;
+@utility btn {
+  @apply shadow-none;
 }

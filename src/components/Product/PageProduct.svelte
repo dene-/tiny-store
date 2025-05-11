@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { cartStore, type CartItem } from '@/stores/cartStore.store.svelte';
-  import type { Item } from '@/stores/itemStore.store.svelte';
+  import { cartStore } from '@/stores/cartStore.store.svelte';
+  import type { CartItem } from '@/interfaces/app.interfaces';
+  import type { Item } from '@/interfaces/appWrite.interfaces';
   import CartIcon from '../Icons/CartIcon.svelte';
 
   import MinusIcon from '../Icons/MinusIcon.svelte';
@@ -30,7 +31,7 @@
       {item.name}
     </h1>
     <div class="flex-grow"></div>
-    <div class="mb-5 text-5xl font-bold text-primary">
+    <div class="text-primary mb-5 text-5xl font-bold">
       {item.price} €
     </div>
     <div class="card-actions mt-3 justify-end">
@@ -63,7 +64,6 @@
           <PlusIcon />
         </button>
       </div>
-
       <button
         onclick={() => cartStore.addItem(cartItem)}
         class="btn btn-secondary rounded-xl uppercase"

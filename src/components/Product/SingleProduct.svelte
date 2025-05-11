@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { cartStore, type CartItem } from '$stores/cartStore.store.svelte';
-  import type { Item } from '$stores/itemStore.store.svelte';
+  import { cartStore } from '$stores/cartStore.store.svelte';
+  import type { CartItem } from '@/interfaces/app.interfaces';
+  import type { Item } from '@/interfaces/appWrite.interfaces';
   import CartIcon from '@/components/Icons/CartIcon.svelte';
 
   const { item }: { item: Item } = $props();
@@ -11,7 +12,7 @@
   });
 </script>
 
-<div class="card flex-shrink-0 bg-base-300">
+<div class="card bg-base-300 flex-shrink-0">
   <figure>
     <a href={`/products/${item.product_url}`}>
       <img
@@ -28,7 +29,7 @@
       {item.name}
     </h1>
     <div class="card-actions justify-end">
-      <div class="text-3xl font-bold text-primary">
+      <div class="text-primary text-3xl font-bold">
         {item.price} €
       </div>
       <button

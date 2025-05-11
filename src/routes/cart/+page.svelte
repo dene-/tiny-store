@@ -37,9 +37,15 @@
   {/if}
 </div>
 
-<style lang="scss">
+<style lang="postcss">
+  @reference "tailwindcss";
+
   .grid-header {
-    @apply border-b-2 border-secondary p-3 font-bold;
+    @apply border-b-2 p-3 font-bold;
+  }
+
+  .grid-cell {
+    align-items: center;
   }
 
   .custom-grid {
