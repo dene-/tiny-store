@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { page } from '$app/stores';
+  // import { page } from '$app/stores';
   import { cartStore } from '@/stores/cartStore.store.svelte';
   import { sessionStore } from '@/stores/sessionStore.store.svelte';
   import { loginModalStore } from '@/stores/loginModal.store.svelte';
@@ -7,7 +7,7 @@
   import { onMount } from 'svelte';
 
   import UserAvatarComponent from './User/UserAvatarComponent.svelte';
-  import SearchIcon from './Icons/SearchIcon.svelte';
+  // import SearchIcon from './Icons/SearchIcon.svelte';
   import CubeIcon from './Icons/CubeIcon.svelte';
   import MenuIcon from './Icons/MenuIcon.svelte';
 
@@ -31,11 +31,14 @@
 
 {#snippet navbarLinks(isPhoneView: boolean = true)}
   <li>
-    <a href="/">Shop</a>
+    <a href="/">Tienda</a>
+  </li>
+  <li>
+    <a href="/sobre-nosotros">Sobre nosotros</a>
   </li>
   <li>
     <a href="/cart">
-      Cart
+      Carrito
       {#if cartStore.items.length > 0}
         <span class="badge badge-primary font-bold">{cartStore.items.length}</span>
       {/if}
@@ -57,12 +60,12 @@
       </li>
     {:else}
       <li>
-        <button onclick={handleAccountClick}> Account </button>
+        <button onclick={handleAccountClick}> Cuenta </button>
       </li>
     {/if}
   {:else if sessionStore.hasSessionLoaded}
     <li>
-      <button onclick={() => loginModalStore.open()}> Log in </button>
+      <button onclick={() => loginModalStore.open()}> Cuenta </button>
     </li>
   {/if}
 {/snippet}
@@ -76,7 +79,7 @@
   />
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
-    <div class="navbar w-full justify-center bg-transparent">
+    <div class="navbar bg-base-100 shadow-base-300/15 w-full justify-center shadow-xl">
       <div class="container flex items-center">
         <div class="flex-none lg:hidden">
           <label
@@ -96,7 +99,7 @@
             Mami Crafts
           </a>
         </div>
-        {#if $page.url.pathname === '/'}
+        <!-- {#if $page.url.pathname === '/'}
           <form autocomplete="off">
             <label class="input input-bordered mr-3 hidden items-center gap-2 md:flex">
               <input
@@ -108,7 +111,7 @@
               <SearchIcon />
             </label>
           </form>
-        {/if}
+        {/if} -->
         <div class="hidden flex-none lg:block">
           <ul class="menu menu-horizontal items-center gap-3 text-lg">
             <!-- Navbar menu content here -->

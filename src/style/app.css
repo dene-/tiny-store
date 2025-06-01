@@ -1,22 +1,50 @@
 @import 'tailwindcss';
 @plugin "daisyui" {
-  themes: caramellatte --default;
+  themes: mamicrafts --default;
 }
 @plugin "daisyui/theme" {
-  name: 'caramellatte';
+  name: "mamicrafts";
   default: true;
-  --color-base-300: rgb(178, 161, 148);
-  --color-base-content: rgb(75 68 63);
+  prefersdark: true;
+  color-scheme: "light";
+  --color-base-100: #f7f5ef;
+  --color-base-200: #ede9e2;
+  --color-base-300: #d9d3c6;
+  --color-base-content: oklch(21% 0.006 285.885);
+  --color-primary: #bda899;
+  --color-primary-content: #fff;
+  --color-secondary: #b9c1c7;
+  --color-secondary-content: #fff;
+  --color-accent: #a37b59;
+  --color-accent-content: #fff;
+  --color-neutral: #594c44;
+  --color-neutral-content: #fff;
+  --color-info: #7da2b8;
+  --color-info-content: #fff;
+  --color-success: #85a37b;
+  --color-success-content: #fff;
+  --color-warning: #c4a15a;
+  --color-warning-content: #fff;
+  --color-error: #c2816d;
+  --color-error-content: #fff;
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: .5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 0.5px;
+  --depth: 0;
+  --noise: 0;
 }
 
 @import './variables.scss';
 
 :root {
-  --default-font-family: 'Merriweather', serif;
+  --default-font-family: 'Quicksand', serif;
 }
 
 html {
-  font-family: 'Merriweather', serif !important;
+  font-family: 'Quicksand', serif !important;
   scrollbar-gutter: auto !important;
   background-color: var(--root-bg, var(--color-base-100)) !important;
 }
