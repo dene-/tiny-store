@@ -36,7 +36,6 @@ const config = {
         'img-src': ['self', 'https://aw.terminaldogma.win', 'data:'],
         'media-src': ['self', 'https:'],
         'frame-src': ['none'],
-        'font-src': ['self'],
         'connect-src': ['self', 'https://aw.terminaldogma.win'],
         'worker-src': ['self'],
         'manifest-src': ['self'],

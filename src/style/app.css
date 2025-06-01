@@ -1,5 +1,7 @@
 @import 'tailwindcss';
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: caramellatte --default;
+}
 @plugin "daisyui/theme" {
   name: 'caramellatte';
   default: true;
@@ -9,12 +11,17 @@
 
 @import './variables.scss';
 
+:root {
+  --default-font-family: 'Merriweather', serif;
+}
+
 html {
+  font-family: 'Merriweather', serif !important;
   scrollbar-gutter: auto !important;
+  background-color: var(--root-bg, var(--color-base-100)) !important;
 }
 
 body {
-  font-family: 'MS Sans-serif', sans-serif, Georgia;
   height: 100vh;
   width: 100vw;
   overflow: auto;

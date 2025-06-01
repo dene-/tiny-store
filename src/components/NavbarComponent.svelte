@@ -76,7 +76,7 @@
   />
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
-    <div class="navbar bg-base-300 w-full justify-center">
+    <div class="navbar w-full justify-center bg-transparent">
       <div class="container flex items-center">
         <div class="flex-none lg:hidden">
           <label
@@ -87,7 +87,7 @@
             <MenuIcon />
           </label>
         </div>
-        <div class="mx-2 flex-1 px-2 text-xl font-bold uppercase">
+        <div class="mx-2 flex-1 px-2 text-xl font-bold">
           <a
             href="/"
             class="flex items-center gap-2"
