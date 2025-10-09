@@ -1,19 +1,20 @@
 import type { ItemsResponse } from '@/interfaces/appWrite.interfaces';
-import { databases, ids } from '@/lib/appwrite.lib';
-import type { Item } from '@/stores/itemStore.store.svelte';
+import type { Item } from '@/interfaces/appWrite.interfaces';
+import { getProducts } from './api/products.remote';
 
 export async function load(): Promise<ItemsResponse> {
-  const response = await databases.listDocuments(ids.databases.STORE, ids.collections.ITEMS);
   const items: Item[] = [];
 
-  if (response.documents.length) {
-    for (const item of response.documents) {
-      items.push(item as Item);
+  const products = await getProducts();
+
+  if (products.length) {
+    for (const product of products) {
+      items.push(product);
     }
   }
 
   return {
     items,
-    count: response.total,
+    count: products.length,
   };
 }

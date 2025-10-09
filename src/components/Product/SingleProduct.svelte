@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import { cartStore } from '$stores/cartStore.store.svelte';
   import type { CartItem } from '@/interfaces/app.interfaces';
   import type { Item } from '@/interfaces/appWrite.interfaces';
@@ -34,7 +35,7 @@
       </div> -->
       <div class="text-center">
         <button
-          onclick={() => cartStore.addItem(cartItem)}
+          onclick={() => goto(`/products/${item.product_url}`)}
           class="btn btn-primary mt-3 w-full rounded-xl text-xs uppercase md:text-sm"
         >
           Ver producto

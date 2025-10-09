@@ -1,7 +1,7 @@
 <script lang="ts">
   import { cartStore } from '@/stores/cartStore.store.svelte';
 
-  import CartProduct from '$components/Product/CartProduct.svelte';
+  import CartProduct from '@/components/Product/CartProduct.svelte';
   import CheckoutIcon from '@/components/Icons/CheckoutIcon.svelte';
 </script>
 

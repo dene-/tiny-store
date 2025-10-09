@@ -4,8 +4,8 @@
   import { onNavigate } from '$app/navigation';
   import { onMount } from 'svelte';
   import type { Snippet } from 'svelte';
-  import NavbarComponent from '@/components/NavbarComponent.svelte';
   import LoginModal from '@/components/Modal/LoginModal.svelte';
+  import NavbarComponent from '@/components/NavbarComponent.svelte';
 
   import { sessionStore } from '@/stores/sessionStore.store.svelte';
 

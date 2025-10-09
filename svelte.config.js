@@ -1,28 +1,19 @@
-import adapter from '@sveltejs/adapter-static';
+import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://kit.svelte.dev/docs/integrations#preprocessors
-  // for more information about preprocessors
   preprocess: vitePreprocess(),
   kit: {
-    // adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
-    // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-    // See https://kit.svelte.dev/docs/adapters for more information about adapters.
-    adapter: adapter({
-      fallback: '200.html',
-    }),
-    csrf: {
-      checkOrigin: true,
+    adapter: adapter(),
+    experimental: {
+      remoteFunctions: true,
     },
-    version: {
-      name: process.env.npm_package_version,
-      pollInterval: 10000,
+    csrf: {
+      trustedOrigins: ['https://aw.terminaldogma.win'],
     },
     alias: {
       '@': './src',
-      $components: './src/components',
       $constants: './src/constants',
       $stores: './src/stores',
       $utils: './src/utils',
@@ -33,7 +24,7 @@ const config = {
       mode: 'hash',
       directives: {
         'object-src': ['none'],
-        'img-src': ['self', 'https://aw.terminaldogma.win', 'data:'],
+        //'img-src': ['self', 'https://aw.terminaldogma.win', 'data:', 'localhost:8585'],
         'media-src': ['self', 'https:'],
         'frame-src': ['none'],
         'connect-src': ['self', 'https://aw.terminaldogma.win'],
@@ -46,8 +37,10 @@ const config = {
     },
   },
   compilerOptions: {
-    runes: true,
     discloseVersion: false,
+    experimental: {
+      async: true,
+    },
   },
 };
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Item } from '@/stores/itemStore.store.svelte';
+  import type { Item } from '@/interfaces/appWrite.interfaces';
 
-  import PageProduct from '$components/Product/PageProduct.svelte';
+  import PageProduct from '@/components/Product/PageProduct.svelte';
 
   const { data: item }: { data: Item } = $props();
 </script>

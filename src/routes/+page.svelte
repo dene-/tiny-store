@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import SingleProduct from '$components/Product/SingleProduct.svelte';
+  import SingleProduct from '../components/Product/SingleProduct.svelte';
   import type { ItemsResponse } from '@/interfaces/appWrite.interfaces';
   import HeroComponent from '@/components/Hero/HeroComponent.svelte';
 
