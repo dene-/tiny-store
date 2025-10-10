@@ -6,15 +6,15 @@
 </script>
 
 <div class="cart">
-  <h1 class="mb-3 p-3 text-2xl font-bold">Cart</h1>
+  <h1 class="mb-3 p-3 text-2xl font-bold">Carrito</h1>
   {#if cartStore.items.length === 0}
-    <div class="flex w-full items-center p-3">Your cart is empty</div>
+    <div class="flex w-full items-center p-3">Tu carrito está vacío</div>
   {:else}
     <div class="custom-grid w-full p-3">
       <div class="grid-header photo hidden text-left md:block"></div>
-      <div class="grid-header name text-left">Name</div>
-      <div class="grid-header price text-right">Price</div>
-      <div class="grid-header quantity text-right">Quantity</div>
+      <div class="grid-header name text-left">Nombre</div>
+      <div class="grid-header price text-right">Precio</div>
+      <div class="grid-header quantity text-right">Cantidad</div>
 
       {#each cartStore.items as item (item.$id)}
         <CartProduct {item} />
@@ -30,7 +30,7 @@
           onclick={() => cartStore.checkout()}
         >
           <CheckoutIcon />
-          Checkout
+          Terminar compra
         </button>
       </div>
     </div>

@@ -1,20 +1,21 @@
 @import 'tailwindcss';
+@plugin "@tailwindcss/typography";
 @plugin "daisyui" {
   themes: mamicrafts --default;
 }
 @plugin "daisyui/theme" {
-  name: "mamicrafts";
+  name: 'mamicrafts';
   default: true;
   prefersdark: true;
-  color-scheme: "light";
+  color-scheme: 'light';
   --color-base-100: #f7f5ef;
   --color-base-200: #ede9e2;
   --color-base-300: #d9d3c6;
   --color-base-content: oklch(21% 0.006 285.885);
-  --color-primary: #bda899;
+  --color-primary: oklch(0.542 0.032 57.8);
   --color-primary-content: #fff;
-  --color-secondary: #b9c1c7;
-  --color-secondary-content: #fff;
+  --color-secondary: oklch(0.562 0.012 239.9);
+  --color-secondary-content: oklch(100% 0 0);
   --color-accent: #a37b59;
   --color-accent-content: #fff;
   --color-neutral: #594c44;
@@ -29,7 +30,7 @@
   --color-error-content: #fff;
   --radius-selector: 1rem;
   --radius-field: 0.5rem;
-  --radius-box: .5rem;
+  --radius-box: 0rem;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 0.5px;

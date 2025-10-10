@@ -29,6 +29,11 @@
     <h1 class="product-title card-title justify-center text-sm md:text-xl">
       {item.name}
     </h1>
+    {#if item.short_description}
+      <p class="text-center text-xs md:text-sm">
+        {item.short_description}
+      </p>
+    {/if}
     <div class="card-actions justify-center">
       <!-- <div class="text-primary text-3xl font-bold">
         {item.price} €

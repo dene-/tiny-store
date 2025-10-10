@@ -1,20 +1,29 @@
 import { query } from '$app/server';
 import { error } from '@sveltejs/kit';
 import { ENDPOINTS } from './config.const';
-import type { Product } from '@/interfaces/store.interfaces';
+import type { Product, Prices } from '@/interfaces/store.interfaces';
 import type { Item } from '@/interfaces/appWrite.interfaces';
 import z from 'zod';
+
+const parseWcPrice = (priceObject: Prices): number => {
+  const priceInMinorUnit = parseInt(priceObject.price, 10);
+
+  const divisor = Math.pow(10, priceObject.currency_minor_unit);
+
+  return priceInMinorUnit / divisor;
+};
 
 const productToItem = (product: Product): Item =>
   ({
     $id: product.id.toString(),
     name: product.name,
-    price: parseInt(product.prices.price),
+    price: parseWcPrice(product.prices),
     categories: product.categories ? product.categories.map(cat => cat.name) : [],
     image_url: product.images && product.images.length ? product.images[0].src : '',
     image_alt: product.images && product.images.length ? product.images[0].alt || product.name : product.name,
     product_url: product.slug,
-    description: product.description || product.short_description || '',
+    description: product.description || '',
+    short_description: product.short_description ? product.short_description.replace(/<[^>]*>/g, '') : '',
     sku: product.sku || '',
     quantity: 1,
     tags: product.tags ? product.tags.map(tag => tag.name) : [],
@@ -53,13 +62,9 @@ export const getProduct = query(getProductSchema, async ({ slug, tag, category }
     if (tag) requestParams.append('tag', tag);
     if (category) requestParams.append('category', category);
 
-    console.log('Fetching product with params:', requestParams.toString());
-
     const res = await fetch(`${ENDPOINTS.PRODUCTS}/?${requestParams.toString()}`);
 
     const products = (await res.json()) as Product[];
-
-    console.log('Fetched products:', products);
 
     if (!products || products.length === 0) throw error(404, 'Product not found');
 

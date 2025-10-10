@@ -69,35 +69,41 @@
         class="btn btn-secondary rounded-xl uppercase"
       >
         <CartIcon />
-        Add to cart
+        Añadir al carrito
       </button>
       <button
         class="btn btn-primary rounded-xl uppercase"
         onclick={() => cartStore.checkout()}
       >
         <CheckoutIcon />
-        Buy now
+        Comprar ahora
       </button>
     </div>
   </div>
 </div>
 <div class="p-3">
-  <h2 class="py-3 text-xl font-bold">Description</h2>
-  <p class="mb-10">{item.description}</p>
-  <p>
-    Categories:
-    {#each item.categories as category}
-      <a href={`/categories/${category}`}>
-        <span class="badge badge-outline mr-2">{category}</span>
-      </a>
-    {/each}
-  </p>
-  <p>
-    Tags:
-    {#each item.tags as tag}
-      <a href={`/tag/${tag}`}>
-        <span class="badge badge-secondary badge-outline mr-2">{tag}</span>
-      </a>
-    {/each}
-  </p>
+  {#if item.description}
+    <h2 class="py-3 text-xl font-bold">Descripción</h2>
+    <p class="prose mb-10">{@html item.description}</p>
+  {/if}
+  {#if item.categories.length}
+    <p>
+      Catagorías:
+      {#each item.categories as category}
+        <a href={`/categories/${category}`}>
+          <span class="badge badge-outline mr-2">{category}</span>
+        </a>
+      {/each}
+    </p>
+  {/if}
+  {#if item.tags.length}
+    <p>
+      Tags:
+      {#each item.tags as tag}
+        <a href={`/tag/${tag}`}>
+          <span class="badge badge-secondary badge-outline mr-2">{tag}</span>
+        </a>
+      {/each}
+    </p>
+  {/if}
 </div>

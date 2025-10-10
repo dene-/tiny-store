@@ -41,30 +41,30 @@
   {#if sessionStore.user}
     <div class="mt-3 flex w-full flex-col gap-6 md:flex-row">
       <div class="sidemenu flex-shrink-0 flex-grow md:flex-grow-0">
-        <ul class="menu w-full flex-row flex-nowrap gap-3 overflow-x-auto rounded-box bg-base-200 md:w-56 md:flex-col">
+        <ul class="menu rounded-box bg-base-200 w-full flex-row flex-nowrap gap-3 overflow-x-auto md:w-56 md:flex-col">
           <li>
             <button onclick={() => changeViewComponent('user')}>
               <UserIcon />
-              User
+              Usuario
             </button>
           </li>
           <li>
             <button onclick={() => changeViewComponent('orders')}>
               <OrdersIcon />
-              Orders
+              Pedidos
             </button>
           </li>
           <li>
             <button onclick={() => changeViewComponent('shippingAddress')}>
               <AddressIcon />
-              Shipping address
+              Direcciones de envío
             </button>
           </li>
           {#if sessionStore.user.labels.includes('admin')}
             <li>
               <button onclick={() => changeViewComponent('products')}>
                 <ProductsIcon />
-                Products
+                Productos
               </button>
             </li>
           {/if}
@@ -74,7 +74,7 @@
               onclick={() => sessionStore.logout()}
             >
               <LogoutIcon />
-              Log out
+              Cerrar sesión
             </button>
           </li>
         </ul>
@@ -85,16 +85,16 @@
     </div>
   {:else if sessionStore.hasSessionLoaded}
     <div class="flex flex-col items-center gap-3">
-      <h1 class="text-2xl font-bold">Welcome, Guest</h1>
+      <h1 class="text-2xl font-bold">Bienvenido, Invitado</h1>
       <div class="text-lg">
-        Please
+        Por favor
         <button
           class="btn btn-primary mx-3"
           onclick={() => loginModalStore.open()}
         >
-          log in
+          iniciar sesión
         </button>
-        to view your account details.
+        para ver los detalles de tu cuenta.
       </div>
     </div>
   {:else if !sessionStore.hasSessionLoaded}

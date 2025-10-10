@@ -9,6 +9,10 @@ export interface Item extends Models.Document {
    */
   description: string;
   /**
+   * Short description of the item.
+   */
+  short_description: string;
+  /**
    * Price of the item.
    */
   price: number;

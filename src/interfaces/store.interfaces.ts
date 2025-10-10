@@ -24,6 +24,22 @@ export type StoreTerm = {
   link: string;
 };
 
+export interface Prices {
+  currency_code: string;
+  currency_symbol: string;
+  currency_minor_unit: number;
+  price: string;
+  regular_price: string;
+  sale_price: string | null;
+
+  // Extra price metadata
+  price_range?: unknown | null;
+  currency_decimal_separator?: string;
+  currency_thousand_separator?: string;
+  currency_prefix?: string;
+  currency_suffix?: string;
+}
+
 export type Product = {
   id: number;
   name: string;
@@ -40,21 +56,7 @@ export type Product = {
   description?: string;
 
   on_sale: boolean;
-  prices: {
-    currency_code: string;
-    currency_symbol: string;
-    currency_minor_unit: number;
-    price: string;
-    regular_price: string;
-    sale_price: string | null;
-
-    // Extra price metadata
-    price_range?: unknown | null;
-    currency_decimal_separator?: string;
-    currency_thousand_separator?: string;
-    currency_prefix?: string;
-    currency_suffix?: string;
-  };
+  prices: Prices;
 
   // HTML string from API
   price_html?: string;
