@@ -26,6 +26,9 @@
     </figure>
 
     <div class="flex flex-grow flex-col p-3 pb-0">
+      {#if product.on_sale}
+        <div class="badge badge-primary badge-lg mb-3">¡En oferta!</div>
+      {/if}
       <div class="prose">
         <h1 class="product-title text-primary">
           {product.name}
@@ -42,7 +45,7 @@
           </span>
         </div>
       {/if}
-      <div class="py-3">
+      <div class="py-3 text-2xl">
         <ProductPrice {product} />
       </div>
       <div class="card-actions flex-col gap-3 md:flex-row">
@@ -101,7 +104,7 @@
       </div>
     </div>
   </div>
-  <div class="flex gap-3 p-3 md:p-0">
+  <div class="flex gap-3 p-3">
     {#if product.categories && product.categories.length}
       <div>
         Catagorías:

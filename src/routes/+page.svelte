@@ -14,7 +14,7 @@
 </script>
 
 <HeroComponent />
-<h1 class="mb-3 p-3 text-2xl font-bold">Productos</h1>
+<h1 class="mb-3 p-3 text-center text-2xl font-bold">Productos</h1>
 <div class="grid w-full grid-cols-2 flex-wrap content-start items-start gap-3 p-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
   {#if !itemStore.products.length}
     <div class="flex h-[50vh] w-full items-center justify-center">

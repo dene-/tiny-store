@@ -4,28 +4,42 @@
   import TrashBinIcon from '../Icons/TrashBinIcon.svelte';
   import MinusIcon from '../Icons/MinusIcon.svelte';
   import PlusIcon from '../Icons/PlusIcon.svelte';
+  import ProductPrice from './ProductPrice.svelte';
+
   import type { CartItem } from '@/interfaces/store.interfaces';
 
   import { formatPrice } from '@/lib/utils.lib';
+  import { itemStore } from '@/stores/itemStore.store.svelte';
 
   const { item: cartItem }: { item: CartItem } = $props();
+  $inspect(cartItem);
 </script>
 
 <div class="hidden items-center p-5 text-left md:flex">
   <img
-    class="w-[150px] rounded-xl bg-white"
+    class="w-[100px] rounded-xl bg-white"
     src={cartItem.images[0].src}
     alt={cartItem.images[0].alt}
     title={cartItem.images[0].alt}
   />
 </div>
 <div class="grid-cell w-full text-left md:w-auto">
-  <span class="text-sm font-bold md:text-xl">
-    {cartItem.name}
-  </span>
+  <div class="flex flex-col gap-1">
+    <img
+      class="w-[100px] rounded-xl bg-white md:hidden"
+      src={cartItem.images[0].src}
+      alt={cartItem.images[0].alt}
+      title={cartItem.images[0].alt}
+    />
+    <span class="text-sm font-bold md:text-xl">
+      {cartItem.name}
+    </span>
+  </div>
 </div>
-<div class="grid-cell justify-end">{formatPrice(cartItem.prices.price, cartItem.prices)} €</div>
-<div class="grid-cell flex-col justify-end gap-2 md:flex-row md:!items-center">
+<div class="grid-cell justify-end">
+  <ProductPrice product={cartItem} />
+</div>
+<div class="grid-cell justify-end gap-2 md:flex-row">
   {#if cartItem.sold_individually}
     {cartItem.quantity}
   {:else}
@@ -57,7 +71,7 @@
 <div class="grid-cell">
   <button
     onclick={() => cartStore.removeItem(cartItem)}
-    class="btn btn-secondary join-item aspect-square p-0 text-white"
+    class="btn btn-primary join-item aspect-square p-0 text-white"
   >
     <TrashBinIcon />
   </button>

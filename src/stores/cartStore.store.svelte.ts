@@ -9,6 +9,7 @@ import type { Cart } from '@/interfaces/store.interfaces';
 import type { CartItem } from '@/interfaces/store.interfaces';
 
 import Toastify from 'toastify-js';
+import { toastifyDefaults } from '@/constants/toastify.const';
 
 class UseCartStore {
   // Add your store properties here
@@ -37,10 +38,7 @@ class UseCartStore {
 
     Toastify({
       text: `"${product.name}" añadido al carrito`,
-      duration: 3000,
-      gravity: 'bottom',
-      position: 'right',
-      backgroundColor: 'oklch(0.4598 0.248 305.03)',
+      ...toastifyDefaults,
     }).showToast();
   }
 
@@ -56,10 +54,7 @@ class UseCartStore {
 
     Toastify({
       text: message || `"${cartItem.name}" eliminado del carrito`,
-      duration: 3000,
-      gravity: 'bottom',
-      position: 'right',
-      backgroundColor: 'oklch(0.4598 0.248 305.03)',
+      ...toastifyDefaults,
     }).showToast();
   };
 
@@ -80,10 +75,7 @@ class UseCartStore {
 
     Toastify({
       text: message || `"${cartItem.name}" actualizado en el carrito`,
-      duration: 3000,
-      gravity: 'bottom',
-      position: 'right',
-      backgroundColor: 'oklch(0.4598 0.248 305.03)',
+      ...toastifyDefaults,
     }).showToast();
   };
 }

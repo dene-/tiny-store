@@ -32,10 +32,10 @@
 </script>
 
 <svelte:head>
-  <title>Tiny Store</title>
+  <title>Tienda Mami Crafts</title>
   <meta
     name="description"
-    content="Svelte 5 Mini Store POC"
+    content="Explora nuestra variedad de productos disponibles en Mami Crafts. Encuentra lo que necesitas con facilidad."
   />
 </svelte:head>
 

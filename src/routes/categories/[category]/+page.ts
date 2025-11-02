@@ -1,13 +1,11 @@
 import { getProduct } from '@/routes/api/products.remote.js';
-import type { ItemsResponse } from '@/interfaces/appWrite.interfaces';
 
-export async function load({ params }): Promise<ItemsResponse> {
+export async function load({ params }) {
   const { category } = params;
 
-  const items = await getProduct({ category });
+  const products = await getProduct({ category });
 
   return {
-    items,
-    count: items.length,
+    products,
   };
 }

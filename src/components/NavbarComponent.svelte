@@ -26,8 +26,6 @@
         (document.getElementById('drawer') as HTMLInputElement).checked = false;
       });
     });
-
-    $inspect(cartStore.cart);
   });
 </script>
 
@@ -35,9 +33,9 @@
   <li>
     <a href="/">Tienda</a>
   </li>
-  <li>
+  <!-- <li>
     <a href="/sobre-nosotros">Sobre nosotros</a>
-  </li>
+  </li> -->
   <li>
     <a href="/cart">
       Carrito
@@ -46,7 +44,7 @@
       {/if}
     </a>
   </li>
-  {#if sessionStore.isLoggedIn}
+  <!-- {#if sessionStore.isLoggedIn}
     {#if !isPhoneView}
       <li>
         <button
@@ -69,7 +67,7 @@
     <li>
       <button onclick={() => loginModalStore.open()}> Cuenta </button>
     </li>
-  {/if}
+  {/if} -->
 {/snippet}
 
 <div class="drawer sticky top-0 z-40">
