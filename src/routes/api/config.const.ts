@@ -6,4 +6,5 @@ const WP_API = '/wp-json/wc/store/v1/';
 export const ENDPOINTS = {
   PRODUCTS: `${baseURL}${WP_API}products`,
   CART: `${baseURL}${WP_API}cart`,
+  CHECKOUT: `${baseURL}${WP_API}checkout`,
 };

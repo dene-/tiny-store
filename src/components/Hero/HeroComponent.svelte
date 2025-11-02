@@ -2,13 +2,13 @@
   <div class="absolute top-0 flex h-full w-full flex-col items-center justify-center pb-[76px] lg:flex-row-reverse">
     <div class="flex flex-col gap-6 p-3 text-center lg:text-left">
       <h1 class="text-center text-5xl font-bold">Productos <br />artesanales únicos</h1>
-      <p class="w-full py-6 text-center md:max-w-[500px]">
+      <p class="w-full py-6 text-center text-xl md:max-w-[700px]">
         Descubre nuestra selección de bullet journals y scrap. Cada producto está hecho a mano con amor y atención al detalle, perfecto para capturar tus
         pensamientos y recuerdos.
       </p>
-      <div class="text-center">
+      <!-- <div class="text-center">
         <button class="btn btn-primary"> Explorar ahora </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -20,7 +20,9 @@
       Encuadernaciones <br /> y Scrap
     </div>
     <div class="flex items-center justify-center text-center">
-      Libretas <br /> y agendas
+      <a href="/categoria/libretas">
+        Libretas <br /> y agendas
+      </a>
     </div>
     <div class="flex items-center justify-center text-center">
       Papelería <br /> personalizada

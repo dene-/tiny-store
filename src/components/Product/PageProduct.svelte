@@ -10,8 +10,6 @@
 
   const { product }: { product: Product } = $props();
   let quantity = $state(1);
-
-  $inspect(product);
 </script>
 
 <div class="mx-auto md:max-w-[900px]">
@@ -86,13 +84,6 @@
             <CartIcon />
             Añadir al carrito
           </button>
-          <!-- <button
-          class="btn btn-primary w-1/2 rounded-xl p-2 md:w-auto"
-          onclick={() => cartStore.checkout()}
-        >
-          <CheckoutIcon />
-          Comprar ahora
-        </button> -->
         </div>
       </div>
       <div>
@@ -109,7 +100,7 @@
       <div>
         Catagorías:
         {#each product.categories as category}
-          <a href={`/categories/${category.slug}`}>
+          <a href={`/categoria/${category.slug}`}>
             <span class="badge badge-outline mr-2">{category.slug}</span>
           </a>
         {/each}
@@ -119,7 +110,7 @@
       <div>
         Tags:
         {#each product.tags as tag}
-          <a href={`/tag/${tag.slug}`}>
+          <a href={`/etiqueta/${tag.slug}`}>
             <span class="badge badge-secondary badge-outline mr-2">{tag.slug}</span>
           </a>
         {/each}

@@ -5,6 +5,8 @@
   import CheckoutIcon from '@/components/Icons/CheckoutIcon.svelte';
 
   import { formatPrice } from '@/lib/utils.lib';
+
+  import { getCheckoutStatus } from '../api/checkout.remote';
 </script>
 
 <svelte:head>
@@ -36,8 +38,8 @@
       {/if}
     </div>
     <div class="min-w-1/4">
-      <h1 class="mb-3 text-2xl font-bold">Resumen pedido</h1>
-      <div class="flex w-full flex-col">
+      <h1 class="mb-6 text-2xl font-bold">Resumen pedido</h1>
+      <div class="flex w-full flex-col gap-8">
         <!-- <div class="flex items-center justify-between">
           <h3 class="p-0">Subtotal</h3>
           <div>
@@ -46,11 +48,24 @@
           </div>
         </div> -->
         <div class="flex items-center justify-between">
-          <h3 class="p-0">Total</h3>
+          <h3 class="p-0 font-bold">Total</h3>
           <div>
             {cartStore.cart.totals.currency_prefix}{formatPrice(cartStore.cart.totals.total_price, cartStore.cart.totals)}{cartStore.cart.totals
               .currency_suffix}
           </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <h3 class="p-0"><span class="font-bold">Pago:</span> en la entrega</h3>
+        </div>
+        <div class="divider"></div>
+        <div class="flex items-center justify-between">
+          <button
+            class="btn btn-primary w-full rounded-xl p-2 md:w-full"
+            onclick={() => getCheckoutStatus(cartStore.cartToken)}
+          >
+            <CheckoutIcon />
+            Finalizar compra
+          </button>
         </div>
       </div>
     </div>

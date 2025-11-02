@@ -12,7 +12,6 @@
   import { itemStore } from '@/stores/itemStore.store.svelte';
 
   const { item: cartItem }: { item: CartItem } = $props();
-  $inspect(cartItem);
 </script>
 
 <div class="hidden items-center p-5 text-left md:flex">
