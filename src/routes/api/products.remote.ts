@@ -1,33 +1,16 @@
 import { query } from '$app/server';
 import { error } from '@sveltejs/kit';
 import { ENDPOINTS } from './config.const';
-import type { Product, Prices } from '@/interfaces/store.interfaces';
-import type { Item } from '@/interfaces/appWrite.interfaces';
+import type { Product, Price } from '@/interfaces/store.interfaces';
 import z from 'zod';
 
-const parseWcPrice = (priceObject: Prices): number => {
+const parseWcPrice = (priceObject: Price): number => {
   const priceInMinorUnit = parseInt(priceObject.price, 10);
 
   const divisor = Math.pow(10, priceObject.currency_minor_unit);
 
   return priceInMinorUnit / divisor;
 };
-
-const productToItem = (product: Product): Item =>
-  ({
-    $id: product.id.toString(),
-    name: product.name,
-    price: parseWcPrice(product.prices),
-    categories: product.categories ? product.categories.map(cat => cat.name) : [],
-    image_url: product.images && product.images.length ? product.images[0].src : '',
-    image_alt: product.images && product.images.length ? product.images[0].alt || product.name : product.name,
-    product_url: product.slug,
-    description: product.description || '',
-    short_description: product.short_description ? product.short_description.replace(/<[^>]*>/g, '') : '',
-    sku: product.sku || '',
-    quantity: 1,
-    tags: product.tags ? product.tags.map(tag => tag.name) : [],
-  }) as Partial<Item> as Item;
 
 export const getProducts = query(async () => {
   try {
@@ -37,9 +20,9 @@ export const getProducts = query(async () => {
 
     if (!data) throw error(500, 'No response from server');
 
-    const items = data.map(productToItem);
+    // const items = data.map(productToItem);
 
-    return items;
+    return data;
   } catch (err) {
     console.error(err);
 
@@ -68,9 +51,9 @@ export const getProduct = query(getProductSchema, async ({ slug, tag, category }
 
     if (!products || products.length === 0) throw error(404, 'Product not found');
 
-    const items = products.map(productToItem);
+    // const items = products.map(productToItem);
 
-    return items;
+    return products;
   } catch (err) {
     console.error(err);
 

@@ -1,25 +1,17 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { cartStore } from '$stores/cartStore.store.svelte';
-  import type { CartItem } from '@/interfaces/app.interfaces';
-  import type { Item } from '@/interfaces/appWrite.interfaces';
-  // import CartIcon from '@/components/Icons/CartIcon.svelte';
+  import type { Product } from '@/interfaces/store.interfaces';
 
-  const { item }: { item: Item } = $props();
-
-  let cartItem: CartItem = $state({
-    ...item,
-    quantity: 1,
-  });
+  const { product }: { product: Product } = $props();
 </script>
 
 <div class="card border-base-300 flex-shrink-0 border bg-white">
   <figure>
-    <a href={`/products/${item.product_url}`}>
+    <a href={`/products/${product.slug}`}>
       <img
-        src={item.image_url}
-        alt={item.image_alt}
-        title={item.image_alt}
+        src={product.images[0].src}
+        alt={product.images[0].alt}
+        title={product.images[0].alt}
         class="drop-shadow-lg"
       />
     </a>
@@ -27,20 +19,20 @@
 
   <div class="card-body p-4">
     <h1 class="product-title card-title justify-center text-sm md:text-xl">
-      {item.name}
+      {product.name}
     </h1>
-    {#if item.short_description}
+    <!-- {#if product.short_description}
       <p class="text-center text-xs md:text-sm">
-        {item.short_description}
+        {product.short_description}
       </p>
-    {/if}
+    {/if} -->
     <div class="card-actions justify-center">
       <!-- <div class="text-primary text-3xl font-bold">
         {item.price} €
       </div> -->
       <div class="text-center">
         <button
-          onclick={() => goto(`/products/${item.product_url}`)}
+          onclick={() => goto(`/products/${product.slug}`)}
           class="btn btn-primary mt-3 w-full rounded-xl text-xs uppercase md:text-sm"
         >
           Ver producto

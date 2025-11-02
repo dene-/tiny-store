@@ -1,58 +1,66 @@
 <script lang="ts">
   import { cartStore } from '@/stores/cartStore.store.svelte';
-  import type { CartItem } from '@/interfaces/app.interfaces';
 
   import TrashBinIcon from '../Icons/TrashBinIcon.svelte';
   import MinusIcon from '../Icons/MinusIcon.svelte';
   import PlusIcon from '../Icons/PlusIcon.svelte';
+  import type { CartItem } from '@/interfaces/store.interfaces';
+
+  import { formatPrice } from '@/lib/utils.lib';
 
   const { item: cartItem }: { item: CartItem } = $props();
 </script>
 
 <div class="hidden items-center p-5 text-left md:flex">
-  <a href={`/products/${cartItem.product_url}`}>
-    <img
-      class="w-[150px] rounded-xl bg-white"
-      src={cartItem.image_url}
-      alt={cartItem.image_alt}
-      title={cartItem.image_alt}
-    />
-  </a>
+  <img
+    class="w-[150px] rounded-xl bg-white"
+    src={cartItem.images[0].src}
+    alt={cartItem.images[0].alt}
+    title={cartItem.images[0].alt}
+  />
 </div>
 <div class="grid-cell w-full text-left md:w-auto">
-  <a href={`/products/${cartItem.product_url}`}>
-    <span class="text-sm font-bold md:text-xl">
-      {cartItem.name}
-    </span>
-  </a>
+  <span class="text-sm font-bold md:text-xl">
+    {cartItem.name}
+  </span>
 </div>
-<div class="grid-cell justify-end">{cartItem.price * cartItem.quantity} €</div>
-<div class="grid-cell flex-col !items-end gap-2 md:flex-row md:!items-center">
-  <div class="join">
-    <button
-      onclick={() => cartStore.decreaseItemQuantity(cartItem)}
-      class="btn btn-secondary join-item aspect-square p-0 text-white"
-    >
-      {#if cartItem.quantity === 1}
-        <TrashBinIcon />
-      {:else}
+<div class="grid-cell justify-end">{formatPrice(cartItem.prices.price, cartItem.prices)} €</div>
+<div class="grid-cell flex-col justify-end gap-2 md:flex-row md:!items-center">
+  {#if cartItem.sold_individually}
+    {cartItem.quantity}
+  {:else}
+    <div class="join">
+      <button
+        onclick={() => cartStore.updateItem(cartItem, cartItem.quantity - 1)}
+        class="btn btn-secondary join-item aspect-square p-0 text-white"
+        disabled={cartItem.quantity === 1}
+      >
         <MinusIcon />
-      {/if}
-    </button>
-    <input
-      type="number"
-      min="1"
-      max="999"
-      bind:value={cartItem.quantity}
-      class="input join-item input-bordered input-secondary w-16"
-    />
-    <button
-      onclick={() => cartStore.increaseItemQuantity(cartItem)}
-      class="btn btn-primary join-item aspect-square p-0"
-    >
-      <PlusIcon />
-    </button>
-  </div>
+      </button>
+      <input
+        type="number"
+        min="1"
+        max="999"
+        bind:value={cartItem.quantity}
+        class="input join-item input-bordered input-secondary"
+      />
+      <button
+        onclick={() => cartStore.updateItem(cartItem, cartItem.quantity + 1)}
+        class="btn btn-primary join-item aspect-square p-0"
+        disabled={cartItem.sold_individually || cartItem.quantity === cartItem.low_stock_remaining}
+      >
+        <PlusIcon />
+      </button>
+    </div>
+  {/if}
+</div>
+<div class="grid-cell">
+  <button
+    onclick={() => cartStore.removeItem(cartItem)}
+    class="btn btn-secondary join-item aspect-square p-0 text-white"
+  >
+    <TrashBinIcon />
+  </button>
 </div>
 
 <style lang="postcss">

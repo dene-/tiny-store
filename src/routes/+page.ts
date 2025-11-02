@@ -1,20 +1,10 @@
-import type { ItemsResponse } from '@/interfaces/appWrite.interfaces';
-import type { Item } from '@/interfaces/appWrite.interfaces';
 import { getProducts } from './api/products.remote';
+import type { Product, ListProductsResponse } from '@/interfaces/store.interfaces';
 
-export async function load(): Promise<ItemsResponse> {
-  const items: Item[] = [];
-
-  const products = await getProducts();
-
-  if (products.length) {
-    for (const product of products) {
-      items.push(product);
-    }
-  }
+export async function load(): Promise<ListProductsResponse> {
+  const products = (await getProducts()) as Product[];
 
   return {
-    items,
-    count: products.length,
+    products,
   };
 }

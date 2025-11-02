@@ -26,6 +26,8 @@
         (document.getElementById('drawer') as HTMLInputElement).checked = false;
       });
     });
+
+    $inspect(cartStore.cart);
   });
 </script>
 
@@ -39,8 +41,8 @@
   <li>
     <a href="/cart">
       Carrito
-      {#if cartStore.items.length > 0}
-        <span class="badge badge-primary font-bold">{cartStore.items.length}</span>
+      {#if cartStore.cart.items && cartStore.cart.items.length > 0}
+        <span class="badge badge-primary font-bold">{cartStore.cart.items.length}</span>
       {/if}
     </a>
   </li>

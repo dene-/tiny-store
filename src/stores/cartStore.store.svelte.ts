@@ -1,56 +1,61 @@
+import { addItemToCart } from '@/routes/api/cart.remote';
+import { removeCartItem } from '@/routes/api/cart.remote';
+import { updateCartItem } from '@/routes/api/cart.remote';
 import { loginModalStore } from './loginModal.store.svelte';
 import { sessionStore } from './sessionStore.store.svelte';
 
-import type { CartItem } from '@/interfaces/app.interfaces';
-import type { Item } from '@/interfaces/appWrite.interfaces';
+import type { Product } from '@/interfaces/store.interfaces';
+import type { Cart } from '@/interfaces/store.interfaces';
+import type { CartItem } from '@/interfaces/store.interfaces';
 
 import Toastify from 'toastify-js';
 
 class UseCartStore {
   // Add your store properties here
-  items: CartItem[] = $state([]);
-  maxItems = 999;
-  minItems = 1;
-
-  total = $derived.by(() => {
-    return this.items.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
-  });
+  cart = $state({}) as Cart;
+  cartToken = $state('') as string;
+  minQuantity = 1;
+  maxQuantity = 99;
 
   constructor() {
     if (typeof window !== 'undefined') {
-      const items = localStorage.getItem('cart');
-      if (items) {
-        this.items = JSON.parse(items) as CartItem[];
-      }
+      this.cartToken = localStorage.getItem('cart_token') || '';
     }
   }
 
   // Add your store methods here
-  addItem = (item: CartItem) => {
-    if (this.items.some(i => i.$id === item.$id)) {
-      this.items = this.items.map(i => {
-        if (i.$id === item.$id) {
-          i.quantity += item.quantity;
+  async addItem(product: Product, quantity: number) {
+    const { cart } = await addItemToCart({
+      id: product.id,
+      quantity,
+      cartToken: this.cartToken,
+    });
 
-          Toastify({
-            text: `"${item.name}" added to cart. Quantity updated to ${i.quantity}`,
-            duration: 3000,
-            gravity: 'bottom',
-            position: 'right',
-            backgroundColor: 'oklch(0.4598 0.248 305.03)',
-          }).showToast();
-        }
-        return i;
-      });
-      return;
+    if (cart) {
+      this.cart = cart;
     }
 
-    this.items.push(item);
+    Toastify({
+      text: `"${product.name}" añadido al carrito`,
+      duration: 3000,
+      gravity: 'bottom',
+      position: 'right',
+      backgroundColor: 'oklch(0.4598 0.248 305.03)',
+    }).showToast();
+  }
 
-    this.updateLocalStorage();
+  removeItem = async (cartItem: CartItem) => {
+    const { cart, message } = await removeCartItem({
+      key: cartItem.key,
+      cartToken: this.cartToken,
+    });
+
+    if (cart) {
+      this.cart = cart;
+    }
 
     Toastify({
-      text: `"${item.name}" added to cart`,
+      text: message || `"${cartItem.name}" eliminado del carrito`,
       duration: 3000,
       gravity: 'bottom',
       position: 'right',
@@ -58,56 +63,28 @@ class UseCartStore {
     }).showToast();
   };
 
-  removeItem = (item: Item) => {
-    this.items = this.items.filter(i => i.$id !== item.$id);
-
-    this.updateLocalStorage();
-  };
-
-  decreaseItemQuantity = (item: Item) => {
-    if (item.quantity === this.minItems) {
-      this.removeItem(item);
+  updateItem = async (cartItem: CartItem, quantity: number) => {
+    if (quantity === 0) {
+      return this.removeItem(cartItem);
     }
 
-    this.items = this.items.map(i => {
-      if (i.$id === item.$id && i.quantity > this.minItems) {
-        i.quantity -= 1;
-      }
-      return i;
+    const { cart, message } = await updateCartItem({
+      key: cartItem.key,
+      quantity,
+      cartToken: this.cartToken,
     });
 
-    this.updateLocalStorage();
-  };
-
-  increaseItemQuantity = (item: Item) => {
-    this.items = this.items.map(i => {
-      if (i.$id === item.$id && i.quantity < this.maxItems) {
-        i.quantity += 1;
-      }
-      return i;
-    });
-
-    this.updateLocalStorage();
-  };
-
-  updateLocalStorage = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cart', JSON.stringify(this.items));
-    }
-  };
-
-  checkout = () => {
-    if (this.items.length === 0) {
-      alert('Your cart is empty');
-      return;
+    if (cart) {
+      this.cart = cart;
     }
 
-    if (!sessionStore.isLoggedIn) {
-      loginModalStore.open();
-      return;
-    }
-
-    alert('Checkout feature is not implemented');
+    Toastify({
+      text: message || `"${cartItem.name}" actualizado en el carrito`,
+      duration: 3000,
+      gravity: 'bottom',
+      position: 'right',
+      backgroundColor: 'oklch(0.4598 0.248 305.03)',
+    }).showToast();
   };
 }
 

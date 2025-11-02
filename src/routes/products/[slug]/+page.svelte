@@ -1,13 +1,12 @@
 <script lang="ts">
-  import type { Item } from '@/interfaces/appWrite.interfaces';
-
   import PageProduct from '@/components/Product/PageProduct.svelte';
+  import type { Product } from '@/interfaces/store.interfaces';
 
-  const { data: item }: { data: Item } = $props();
+  const { data: product }: { data: Product } = $props();
 </script>
 
-{#if item}
-  <PageProduct {item} />
+{#if product}
+  <PageProduct {product} />
 {:else}
   <div class="flex w-full items-center p-5">No product found</div>
 {/if}

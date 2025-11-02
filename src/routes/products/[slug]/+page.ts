@@ -1,10 +1,10 @@
-import type { Item } from '@/interfaces/appWrite.interfaces';
 import { getProduct } from '@/routes/api/products.remote.js';
+import type { Product } from '@/interfaces/store.interfaces.js';
 
-export async function load({ params }): Promise<Item | undefined> {
+export async function load({ params }): Promise<Product | undefined> {
   const { slug } = params;
 
-  const item = await getProduct({ slug });
+  const products = await getProduct({ slug });
 
-  return item[0];
+  return products[0];
 }
