@@ -21,6 +21,7 @@
     "@tailwindcss/postcss": "^4.1.6",
     "@tailwindcss/typography": "^0.5.19",
     "@types/eslint": "^9.6.0",
+    "@types/node": "^24.10.0",
     "daisyui": "^5.0.35",
     "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
@@ -46,6 +47,7 @@
     "@types/toastify-js": "^1.12.3",
     "appwrite": "^16.0.2",
     "dotenv": "^16.4.5",
+    "oauth-1.0a": "^2.2.6",
     "toastify-js": "^1.12.0",
     "zod": "^4.1.12"
   },

@@ -39,9 +39,9 @@
 
 <div class="account-page p-3">
   {#if sessionStore.user}
-    <div class="mt-3 flex w-full flex-col gap-6 md:flex-row">
-      <div class="sidemenu flex-shrink-0 flex-grow md:flex-grow-0">
-        <ul class="menu rounded-box bg-base-200 w-full flex-row flex-nowrap gap-3 overflow-x-auto md:w-56 md:flex-col">
+    <div class="mt-3 flex w-full flex-col gap-6 lg:flex-row">
+      <div class="sidemenu flex-shrink-0 flex-grow lg:flex-grow-0">
+        <ul class="menu rounded-box bg-base-200 w-full flex-row flex-nowrap gap-3 overflow-x-auto lg:w-56 lg:flex-col">
           <li>
             <button onclick={() => changeViewComponent('user')}>
               <UserIcon />

@@ -63,8 +63,9 @@
 <form
   class={formName}
   onsubmit={handleSubmit}
+  autocomplete="on"
 >
-  <div class="grid grid-cols-2 gap-x-3">
+  <div class="grid grid-cols-2 gap-3">
     {#each fields as field}
       <div class="form-control {field.fullWidth ? 'col-span-2' : 'col-span-1'}">
         {#if field.type !== 'checkbox'}
@@ -72,23 +73,23 @@
             for={field.id}
             class="label"
           >
-            <span class="label-text text-xs">{field.label}{field.required ? '*' : ''}</span>
+            <span class="label-text text-sm font-semibold">{field.label}{field.required ? '*' : ''}</span>
           </label>
         {/if}
 
         {#if field.type === 'textarea'}
           <textarea
             id={field.id}
-            name={field.id}
+            name={field.name || field.id}
             placeholder={field.placeholder}
             required={field.required}
-            class="textarea textarea-bordered h-24"
+            class="textarea textarea-lg textarea-bordered h-24"
             bind:value={formData[field.id]}
           ></textarea>
         {:else if field.type === 'select'}
           <select
             id={field.id}
-            name={field.id}
+            name={field.name || field.id}
             required={field.required}
             class="select select-bordered w-full"
             bind:value={formData[field.id]}
@@ -104,9 +105,9 @@
               <span class="label-text text-xs">{field.label}{field.required ? '*' : ''}</span>
               <input
                 type="checkbox"
-                class="checkbox"
+                class="checkbox checkbox-lg"
                 id={field.id}
-                name={field.id}
+                name={field.name || field.id}
                 checked={formData[field.id]}
                 onchange={e => handleInput(field, e)}
               />
@@ -116,7 +117,7 @@
           <input
             type={field.type}
             id={field.id}
-            name={field.id}
+            name={field.name || field.id}
             placeholder={field.placeholder}
             required={field.required}
             pattern={field.validation?.pattern}
@@ -125,7 +126,7 @@
             min={field.validation?.min}
             max={field.validation?.max}
             autocomplete={'new-password'}
-            class="input input-bordered w-full"
+            class="input input-lg input-bordered w-full"
             bind:value={formData[field.id]}
           />
         {/if}
@@ -136,7 +137,7 @@
   <div class="mt-6 flex justify-center">
     <button
       type="submit"
-      class="btn btn-primary btn-wide">{buttonText}</button
+      class="btn btn-primary btn-lg lg:btn-wide w-full">{buttonText}</button
     >
   </div>
 </form>

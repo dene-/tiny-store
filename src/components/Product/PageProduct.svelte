@@ -6,20 +6,19 @@
   import MinusIcon from '../Icons/MinusIcon.svelte';
   import PlusIcon from '../Icons/PlusIcon.svelte';
   import ProductPrice from './ProductPrice.svelte';
-  import { ca } from 'zod/locales';
 
   const { product }: { product: Product } = $props();
   let quantity = $state(1);
 </script>
 
-<div class="mx-auto md:max-w-[900px]">
-  <div class="mt-12 flex flex-col items-stretch gap-6 md:flex-row">
+<div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
+  <div class="flex flex-col items-stretch gap-6 lg:flex-row">
     <figure class="min-w-1/2">
       <img
         src={product.images[0].src}
         alt={product.images[0].alt}
         title={product.images[0].alt}
-        class="bg-white md:rounded-md"
+        class="bg-white lg:rounded-md"
       />
     </figure>
 
@@ -38,7 +37,7 @@
       <!-- Product in stock indicador -->
       {#if product.stock_availability && product.stock_availability.text}
         <div class="my-3 text-lg font-semibold">
-          <span class={`badge badge-lg badge-${product.stock_availability.class}`}>
+          <span class={`badge badge-lg border-primary badge-${product.stock_availability.class}`}>
             {product.stock_availability.text}
           </span>
         </div>
@@ -46,7 +45,7 @@
       <div class="py-3 text-2xl">
         <ProductPrice {product} />
       </div>
-      <div class="card-actions flex-col gap-3 md:flex-row">
+      <div class="card-actions flex-col gap-3 lg:flex-row">
         {#if !product.sold_individually}
           <div class="join">
             <button
@@ -64,7 +63,7 @@
               min="1"
               max={product.low_stock_remaining}
               bind:value={quantity}
-              class="input join-item input-bordered input-secondary md:w-16"
+              class="input join-item input-bordered input-secondary lg:w-16"
             />
             <button
               onclick={() => quantity++}
@@ -78,7 +77,7 @@
         <div class="my-3 flex w-full items-stretch gap-2">
           <button
             onclick={() => cartStore.addItem(product, quantity)}
-            class="btn btn-secondary w-full rounded-xl"
+            class="btn btn-secondary btn-lg w-full rounded-xl"
             disabled={!product.is_in_stock || !!cartStore.cart.items.find(item => item.id === product.id)}
           >
             <CartIcon />

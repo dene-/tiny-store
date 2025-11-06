@@ -18,11 +18,11 @@
   </figure>
 
   <div class="card-body p-4">
-    <h1 class="product-title card-title justify-center text-sm md:text-xl">
+    <h1 class="product-title card-title justify-center text-sm lg:text-xl">
       {product.name}
     </h1>
     <!-- {#if product.short_description}
-      <p class="text-center text-xs md:text-sm">
+      <p class="text-center text-xs lg:text-sm">
         {product.short_description}
       </p>
     {/if} -->
@@ -33,7 +33,7 @@
       <div class="text-center">
         <button
           onclick={() => goto(`/products/${product.slug}`)}
-          class="btn btn-primary mt-3 w-full rounded-xl text-xs uppercase md:text-sm"
+          class="btn btn-primary mt-3 w-full rounded-xl text-xs uppercase lg:text-sm"
         >
           Ver producto
         </button>

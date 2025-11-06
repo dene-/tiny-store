@@ -6,6 +6,7 @@ export interface InputField {
   type: InputType;
   placeholder?: string;
   required?: boolean;
+  name?: string;
   options?: { value: string; label: string }[];
   fullWidth?: boolean;
   value?: unknown;

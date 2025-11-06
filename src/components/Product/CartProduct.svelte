@@ -14,7 +14,7 @@
   const { item: cartItem }: { item: CartItem } = $props();
 </script>
 
-<div class="hidden items-center p-5 text-left md:flex">
+<div class="hidden items-center p-5 text-left lg:flex">
   <img
     class="w-[100px] rounded-xl bg-white"
     src={cartItem.images[0].src}
@@ -22,15 +22,15 @@
     title={cartItem.images[0].alt}
   />
 </div>
-<div class="grid-cell w-full text-left md:w-auto">
+<div class="grid-cell w-full text-left lg:w-auto">
   <div class="flex flex-col gap-1">
     <img
-      class="w-[100px] rounded-xl bg-white md:hidden"
+      class="w-[100px] rounded-xl bg-white lg:hidden"
       src={cartItem.images[0].src}
       alt={cartItem.images[0].alt}
       title={cartItem.images[0].alt}
     />
-    <span class="text-sm font-bold md:text-xl">
+    <span class="text-sm font-bold lg:text-xl">
       {cartItem.name}
     </span>
   </div>

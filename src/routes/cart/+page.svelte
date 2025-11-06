@@ -6,7 +6,7 @@
 
   import { formatPrice } from '@/lib/utils.lib';
 
-  import { getCheckoutStatus } from '../api/checkout.remote';
+  import { goto } from '$app/navigation';
 </script>
 
 <svelte:head>
@@ -17,15 +17,15 @@
   />
 </svelte:head>
 
-<div class="cart mt-12">
-  <div class="flex flex-col gap-12 p-3 md:flex-row">
+<div class="cart my-12 lg:my-24">
+  <div class="flex flex-col gap-12 p-3 lg:flex-row">
     <div class="flex-grow">
       <h1 class="mb-3 text-2xl font-bold">Carrito</h1>
       {#if !cartStore.cart.items || (cartStore.cart.items && !cartStore.cart.items.length)}
-        <div class="flex w-full items-center p-3">Tu carrito está vacío</div>
+        <div class="flex w-full items-center">Tu carrito está vacío</div>
       {:else}
         <div class="custom-grid w-full">
-          <div class="grid-header photo hidden text-left md:block"></div>
+          <div class="grid-header photo hidden text-left lg:block"></div>
           <div class="grid-header name text-left">Nombre</div>
           <div class="grid-header price text-right">Precio</div>
           <div class="grid-header quantity text-right">Cantidad</div>
@@ -37,38 +37,41 @@
         </div>
       {/if}
     </div>
-    <div class="min-w-1/4">
-      <h1 class="mb-6 text-2xl font-bold">Resumen pedido</h1>
-      <div class="flex w-full flex-col gap-8">
-        <!-- <div class="flex items-center justify-between">
+    {#if cartStore.cart.items && cartStore.cart.items && cartStore.cart.items.length}
+      <div class="min-w-1/4">
+        <h1 class="mb-6 text-2xl font-bold">Resumen pedido</h1>
+        <div class="flex w-full flex-col gap-8">
+          <!-- <div class="flex items-center justify-between">
           <h3 class="p-0">Subtotal</h3>
           <div>
             {cartStore.cart.totals.currency_prefix}{formatPrice(cartStore.cart.totals.total_items, cartStore.cart.totals)}{cartStore.cart.totals
               .currency_suffix}
           </div>
         </div> -->
-        <div class="flex items-center justify-between">
-          <h3 class="p-0 font-bold">Total</h3>
-          <div>
-            {cartStore.cart.totals.currency_prefix}{formatPrice(cartStore.cart.totals.total_price, cartStore.cart.totals)}{cartStore.cart.totals
-              .currency_suffix}
+          <div class="flex items-center justify-between">
+            <div class="font-bold">Total:</div>
+            <div>
+              {cartStore.cart.totals.currency_prefix}{formatPrice(cartStore.cart.totals.total_price, cartStore.cart.totals)}{cartStore.cart.totals
+                .currency_suffix}
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="font-bold">Pago:</div>
+            <div>En la entrega</div>
+          </div>
+          <div class="divider"></div>
+          <div class="flex items-center justify-between">
+            <button
+              class="btn btn-primary btn-lg w-full rounded-xl p-2 lg:w-full"
+              onclick={() => goto('/finalizar-compra')}
+            >
+              <CheckoutIcon />
+              Finalizar compra
+            </button>
           </div>
         </div>
-        <div class="flex items-center justify-between">
-          <h3 class="p-0"><span class="font-bold">Pago:</span> en la entrega</h3>
-        </div>
-        <div class="divider"></div>
-        <div class="flex items-center justify-between">
-          <button
-            class="btn btn-primary w-full rounded-xl p-2 md:w-full"
-            onclick={() => getCheckoutStatus(cartStore.cartToken)}
-          >
-            <CheckoutIcon />
-            Finalizar compra
-          </button>
-        </div>
       </div>
-    </div>
+    {/if}
   </div>
 </div>
 
@@ -87,7 +90,7 @@
     display: grid;
     grid-template-columns: auto 1fr auto auto auto;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       grid-template-columns: 1fr auto auto auto;
     }
   }

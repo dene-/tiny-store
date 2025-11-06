@@ -6,7 +6,7 @@
 </script>
 
 {#if product.prices.sale_price && product.prices.sale_price !== product.prices.regular_price}
-  <div class="flex flex-col items-end gap-1 md:flex-row md:items-center">
+  <div class="flex flex-col items-end gap-1 lg:flex-row lg:items-center">
     <span class="badge badge-primary">
       ¡Ahorra {product.prices.currency_prefix}{formatPrice(
         (parseInt(product.prices.regular_price) - parseInt(product.prices.sale_price)).toString(),

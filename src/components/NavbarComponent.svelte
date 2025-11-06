@@ -11,6 +11,8 @@
   import CubeIcon from './Icons/CubeIcon.svelte';
   import MenuIcon from './Icons/MenuIcon.svelte';
 
+  import { categoriesStore } from '@/stores/categories.store.svelte';
+
   function handleAccountClick() {
     if (!sessionStore.isLoggedIn) {
       loginModalStore.open();
@@ -36,6 +38,22 @@
   <!-- <li>
     <a href="/sobre-nosotros">Sobre nosotros</a>
   </li> -->
+  <!-- <div class="flex-none">
+    <ul class="menu menu-horizontal rounded-lg px-1">
+      <li>
+        <details>
+          <summary>Categorías</summary>
+          <ul class="bg-base-100 rounded-t-none p-2">
+            {#each categoriesStore.categories as category}
+              <li>
+                <a href={`/category/${category.slug}`}>{category.name}</a>
+              </li>
+            {/each}
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </div> -->
   <li>
     <a href="/cart">
       Carrito
@@ -101,7 +119,7 @@
         </div>
         <!-- {#if $page.url.pathname === '/'}
           <form autocomplete="off">
-            <label class="input input-bordered mr-3 hidden items-center gap-2 md:flex">
+            <label class="input input-bordered mr-3 hidden items-center gap-2 lg:flex">
               <input
                 type="search"
                 name="search"
@@ -119,7 +137,7 @@
           </ul>
         </div>
       </div>
-      <!-- <div class="md:hidden">
+      <!-- <div class="lg:hidden">
         <div class="indicator">
           <CartIcon />
           <div class="badge indicator-item badge-primary badge-sm rounded-full">{cartStore.items.length}</div>

@@ -565,6 +565,18 @@ export interface ProductCategory extends Term {
   permalink: string;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  parent: number;
+  count: number;
+  image: Image | null;
+  review_count: number;
+  permalink?: string;
+}
+
 /**
  * A product brand extends the base term with image and review count fields.
  */
@@ -943,3 +955,73 @@ export interface ErrorResponse {
 export interface ListProductsResponse {
   products: Product[];
 }
+
+/**
+ * Payment gateway setting types.
+ */
+export type PaymentGatewaySettingType = 'safe_text' | 'textarea' | 'multiselect' | 'checkbox';
+
+export interface PaymentGatewaySettingBase {
+  id: string;
+  label: string;
+  description: string;
+  type: PaymentGatewaySettingType;
+  value: string;
+  default: string;
+  tip: string;
+  placeholder: string;
+}
+
+export interface PaymentGatewayMultiSelectSetting extends PaymentGatewaySettingBase {
+  type: 'multiselect';
+  /** Grouped options: group label -> { methodId -> label } */
+  options?: Record<string, Record<string, string>>;
+}
+
+export type PaymentGatewaySetting = PaymentGatewaySettingBase | PaymentGatewayMultiSelectSetting;
+
+export interface PaymentGatewaySettings {
+  title?: PaymentGatewaySettingBase;
+  instructions?: PaymentGatewaySettingBase;
+  enable_for_methods?: PaymentGatewayMultiSelectSetting;
+  enable_for_virtual?: PaymentGatewaySettingBase;
+  [key: string]: PaymentGatewaySetting | undefined;
+}
+
+/**
+ * HAL-style links for WooCommerce REST resources.
+ */
+export interface PaymentGatewayLink {
+  href: string;
+  targetHints?: { allow: string[] };
+}
+
+export interface PaymentGatewayLinks {
+  self: PaymentGatewayLink[];
+  collection: Array<{ href: string }>;
+}
+
+/**
+ * WooCommerce payment gateway.
+ */
+export interface PaymentGateway {
+  id: string;
+  title: string;
+  description: string;
+  order: number;
+  enabled: boolean;
+  method_title: string;
+  method_description: string;
+  method_supports: string[];
+  settings: PaymentGatewaySettings;
+  needs_setup: boolean;
+  post_install_scripts: unknown[];
+  settings_url: string;
+  connection_url: string | null;
+  setup_help_text: string | null;
+  required_settings_keys: string[];
+  _links: PaymentGatewayLinks;
+}
+
+/** List response helper for payment gateways if needed by the client. */
+export type PaymentGatewaysResponse = PaymentGateway[];
