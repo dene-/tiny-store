@@ -13,6 +13,14 @@
   });
 </script>
 
+<svelte:head>
+  <title>Tienda Mami Crafts</title>
+  <meta
+    name="description"
+    content="Explora nuestra variedad de productos disponibles en Mami Crafts. Encuentra lo que necesitas con facilidad."
+  />
+</svelte:head>
+
 <HeroComponent />
 <h1 class="mb-3 p-3 text-center text-2xl font-bold">Productos</h1>
 <div class="grid w-full grid-cols-2 flex-wrap content-start items-start gap-3 p-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

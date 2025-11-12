@@ -480,7 +480,7 @@ export interface OrderCoupon extends CurrencyInfo {
  * Totals object returned for orders. In addition to the totals provided on
  * carts, orders include refund and fee data.
  */
-export interface OrderTotals extends CurrencyInfo {
+export interface OrderTotals extends CurrencyInfo, Prices {
   subtotal: string;
   total_discount: string;
   total_shipping: string;
@@ -1025,3 +1025,84 @@ export interface PaymentGateway {
 
 /** List response helper for payment gateways if needed by the client. */
 export type PaymentGatewaysResponse = PaymentGateway[];
+
+/**
+ * Checkout status address types with "company" field as used by the endpoint.
+ */
+export interface CheckoutStatusBaseAddress {
+  first_name?: string;
+  last_name?: string;
+  company?: string;
+  address_1?: string;
+  address_2?: string;
+  city?: string;
+  state?: string;
+  postcode?: string;
+  country?: string;
+  phone?: string;
+}
+
+export interface CheckoutStatusShippingAddress extends CheckoutStatusBaseAddress {}
+
+export interface CheckoutStatusBillingAddress extends CheckoutStatusBaseAddress {
+  email?: string;
+}
+
+/**
+ * Payment result returned by checkout status. The shape of payment_details may vary.
+ */
+export interface CheckoutStatusPaymentResult {
+  payment_status: string;
+  payment_details?: unknown;
+  redirect_url?: string;
+}
+
+/**
+ * Checkout status response shape.
+ */
+export interface CheckoutStatus {
+  order_id: number;
+  status: string;
+  order_key: string;
+  order_number: string;
+  customer_note: string;
+  customer_id: number;
+  billing_address: CheckoutStatusBillingAddress;
+  shipping_address: CheckoutStatusShippingAddress;
+  payment_method: string;
+  payment_result?: CheckoutStatusPaymentResult;
+  additional_fields?: AdditionalFields;
+  __experimentalCart: Cart | null;
+  extensions?: Record<string, unknown>;
+}
+
+export interface CheckoutOrderPaymentDetail {
+  key: string;
+  value: string;
+}
+
+export interface CheckoutOrderPaymentResult {
+  payment_status: string;
+  payment_details?: CheckoutOrderPaymentDetail[];
+  redirect_url?: string;
+}
+
+export interface CheckoutOrderBillingAddress extends CheckoutStatusBillingAddress {}
+
+export interface CheckoutOrderShippingAddress extends CheckoutStatusShippingAddress {}
+
+export interface CheckoutOrderResponse {
+  order_id: number;
+  status: string;
+  order_key: string;
+  order_number: string;
+  customer_note: string;
+  customer_id: number;
+  billing_address: CheckoutOrderBillingAddress;
+  shipping_address: CheckoutOrderShippingAddress;
+  payment_method: string;
+  payment_result?: CheckoutOrderPaymentResult;
+  additional_fields: AdditionalFields;
+  __experimentalCart: Cart | null;
+  extensions: Record<string, unknown>;
+}

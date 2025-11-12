@@ -45,6 +45,7 @@ export const getCart = query(getCartSchema, async (cartToken?: getCartParams) =>
     });
 
     const cartToken = res.headers.get('Cart-Token');
+    const nonce = res.headers.get('Nonce');
 
     const cart = await res.json();
 
@@ -53,6 +54,7 @@ export const getCart = query(getCartSchema, async (cartToken?: getCartParams) =>
     return {
       cart,
       cartToken,
+      nonce,
     };
   } catch (err) {
     console.error('Error fetching cart data:', err);

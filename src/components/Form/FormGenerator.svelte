@@ -7,10 +7,11 @@
     formName: string;
     buttonText?: string;
     fields: InputField[];
+    isProcessing?: boolean;
     onSubmit: (formData: Record<string, any>) => void;
   }
 
-  let { formName, buttonText = 'Submit', fields = [], onSubmit }: Props = $props();
+  let { formName, buttonText = 'Submit', fields = [], isProcessing = false, onSubmit }: Props = $props();
 
   const formData = $state<Record<string, any>>({});
 
@@ -83,7 +84,7 @@
             name={field.name || field.id}
             placeholder={field.placeholder}
             required={field.required}
-            class="textarea textarea-lg textarea-bordered h-24"
+            class="textarea textarea-lg textarea-bordered h-24 bg-white"
             bind:value={formData[field.id]}
           ></textarea>
         {:else if field.type === 'select'}
@@ -91,12 +92,19 @@
             id={field.id}
             name={field.name || field.id}
             required={field.required}
-            class="select select-bordered w-full"
+            class="select select-bordered select-lg w-full bg-white"
             bind:value={formData[field.id]}
+            autocomplete={field.name === 'country' ? 'country' : 'off'}
           >
-            <option value="">Select an option</option>
+            <option
+              value=""
+              disabled>Select an option</option
+            >
             {#each field.options || [] as option}
-              <option value={option.value}>{option.label}</option>
+              <option
+                value={option.value}
+                selected={option.selected}>{option.label}</option
+              >
             {/each}
           </select>
         {:else if field.type === 'checkbox'}
@@ -105,7 +113,7 @@
               <span class="label-text text-xs">{field.label}{field.required ? '*' : ''}</span>
               <input
                 type="checkbox"
-                class="checkbox checkbox-lg"
+                class="checkbox checkbox-lg bg-white"
                 id={field.id}
                 name={field.name || field.id}
                 checked={formData[field.id]}
@@ -125,8 +133,7 @@
             maxlength={field.validation?.maxLength}
             min={field.validation?.min}
             max={field.validation?.max}
-            autocomplete={'new-password'}
-            class="input input-lg input-bordered w-full"
+            class="input input-lg input-bordered w-full bg-white"
             bind:value={formData[field.id]}
           />
         {/if}
@@ -137,7 +144,13 @@
   <div class="mt-6 flex justify-center">
     <button
       type="submit"
-      class="btn btn-primary btn-lg lg:btn-wide w-full">{buttonText}</button
+      class="btn btn-primary btn-lg lg:btn-wide w-full"
+      disabled={isProcessing}
     >
+      {#if isProcessing}
+        <span class="loading loading-spinner"></span>
+      {/if}
+      {buttonText}
+    </button>
   </div>
 </form>

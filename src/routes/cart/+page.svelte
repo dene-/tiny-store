@@ -5,8 +5,10 @@
   import CheckoutIcon from '@/components/Icons/CheckoutIcon.svelte';
 
   import { formatPrice } from '@/lib/utils.lib';
+  import ProductPrice from '@/components/Product/ProductPrice.svelte';
 
   import { goto } from '$app/navigation';
+  import ProductTable from '@/components/Product/ProductTable.svelte';
 </script>
 
 <svelte:head>
@@ -14,6 +16,10 @@
   <meta
     name="description"
     content="Revisa los productos en tu carrito de compras en Mami Crafts. Asegúrate de que todo esté listo antes de proceder al pago."
+  />
+  <meta
+    name="robots"
+    content="noindex"
   />
 </svelte:head>
 
@@ -25,8 +31,7 @@
         <div class="flex w-full items-center">Tu carrito está vacío</div>
       {:else}
         <div class="custom-grid w-full">
-          <div class="grid-header photo hidden text-left lg:block"></div>
-          <div class="grid-header name text-left">Nombre</div>
+          <div class="grid-header name text-left">Producto</div>
           <div class="grid-header price text-right">Precio</div>
           <div class="grid-header quantity text-right">Cantidad</div>
           <div class="grid-header actions text-right"></div>
@@ -48,12 +53,12 @@
               .currency_suffix}
           </div>
         </div> -->
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between text-2xl">
             <div class="font-bold">Total:</div>
-            <div>
-              {cartStore.cart.totals.currency_prefix}{formatPrice(cartStore.cart.totals.total_price, cartStore.cart.totals)}{cartStore.cart.totals
-                .currency_suffix}
-            </div>
+            <ProductPrice
+              isTotalPrice={true}
+              totals={cartStore.cart.totals}
+            />
           </div>
           <div class="flex items-center justify-between">
             <div class="font-bold">Pago:</div>
@@ -88,7 +93,7 @@
 
   .custom-grid {
     display: grid;
-    grid-template-columns: auto 1fr auto auto auto;
+    grid-template-columns: 1fr auto auto auto;
 
     @media (max-width: 1024px) {
       grid-template-columns: 1fr auto auto auto;

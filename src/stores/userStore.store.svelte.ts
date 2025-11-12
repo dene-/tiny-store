@@ -26,7 +26,6 @@ class UseUserStore {
   }
 
   async verifyEmail(userId: string, secret: string) {
-    console.log(userId, secret);
     try {
       await account.updateVerification(userId, secret);
     } catch (error) {
@@ -56,8 +55,6 @@ class UseUserStore {
       });
 
       sessionStore.user = await account.get();
-
-      console.log('Account updated');
 
       Toastify({
         text: 'Account updated!',

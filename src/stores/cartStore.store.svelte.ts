@@ -1,8 +1,8 @@
 import { addItemToCart } from '@/routes/api/cart.remote';
 import { removeCartItem } from '@/routes/api/cart.remote';
 import { updateCartItem } from '@/routes/api/cart.remote';
-import { loginModalStore } from './loginModal.store.svelte';
-import { sessionStore } from './sessionStore.store.svelte';
+
+import { getCart } from '@/routes/api/cart.remote';
 
 import type { Product } from '@/interfaces/store.interfaces';
 import type { Cart } from '@/interfaces/store.interfaces';
@@ -15,6 +15,7 @@ class UseCartStore {
   // Add your store properties here
   cart = $state({}) as Cart;
   cartToken = $state('') as string;
+  cartNonce = $state('') as string;
   minQuantity = 1;
   maxQuantity = 99;
 
@@ -22,6 +23,29 @@ class UseCartStore {
     if (typeof window !== 'undefined') {
       this.cartToken = localStorage.getItem('cart_token') || '';
     }
+  }
+
+  async getCart() {
+    let localCartToken = undefined;
+    let localNonceToken = undefined;
+
+    if (typeof window !== 'undefined') {
+      localCartToken = localStorage.getItem('cart_token') || undefined;
+      localNonceToken = localStorage.getItem('nonce_token') || undefined;
+    }
+
+    const { cart, cartToken, nonce } = await getCart(localCartToken);
+
+    if (typeof window !== 'undefined' && cartToken) {
+      localStorage.setItem('cart_token', cartToken);
+      if (nonce) {
+        localStorage.setItem('nonce_token', nonce);
+        cartStore.cartNonce = nonce;
+      }
+      cartStore.cartToken = cartToken;
+    }
+
+    this.cart = cart;
   }
 
   // Add your store methods here
@@ -78,6 +102,19 @@ class UseCartStore {
       ...toastifyDefaults,
     }).showToast();
   };
+
+  async cartTokenNonceReady() {
+    return new Promise<void>(resolve => {
+      const checkReady = () => {
+        if (this.cartToken && this.cartNonce) {
+          resolve();
+        } else {
+          setTimeout(checkReady, 100);
+        }
+      };
+      checkReady();
+    });
+  }
 }
 
 export const cartStore = new UseCartStore();

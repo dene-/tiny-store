@@ -5,14 +5,16 @@
   const { product }: { product: Product } = $props();
 </script>
 
-<div class="card border-base-300 flex-shrink-0 border bg-white">
+<div class="card border-base-300 relative flex-shrink-0 border bg-white">
+  {#if product.on_sale}
+    <div class="bg-primary absolute top-2 right-2 z-1 rounded-lg p-2 font-bold text-white select-none">¡EN OFERTA!</div>
+  {/if}
   <figure>
-    <a href={`/products/${product.slug}`}>
+    <a href={`/producto/${product.slug}`}>
       <img
         src={product.images[0].src}
         alt={product.images[0].alt}
         title={product.images[0].alt}
-        class="drop-shadow-lg"
       />
     </a>
   </figure>
@@ -32,7 +34,7 @@
       </div> -->
       <div class="text-center">
         <button
-          onclick={() => goto(`/products/${product.slug}`)}
+          onclick={() => goto(`/producto/${product.slug}`)}
           class="btn btn-primary mt-3 w-full rounded-xl text-xs uppercase lg:text-sm"
         >
           Ver producto

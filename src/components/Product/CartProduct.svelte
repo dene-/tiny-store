@@ -8,32 +8,24 @@
 
   import type { CartItem } from '@/interfaces/store.interfaces';
 
-  import { formatPrice } from '@/lib/utils.lib';
-  import { itemStore } from '@/stores/itemStore.store.svelte';
-
   const { item: cartItem }: { item: CartItem } = $props();
 </script>
 
-<div class="hidden items-center p-5 text-left lg:flex">
-  <img
-    class="w-[100px] rounded-xl bg-white"
-    src={cartItem.images[0].src}
-    alt={cartItem.images[0].alt}
-    title={cartItem.images[0].alt}
-  />
-</div>
 <div class="grid-cell w-full text-left lg:w-auto">
-  <div class="flex flex-col gap-1">
+  <a
+    href={`${new URL(cartItem.permalink).pathname}`}
+    class="flex flex-col gap-1 underline lg:flex-row lg:items-center lg:gap-3"
+  >
     <img
-      class="w-[100px] rounded-xl bg-white lg:hidden"
+      class="w-[85px] rounded-xl bg-white lg:w-[150px]"
       src={cartItem.images[0].src}
       alt={cartItem.images[0].alt}
       title={cartItem.images[0].alt}
     />
-    <span class="text-sm font-bold lg:text-xl">
+    <span class="text-base font-bold lg:text-xl">
       {cartItem.name}
     </span>
-  </div>
+  </a>
 </div>
 <div class="grid-cell justify-end">
   <ProductPrice product={cartItem} />

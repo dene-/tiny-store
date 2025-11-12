@@ -77,7 +77,7 @@
         <div class="my-3 flex w-full items-stretch gap-2">
           <button
             onclick={() => cartStore.addItem(product, quantity)}
-            class="btn btn-secondary btn-lg w-full rounded-xl"
+            class="btn btn-primary btn-lg border-base-300 w-full rounded-xl border-2"
             disabled={!product.is_in_stock || !!cartStore.cart.items.find(item => item.id === product.id)}
           >
             <CartIcon />

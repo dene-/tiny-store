@@ -10,6 +10,7 @@
   // import SearchIcon from './Icons/SearchIcon.svelte';
   import CubeIcon from './Icons/CubeIcon.svelte';
   import MenuIcon from './Icons/MenuIcon.svelte';
+  import CartIcon from './Icons/CartIcon.svelte';
 
   import { categoriesStore } from '@/stores/categories.store.svelte';
 
@@ -97,7 +98,7 @@
   />
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
-    <div class="navbar bg-base-100 shadow-base-300/15 w-full justify-center shadow-xl">
+    <div class="navbar bg-base-100 shadow-base-300/15 border-base-300 w-full justify-center border-b shadow-xl">
       <div class="container flex items-center">
         <div class="flex-none lg:hidden">
           <label
@@ -130,6 +131,17 @@
             </label>
           </form>
         {/if} -->
+        <a
+          href="/cart"
+          class="mr-3 flex shrink-0 lg:hidden"
+        >
+          <CartIcon />
+          {#if cartStore.cart.items && cartStore.cart.items.length > 0}
+            <div class="indicator">
+              <div class="indicator-item badge badge-xs badge-primary self-start font-mono">{cartStore.cart.items.length}</div>
+            </div>
+          {/if}
+        </a>
         <div class="hidden flex-none lg:block">
           <ul class="menu menu-horizontal items-center gap-3 text-lg">
             <!-- Navbar menu content here -->
@@ -152,7 +164,7 @@
       class="drawer-overlay"
     ></label>
     <ul class="menu bg-base-200 min-h-full w-80 p-4">
-      {#if sessionStore.isLoggedIn}
+      <!-- {#if sessionStore.isLoggedIn}
         <button
           class="rounded-full p-0"
           onclick={handleAccountClick}
@@ -163,7 +175,7 @@
             </div>
           </div>
         </button>
-      {/if}
+      {/if} -->
       {@render navbarLinks()}
     </ul>
   </div>

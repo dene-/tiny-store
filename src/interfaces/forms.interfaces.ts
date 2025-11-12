@@ -7,7 +7,7 @@ export interface InputField {
   placeholder?: string;
   required?: boolean;
   name?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: string; label: string; selected?: boolean }[];
   fullWidth?: boolean;
   value?: unknown;
   validation?: {
