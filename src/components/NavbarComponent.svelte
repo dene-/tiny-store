@@ -57,6 +57,7 @@
   </div> -->
   <li>
     <a href="/cart">
+      <CartIcon />
       Carrito
       {#if cartStore.cart.items && cartStore.cart.items.length > 0}
         <span class="badge badge-primary font-bold">{cartStore.cart.items.length}</span>

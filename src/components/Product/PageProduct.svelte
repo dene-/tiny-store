@@ -13,12 +13,12 @@
 
 <div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
   <div class="flex flex-col items-stretch gap-6 lg:flex-row">
-    <figure class="min-w-1/2">
+    <figure class="mb-6 min-w-1/2">
       <img
         src={product.images[0].src}
         alt={product.images[0].alt}
         title={product.images[0].alt}
-        class="bg-white lg:rounded-md"
+        class="lg:border-base-300 bg-white lg:rounded-md lg:border lg:shadow-md"
       />
     </figure>
 
@@ -34,14 +34,6 @@
       <div>
         SKU: {product.sku ? product.sku : 'N/A'}
       </div>
-      <!-- Product in stock indicador -->
-      {#if product.stock_availability && product.stock_availability.text}
-        <div class="my-3 text-lg font-semibold">
-          <span class={`badge badge-lg border-primary badge-${product.stock_availability.class}`}>
-            {product.stock_availability.text}
-          </span>
-        </div>
-      {/if}
       <div class="py-3 text-2xl">
         <ProductPrice {product} />
       </div>
@@ -92,6 +84,14 @@
           </div>
         {/if}
       </div>
+      <!-- Product in stock indicador -->
+      {#if product.stock_availability && product.stock_availability.text}
+        <div class="my-3 text-lg font-semibold">
+          <span class={`badge badge-lg border-primary badge-${product.stock_availability.class}`}>
+            {product.stock_availability.text}
+          </span>
+        </div>
+      {/if}
     </div>
   </div>
   <div class="flex gap-3 p-3">

@@ -1,26 +1,18 @@
 import { query } from '$app/server';
 import { error } from '@sveltejs/kit';
 import { ENDPOINTS } from './config.const';
-import type { Product, Price } from '@/interfaces/store.interfaces';
+import type { Product } from '@/interfaces/store.interfaces';
 import z from 'zod';
-
-const parseWcPrice = (priceObject: Price): number => {
-  const priceInMinorUnit = parseInt(priceObject.price, 10);
-
-  const divisor = Math.pow(10, priceObject.currency_minor_unit);
-
-  return priceInMinorUnit / divisor;
-};
 
 export const getProducts = query(async () => {
   try {
     const res = await fetch(ENDPOINTS.PRODUCTS);
 
-    const data = (await res.json()) as Product[];
+    let data = (await res.json()) as Product[];
 
     if (!data) throw error(500, 'No response from server');
 
-    // const items = data.map(productToItem);
+    data = data.filter(product => product.is_in_stock);
 
     return data;
   } catch (err) {
@@ -47,11 +39,11 @@ export const getProduct = query(getProductSchema, async ({ slug, tag, category }
 
     const res = await fetch(`${ENDPOINTS.PRODUCTS}/?${requestParams.toString()}`);
 
-    const products = (await res.json()) as Product[];
+    let products = (await res.json()) as Product[];
 
     if (!products || products.length === 0) throw error(404, 'Product not found');
 
-    // const items = products.map(productToItem);
+    products = products.filter(product => product.is_in_stock);
 
     return products;
   } catch (err) {

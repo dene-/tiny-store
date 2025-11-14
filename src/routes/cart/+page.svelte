@@ -4,11 +4,9 @@
   import CartProduct from '@/components/Product/CartProduct.svelte';
   import CheckoutIcon from '@/components/Icons/CheckoutIcon.svelte';
 
-  import { formatPrice } from '@/lib/utils.lib';
   import ProductPrice from '@/components/Product/ProductPrice.svelte';
 
   import { goto } from '$app/navigation';
-  import ProductTable from '@/components/Product/ProductTable.svelte';
 </script>
 
 <svelte:head>

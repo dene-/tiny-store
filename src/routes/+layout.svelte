@@ -3,7 +3,6 @@
   import '../style/app.css';
   import { onNavigate } from '$app/navigation';
   import type { Snippet } from 'svelte';
-  import LoginModal from '@/components/Modal/LoginModal.svelte';
   import NavbarComponent from '@/components/NavbarComponent.svelte';
 
   interface Props {
@@ -25,7 +24,6 @@
 </script>
 
 <NavbarComponent />
-<LoginModal />
 
 {#if children}
   <div class="container mx-auto flex-grow">
