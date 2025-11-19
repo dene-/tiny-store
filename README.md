@@ -15,7 +15,7 @@ yarn dev -- --open
 
 Project uses Appwrite as the backend. And this will only work if you set up everything correctly. More on that on the future (maybe).
 
-This Sveltekit project uses `adapter-static`.
+This SvelteKit project uses `adapter-auto`.
 
 ## Building
 
