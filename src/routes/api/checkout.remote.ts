@@ -2,7 +2,7 @@ import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 import { query } from '$app/server';
 import { error } from '@sveltejs/kit';
-import z, { check } from 'zod';
+import z from 'zod';
 
 import { ENDPOINTS } from './config.const';
 
@@ -81,33 +81,26 @@ export const getPaymentGateways = query(async () => {
   }
 });
 
+const AddressSchema = z.object({
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  company: z.string().optional(),
+  address_1: z.string().optional(),
+  address_2: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
+  postcode: z.string().optional(),
+  country: z.string().optional(),
+});
+
+const BillingAddressSchema = AddressSchema.extend({
+  email: z.string().optional(),
+  phone: z.string().optional(),
+});
+
 const CheckoutSchema = z.object({
-  billing_address: z.object({
-    first_name: z.string().optional(),
-    last_name: z.string().optional(),
-    company: z.string().optional(),
-    email: z.string().email().optional(),
-    phone: z.string().optional(),
-    address_1: z.string().optional(),
-    address_2: z.string().optional(),
-    city: z.string().optional(),
-    state: z.string().optional(),
-    postcode: z.string().optional(),
-    country: z.string().optional(),
-  }),
-  shipping_address: z
-    .object({
-      first_name: z.string().optional(),
-      last_name: z.string().optional(),
-      company: z.string().optional(),
-      address_1: z.string().optional(),
-      address_2: z.string().optional(),
-      city: z.string().optional(),
-      state: z.string().optional(),
-      postcode: z.string().optional(),
-      country: z.string().optional(),
-    })
-    .optional(),
+  billing_address: BillingAddressSchema,
+  shipping_address: AddressSchema.optional(),
   payment_method: z.string(),
   customer_note: z.string().optional().default(''),
   create_account: z.boolean().optional(),
@@ -117,9 +110,9 @@ const CheckoutSchema = z.object({
   customer_password: z.string().optional().default(''),
 });
 
-type checkoutParams = z.infer<typeof CheckoutSchema>;
+type CheckoutParams = z.infer<typeof CheckoutSchema>;
 
-export const checkoutOrder = query(CheckoutSchema, async (checkoutData: checkoutParams) => {
+export const checkoutOrder = query(CheckoutSchema, async (checkoutData: CheckoutParams) => {
   try {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

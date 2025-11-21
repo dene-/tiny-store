@@ -45,9 +45,9 @@
       <input
         type="number"
         min="1"
-        max="999"
+        max={cartItem.low_stock_remaining}
         bind:value={cartItem.quantity}
-        class="input join-item input-bordered input-secondary"
+        class="input join-item input-bordered input-secondary m-0 appearance-none text-right"
       />
       <button
         onclick={() => cartStore.updateItem(cartItem, cartItem.quantity + 1)}

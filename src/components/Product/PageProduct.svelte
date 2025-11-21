@@ -9,6 +9,8 @@
 
   const { product }: { product: Product } = $props();
   let quantity = $state(1);
+
+  let isProductInCart = $derived(cartStore.cart.items.some(item => item.id === product.id));
 </script>
 
 <div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
@@ -42,25 +44,27 @@
           <div class="join">
             <button
               onclick={() => {
-                if (quantity > cartStore.minQuantity) {
+                if (quantity > product.add_to_cart.minimum) {
                   quantity--;
                 }
               }}
               class="btn btn-secondary join-item aspect-square p-0"
+              disabled={isProductInCart || quantity <= product.add_to_cart.minimum}
             >
               <MinusIcon />
             </button>
             <input
               type="number"
-              min="1"
-              max={product.low_stock_remaining}
+              min={product.add_to_cart.minimum}
+              max={product.add_to_cart.maximum}
               bind:value={quantity}
-              class="input join-item input-bordered input-secondary lg:w-16"
+              class="input join-item input-bordered input-secondary m-0 appearance-none text-right lg:w-16"
+              disabled={isProductInCart}
             />
             <button
               onclick={() => quantity++}
               class="btn btn-primary join-item aspect-square p-0"
-              disabled={quantity === product.low_stock_remaining}
+              disabled={quantity >= product.add_to_cart.maximum || isProductInCart}
             >
               <PlusIcon />
             </button>
@@ -70,10 +74,10 @@
           <button
             onclick={() => cartStore.addItem(product, quantity)}
             class="btn btn-primary btn-lg border-base-300 w-full rounded-xl border-2"
-            disabled={!product.is_in_stock || !!cartStore.cart.items.find(item => item.id === product.id)}
+            disabled={!product.is_in_stock || isProductInCart}
           >
             <CartIcon />
-            Añadir al carrito
+            {isProductInCart ? 'Ya en el carrito' : 'Añadir al carrito'}
           </button>
         </div>
       </div>
@@ -97,7 +101,7 @@
   <div class="flex gap-3 p-3">
     {#if product.categories && product.categories.length}
       <div>
-        Catagorías:
+        Categorías:
         {#each product.categories as category}
           <a href={`/categoria/${category.slug}`}>
             <span class="badge badge-outline mr-2">{category.slug}</span>

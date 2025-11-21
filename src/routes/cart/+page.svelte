@@ -1,7 +1,7 @@
 <script lang="ts">
   import { cartStore } from '@/stores/cartStore.store.svelte';
 
-  import CartProduct from '@/components/Product/CartProduct.svelte';
+  import CartProductTable from '@/components/Product/CartProductTable.svelte';
   import CheckoutIcon from '@/components/Icons/CheckoutIcon.svelte';
 
   import ProductPrice from '@/components/Product/ProductPrice.svelte';
@@ -28,16 +28,7 @@
       {#if !cartStore.cart.items || (cartStore.cart.items && !cartStore.cart.items.length)}
         <div class="flex w-full items-center">Tu carrito está vacío</div>
       {:else}
-        <div class="custom-grid w-full">
-          <div class="grid-header name text-left">Producto</div>
-          <div class="grid-header price text-right">Precio</div>
-          <div class="grid-header quantity text-right">Cantidad</div>
-          <div class="grid-header actions text-right"></div>
-
-          {#each cartStore.cart.items as item (item.id)}
-            <CartProduct {item} />
-          {/each}
-        </div>
+        <CartProductTable />
       {/if}
     </div>
     {#if cartStore.cart.items && cartStore.cart.items && cartStore.cart.items.length}
@@ -77,24 +68,3 @@
     {/if}
   </div>
 </div>
-
-<style lang="postcss">
-  @reference "tailwindcss";
-
-  .grid-header {
-    @apply border-b-2 p-3 font-bold;
-  }
-
-  .grid-cell {
-    align-items: center;
-  }
-
-  .custom-grid {
-    display: grid;
-    grid-template-columns: 1fr auto auto auto;
-
-    @media (max-width: 1024px) {
-      grid-template-columns: 1fr auto auto auto;
-    }
-  }
-</style>
