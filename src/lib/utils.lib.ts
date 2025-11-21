@@ -12,3 +12,11 @@ export const formatPrice = (price: string, prices: Prices) => {
 
   return formattedPrice;
 };
+
+export const capitalizeFirstLetter = (string: string) => {
+  if (!string || typeof string !== 'string') {
+    return ''; // Handle empty or non-string inputs
+  }
+
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};

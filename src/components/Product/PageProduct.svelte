@@ -7,13 +7,26 @@
   import PlusIcon from '../Icons/PlusIcon.svelte';
   import ProductPrice from './ProductPrice.svelte';
 
+  import { capitalizeFirstLetter } from '@/lib/utils.lib';
+
   const { product }: { product: Product } = $props();
   let quantity = $state(1);
 
   let isProductInCart = $derived(cartStore.cart.items.some(item => item.id === product.id));
+
+  $inspect(product);
 </script>
 
 <div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
+  <div class="breadcrumbs mb-6 text-sm">
+    <ul>
+      <li><a href="/">Inicio</a></li>
+      {#if product.categories?.length}
+        <li><a href={`/categoria/${product.categories[0].slug}`}>{capitalizeFirstLetter(product.categories[0].slug)}</a></li>
+      {/if}
+      <li>{product.name}</li>
+    </ul>
+  </div>
   <div class="flex flex-col items-stretch gap-6 lg:flex-row">
     <figure class="mb-6 min-w-1/2">
       <img

@@ -37,7 +37,7 @@
     <div class="join">
       <button
         onclick={() => cartStore.updateItem(cartItem, cartItem.quantity - 1)}
-        class="btn btn-secondary join-item aspect-square p-0 text-white"
+        class="btn btn-sm btn-secondary join-item aspect-square p-0 text-white"
         disabled={cartItem.quantity === 1}
       >
         <MinusIcon />
@@ -47,11 +47,11 @@
         min="1"
         max={cartItem.low_stock_remaining}
         bind:value={cartItem.quantity}
-        class="input join-item input-bordered input-secondary m-0 appearance-none text-right"
+        class="input input-sm join-item input-bordered input-secondary m-0 appearance-none text-right"
       />
       <button
         onclick={() => cartStore.updateItem(cartItem, cartItem.quantity + 1)}
-        class="btn btn-primary join-item aspect-square p-0"
+        class="btn btn-sm btn-primary join-item aspect-square p-0"
         disabled={cartItem.sold_individually || cartItem.quantity === cartItem.low_stock_remaining}
       >
         <PlusIcon />
@@ -62,7 +62,7 @@
 <div class="grid-cell">
   <button
     onclick={() => cartStore.removeItem(cartItem)}
-    class="btn btn-primary join-item aspect-square p-0 text-white"
+    class="btn btn-sm btn-primary join-item aspect-square p-0 text-white"
   >
     <TrashBinIcon />
   </button>
