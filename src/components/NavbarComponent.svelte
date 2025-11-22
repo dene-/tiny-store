@@ -56,12 +56,14 @@
     </ul>
   </div> -->
   <li>
-    <a href="/cart">
-      <CartIcon />
-      Carrito
-      {#if cartStore.cart.items && cartStore.cart.items.length > 0}
-        <span class="badge badge-primary font-bold">{cartStore.cart.items.length}</span>
-      {/if}
+    <a href="/carrito">
+      <div class="indicator pr-3">
+        <CartIcon />
+        Carrito
+        {#if cartStore.cart.items && cartStore.cart.items.length > 0}
+          <div class="indicator-item badge badge-sm badge-primary font-mono">{cartStore.cart.items.length}</div>
+        {/if}
+      </div>
     </a>
   </li>
   <!-- {#if sessionStore.isLoggedIn}
@@ -133,7 +135,7 @@
           </form>
         {/if} -->
         <a
-          href="/cart"
+          href="/carrito"
           class="mr-3 flex shrink-0 lg:hidden"
         >
           <CartIcon />

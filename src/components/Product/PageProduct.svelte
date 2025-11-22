@@ -6,6 +6,7 @@
   import MinusIcon from '../Icons/MinusIcon.svelte';
   import PlusIcon from '../Icons/PlusIcon.svelte';
   import ProductPrice from './ProductPrice.svelte';
+  import ProductImage from './ProductImage.svelte';
 
   import { capitalizeFirstLetter } from '@/lib/utils.lib';
 
@@ -18,7 +19,7 @@
 </script>
 
 <div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
-  <div class="breadcrumbs mb-6 text-sm">
+  <div class="breadcrumbs mb-6 pl-3 lg:pl-0">
     <ul>
       <li><a href="/">Inicio</a></li>
       {#if product.categories?.length}
@@ -29,12 +30,7 @@
   </div>
   <div class="flex flex-col items-stretch gap-6 lg:flex-row">
     <figure class="mb-6 min-w-1/2">
-      <img
-        src={product.images[0].src}
-        alt={product.images[0].alt}
-        title={product.images[0].alt}
-        class="lg:border-base-300 bg-white lg:rounded-md lg:border lg:shadow-md"
-      />
+      <ProductImage image={product.images[0]} />
     </figure>
 
     <div class="flex flex-grow flex-col p-3 pb-0">
@@ -56,11 +52,7 @@
         {#if !product.sold_individually}
           <div class="join">
             <button
-              onclick={() => {
-                if (quantity > product.add_to_cart.minimum) {
-                  quantity--;
-                }
-              }}
+              onclick={() => quantity--}
               class="btn btn-secondary join-item aspect-square p-0"
               disabled={isProductInCart || quantity <= product.add_to_cart.minimum}
             >
