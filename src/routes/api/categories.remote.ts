@@ -1,16 +1,17 @@
-import { query } from '$app/server';
-import { error } from '@sveltejs/kit';
+import { query, getRequestEvent } from '$app/server';
 import { ENDPOINTS } from './config.const';
 
 import type { Category } from '@/interfaces/store.interfaces';
 
 export const getCategories = query(async () => {
   try {
+    const { fetch } = getRequestEvent();
+
     const res = await fetch(`${ENDPOINTS.CATEGORIES}`);
 
     if (!res.ok) {
       console.error('Error fetching categories:', res.statusText);
-      throw error(500, 'Failed to fetch categories');
+      return [];
     }
 
     const data = (await res.json()) as Category[];
@@ -23,6 +24,6 @@ export const getCategories = query(async () => {
     return data;
   } catch (err) {
     console.error(err);
-    throw error(500, 'Error fetching categories');
+    return [];
   }
 });

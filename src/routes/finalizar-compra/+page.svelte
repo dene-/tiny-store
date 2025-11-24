@@ -128,7 +128,6 @@
 
     const checkoutResponse = await checkoutOrder({
       cart_token: cartStore.cartToken,
-      nonce: cartStore.cartNonce,
       payment_method: selectedPaymentMethod,
       create_account: false,
       billing_address,

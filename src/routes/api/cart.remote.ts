@@ -1,5 +1,4 @@
-import { query } from '$app/server';
-import { error } from '@sveltejs/kit';
+import { query, getRequestEvent } from '$app/server';
 import { ENDPOINTS } from './config.const';
 import z from 'zod';
 import type { Cart } from '@/interfaces/store.interfaces';
@@ -29,10 +28,15 @@ const parseCartResponse = async (response: Response) => {
     };
   }
 
-  throw error(500, 'Invalid response from server');
+  console.error('Invalid response from server');
+  return {
+    cart: {} as Cart,
+  };
 };
 
 export const getCart = query(getCartSchema, async (cartToken?: getCartParams) => {
+  const { fetch, cookies } = getRequestEvent();
+
   const headers = new Headers();
 
   if (cartToken) {
@@ -45,20 +49,29 @@ export const getCart = query(getCartSchema, async (cartToken?: getCartParams) =>
     });
 
     const cartToken = res.headers.get('Cart-Token');
-    const nonce = res.headers.get('Nonce');
+
+    cookies.set('cart_token', cartToken || '', { path: '/' });
 
     const cart = await res.json();
 
-    if (!cart) throw error(500, 'No response from server');
+    if (!cart) {
+      console.error('No response from server');
+      return {
+        cart: {} as Cart,
+        cartToken: null,
+      };
+    }
 
     return {
       cart,
       cartToken,
-      nonce,
     };
   } catch (err) {
     console.error('Error fetching cart data:', err);
-    throw error(500, 'Internal Server Error');
+    return {
+      cart: {} as Cart,
+      cartToken: null,
+    };
   }
 });
 
@@ -69,6 +82,8 @@ export const addItemToCart = query(
     quantity: z.number().min(1).max(999).optional().default(1),
   }),
   async ({ cartToken, id, quantity }) => {
+    const { fetch } = getRequestEvent();
+
     const headers = new Headers();
 
     if (cartToken) {
@@ -84,7 +99,9 @@ export const addItemToCart = query(
       return parseCartResponse(res);
     } catch (err) {
       console.error('Error adding item to cart:', err);
-      throw error(500, 'Internal Server Error');
+      return {
+        cart: {} as Cart,
+      };
     }
   },
 );
@@ -96,6 +113,8 @@ export const updateCartItem = query(
     quantity: z.number().min(0).max(999).optional().default(1),
   }),
   async ({ cartToken, key, quantity }) => {
+    const { fetch } = getRequestEvent();
+
     const headers = new Headers();
 
     if (cartToken) {
@@ -111,7 +130,9 @@ export const updateCartItem = query(
       return parseCartResponse(res);
     } catch (err) {
       console.error('Error updating item in cart:', err);
-      throw error(500, 'Internal Server Error');
+      return {
+        cart: {} as Cart,
+      };
     }
   },
 );
@@ -122,6 +143,8 @@ export const removeCartItem = query(
     key: z.string(),
   }),
   async ({ cartToken, key }) => {
+    const { fetch } = getRequestEvent();
+
     const headers = new Headers();
 
     if (cartToken) {
@@ -137,7 +160,9 @@ export const removeCartItem = query(
       return parseCartResponse(res);
     } catch (err) {
       console.error('Error removing item from cart:', err);
-      throw error(500, 'Internal Server Error');
+      return {
+        cart: {} as Cart,
+      };
     }
   },
 );

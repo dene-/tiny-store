@@ -115,9 +115,13 @@
         <div class="mx-2 flex-1 px-2 text-xl font-bold">
           <a
             href="/"
-            class="flex items-center gap-2"
+            class="flex items-center gap-3"
           >
-            <CubeIcon />
+            <img
+              src="/images/logo.png"
+              alt="Mami Crafts Logo"
+              class="size-10"
+            />
             Mami Crafts
           </a>
         </div>

@@ -30,7 +30,7 @@
         <SingleProduct {product} />
       {/each}
     {:else}
-      <div class="flex w-full items-center p-5">No products found</div>
+      <div class="flex w-full items-center">No se han encontrado productos.</div>
     {/if}
   </div>
 </div>

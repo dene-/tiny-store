@@ -1,16 +1,37 @@
-import { query } from '$app/server';
+import { query, getRequestEvent } from '$app/server';
 import { error } from '@sveltejs/kit';
 import { ENDPOINTS } from './config.const';
 import type { Product } from '@/interfaces/store.interfaces';
 import z from 'zod';
 
+import { oauth } from './config.const';
+
 export const getProducts = query(async () => {
   try {
-    const res = await fetch(ENDPOINTS.PRODUCTS);
+    const { fetch } = getRequestEvent();
+
+    // Generate OAuth params
+    const oauthParams = oauth.authorize({
+      url: ENDPOINTS.PRODUCTSV3,
+      method: 'GET',
+    });
+
+    // Create the Authorization header
+    const authHeader = oauth.toHeader(oauthParams);
+
+    const res = await fetch(ENDPOINTS.PRODUCTS, {
+      headers: {
+        ...authHeader,
+        'Content-Type': 'application/json',
+      },
+    });
 
     let data = (await res.json()) as Product[];
 
-    if (!data) throw error(500, 'No response from server');
+    if (!data) {
+      console.error('No response from server');
+      return [];
+    }
 
     data = data.filter(product => product.is_in_stock);
 
@@ -18,7 +39,7 @@ export const getProducts = query(async () => {
   } catch (err) {
     console.error(err);
 
-    throw error(500, 'Error fetching products');
+    return [];
   }
 });
 
@@ -27,10 +48,12 @@ const getProductSchema = z.object({
   tag: z.string().min(1).optional(),
   category: z.string().min(1).optional(),
 });
-type getProductsParams = z.infer<typeof getProductSchema>;
+type GetProductsParams = z.infer<typeof getProductSchema>;
 
-export const getProduct = query(getProductSchema, async ({ slug, tag, category }: getProductsParams) => {
+export const getProduct = query(getProductSchema, async ({ slug, tag, category }: GetProductsParams) => {
   try {
+    const { fetch } = getRequestEvent();
+
     const requestParams = new URLSearchParams();
 
     if (slug) requestParams.append('slug', slug);
@@ -49,6 +72,6 @@ export const getProduct = query(getProductSchema, async ({ slug, tag, category }
   } catch (err) {
     console.error(err);
 
-    throw error(500, 'Error fetching products');
+    return [];
   }
 });

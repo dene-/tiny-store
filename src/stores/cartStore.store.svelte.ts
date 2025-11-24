@@ -27,21 +27,15 @@ class UseCartStore {
 
   async getCart() {
     let localCartToken = undefined;
-    let localNonceToken = undefined;
 
     if (typeof window !== 'undefined') {
       localCartToken = localStorage.getItem('cart_token') || undefined;
-      localNonceToken = localStorage.getItem('nonce_token') || undefined;
     }
 
-    const { cart, cartToken, nonce } = await getCart(localCartToken);
+    const { cart, cartToken } = await getCart(localCartToken);
 
     if (typeof window !== 'undefined' && cartToken) {
       localStorage.setItem('cart_token', cartToken);
-      if (nonce) {
-        localStorage.setItem('nonce_token', nonce);
-        cartStore.cartNonce = nonce;
-      }
       cartStore.cartToken = cartToken;
     }
 

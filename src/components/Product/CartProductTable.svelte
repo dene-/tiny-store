@@ -21,10 +21,6 @@
     @apply border-b-2 p-3 font-bold;
   }
 
-  .grid-cell {
-    align-items: center;
-  }
-
   .custom-grid {
     display: grid;
     grid-template-columns: 1fr auto auto auto;

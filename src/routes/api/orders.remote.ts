@@ -1,5 +1,4 @@
-import { query } from '$app/server';
-import { error } from '@sveltejs/kit';
+import { query, getRequestEvent } from '$app/server';
 import z from 'zod';
 import { ENDPOINTS } from './config.const';
 
@@ -14,6 +13,8 @@ type GetOrderParams = z.infer<typeof getOrderSchema>;
 
 export const getOrder = query(getOrderSchema, async ({ order_id, key, billing_email }: GetOrderParams) => {
   try {
+    const { fetch } = getRequestEvent();
+
     const response = await fetch(`${ENDPOINTS.ORDERS}/${order_id}/?key=${key}&billing_email=${billing_email}`);
 
     if (!response.ok) {
@@ -28,6 +29,10 @@ export const getOrder = query(getOrderSchema, async ({ order_id, key, billing_em
     return order;
   } catch (err) {
     console.error('Error fetching order:', err);
-    throw error(500, 'Internal Server Error');
+    return {
+      error: true,
+      status: 500,
+      message: 'Internal Server Error',
+    };
   }
 });
