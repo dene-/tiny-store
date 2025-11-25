@@ -56,7 +56,10 @@
     </ul>
   </div> -->
   <li>
-    <a href="/carrito">
+    <a
+      href="/carrito"
+      aria-label="Ver carrito de compras"
+    >
       <div class="indicator pr-3">
         <CartIcon />
         Carrito
@@ -141,6 +144,7 @@
         <a
           href="/carrito"
           class="mr-3 flex shrink-0 lg:hidden"
+          aria-label="Ver carrito de compras"
         >
           <CartIcon />
           {#if cartStore.cart.items && cartStore.cart.items.length > 0}

@@ -18,7 +18,10 @@
 </script>
 
 <div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
-  <div class="breadcrumbs mb-6 pl-3 lg:pl-0">
+  <div
+    class="breadcrumbs mb-6 pl-3 lg:pl-0"
+    aria-label="Breadcrumbs"
+  >
     <ul>
       <li><a href="/">Inicio</a></li>
       {#if product.categories?.length}
@@ -52,6 +55,7 @@
               onclick={() => quantity--}
               class="btn btn-secondary join-item aspect-square p-0"
               disabled={isProductInCart || quantity <= product.add_to_cart.minimum}
+              aria-label="Disminuir cantidad"
             >
               <MinusIcon />
             </button>
@@ -62,11 +66,13 @@
               bind:value={quantity}
               class="input join-item input-bordered input-secondary m-0 appearance-none text-right lg:w-16"
               disabled={isProductInCart}
+              aria-label="Cantidad del producto"
             />
             <button
               onclick={() => quantity++}
               class="btn btn-primary join-item aspect-square p-0"
               disabled={quantity >= product.add_to_cart.maximum || isProductInCart}
+              aria-label="Aumentar cantidad"
             >
               <PlusIcon />
             </button>

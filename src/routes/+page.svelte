@@ -24,8 +24,15 @@
 <HeroComponent />
 <h1 class="mb-3 p-3 text-center text-2xl font-bold">Productos</h1>
 {#if !itemStore.products.length}
-  <div class="mt-12 flex w-full items-center justify-center">
-    <span class="loading loading-spinner loading-lg"></span>
+  <div
+    class="mt-12 flex w-full items-center justify-center"
+    role="status"
+    aria-label="Cargando productos"
+  >
+    <span
+      class="loading loading-spinner loading-lg"
+      aria-hidden="true"
+    ></span>
   </div>
 {:else}
   <div class="grid w-full grid-cols-2 flex-wrap content-start items-start gap-3 p-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

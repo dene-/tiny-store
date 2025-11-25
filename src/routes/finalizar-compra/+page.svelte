@@ -134,7 +134,9 @@
     });
 
     cartStore.getCart();
+
     await goto(`/pedido/${checkoutResponse.order_id}/?key=${checkoutResponse.order_key}&billing_email=${billing_address.email}`);
+
     isProcessingOrder = false;
   }
 </script>

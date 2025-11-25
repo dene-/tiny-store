@@ -41,6 +41,7 @@
         onclick={() => cartStore.updateItem(cartItem, cartItem.quantity - 1)}
         class="btn btn-secondary btn-sm lg:btn-md join-item aspect-square p-0 text-white"
         disabled={cartItem.quantity === 1}
+        aria-label="Disminuir cantidad"
       >
         <MinusIcon />
       </button>
@@ -49,11 +50,13 @@
         id="cart-quantity-input"
         bind:value={cartItem.quantity}
         class="input join-item input-ghost input-sm lg:input-md pointer-events-none m-0 max-w-[40px] text-right font-bold select-none lg:max-w-[50px]"
+        aria-label="Cantidad del producto"
       />
       <button
         onclick={() => cartStore.updateItem(cartItem, cartItem.quantity + 1)}
         class="btn btn-primary btn-sm lg:btn-md join-item aspect-square p-0"
         disabled={cartItem.sold_individually || cartItem.quantity === cartItem.low_stock_remaining}
+        aria-label="Aumentar cantidad"
       >
         <PlusIcon />
       </button>
@@ -64,6 +67,7 @@
   <button
     onclick={() => cartStore.removeItem(cartItem)}
     class="btn btn-primary join-item btn-sm lg:btn-md aspect-square p-0 text-white"
+    aria-label="Eliminar producto del carrito"
   >
     <TrashBinIcon />
   </button>
