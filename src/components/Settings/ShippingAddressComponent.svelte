@@ -12,6 +12,7 @@
       type: 'text',
       required: true,
       placeholder: 'Full name',
+      ariaLabel: 'Full Name',
     },
     {
       id: 'phone-number',
@@ -19,6 +20,7 @@
       type: 'tel',
       required: true,
       placeholder: 'Phone,  e.g. +123 4567890',
+      ariaLabel: 'Phone Number',
     },
     {
       id: 'address-1',
@@ -27,6 +29,7 @@
       required: true,
       placeholder: 'Address',
       fullWidth: true,
+      ariaLabel: 'Address 1',
     },
     {
       id: 'address-2',
@@ -35,6 +38,7 @@
       required: true,
       placeholder: 'Address',
       fullWidth: true,
+      ariaLabel: 'Address 2',
     },
     {
       id: 'city',
@@ -42,6 +46,7 @@
       type: 'text',
       required: true,
       placeholder: 'City',
+      ariaLabel: 'City',
     },
     {
       id: 'postal-code',
@@ -49,6 +54,7 @@
       type: 'text',
       required: true,
       placeholder: 'Postal code',
+      ariaLabel: 'Postal Code',
     },
     {
       id: 'state',
@@ -56,6 +62,7 @@
       type: 'text',
       required: false,
       placeholder: 'State',
+      ariaLabel: 'State (if USA)',
     },
     {
       id: 'country',
@@ -67,6 +74,7 @@
       })),
       required: true,
       placeholder: 'Enter your country',
+      ariaLabel: 'Country',
     },
   ];
 

@@ -40,10 +40,12 @@
     document.querySelectorAll(query).forEach((input: Element) => {
       input.addEventListener('invalid', () => {
         input.classList.add('input-error');
+        input.setAttribute('aria-invalid', 'true');
       });
 
       input.addEventListener('input', () => {
         input.classList.remove('input-error');
+        input.setAttribute('aria-invalid', 'false');
       });
     });
   });
@@ -84,6 +86,8 @@
             name={field.name || field.id}
             placeholder={field.placeholder}
             required={field.required}
+            aria-required={field.required}
+            aria-label={field.ariaLabel || field.label}
             class="textarea textarea-lg textarea-bordered h-24 bg-white"
             bind:value={formData[field.id]}
           ></textarea>
@@ -92,6 +96,8 @@
             id={field.id}
             name={field.name || field.id}
             required={field.required}
+            aria-required={field.required}
+            aria-label={field.ariaLabel || field.label}
             class="select select-bordered select-lg w-full bg-white"
             bind:value={formData[field.id]}
             autocomplete={field.name === 'country' ? 'country' : 'off'}
@@ -118,6 +124,8 @@
                 name={field.name || field.id}
                 checked={formData[field.id]}
                 onchange={e => handleInput(field, e)}
+                aria-label={field.ariaLabel || field.label}
+                aria-required={field.required}
               />
             </label>
           </div>
@@ -128,6 +136,8 @@
             name={field.name || field.id}
             placeholder={field.placeholder}
             required={field.required}
+            aria-required={field.required}
+            aria-label={field.ariaLabel || field.label}
             pattern={field.validation?.pattern}
             minlength={field.validation?.minLength}
             maxlength={field.validation?.maxLength}

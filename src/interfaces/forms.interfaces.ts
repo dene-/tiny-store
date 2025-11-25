@@ -10,6 +10,7 @@ export interface InputField {
   options?: { value: string; label: string; selected?: boolean }[];
   fullWidth?: boolean;
   value?: unknown;
+  ariaLabel?: string;
   validation?: {
     pattern?: string;
     minLength?: number;

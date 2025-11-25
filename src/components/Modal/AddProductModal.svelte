@@ -18,6 +18,7 @@
       required: true,
       placeholder: 'Product name',
       fullWidth: true,
+      ariaLabel: 'Product Name',
     },
     {
       id: 'product-description',
@@ -26,6 +27,7 @@
       required: true,
       placeholder: 'Product description',
       fullWidth: true,
+      ariaLabel: 'Product Description',
     },
     {
       id: 'product-price',
@@ -33,6 +35,7 @@
       type: 'number',
       required: true,
       placeholder: 'Product price',
+      ariaLabel: 'Product Price',
     },
     {
       id: 'sku',
@@ -40,6 +43,7 @@
       type: 'text',
       required: true,
       placeholder: 'SKU',
+      ariaLabel: 'SKU',
     },
     {
       id: 'product_url',
@@ -47,6 +51,7 @@
       type: 'text',
       required: true,
       placeholder: 'Product URL',
+      ariaLabel: 'Product URL',
     },
   ]);
 

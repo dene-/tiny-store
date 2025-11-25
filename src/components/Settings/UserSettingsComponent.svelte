@@ -29,6 +29,7 @@
       required: true,
       value: userForm.name,
       placeholder: 'Enter your name',
+      ariaLabel: 'Name',
     },
     {
       id: 'username',
@@ -37,6 +38,7 @@
       required: true,
       value: userForm.prefs.username,
       placeholder: 'Enter your username',
+      ariaLabel: 'Username',
     },
     {
       id: 'email',
@@ -46,6 +48,7 @@
       fullWidth: true,
       value: userForm.email,
       placeholder: 'Enter your email',
+      ariaLabel: 'Email Address',
     },
     {
       id: 'password',
@@ -54,6 +57,7 @@
       required: true,
       value: userForm.password,
       placeholder: 'Enter your password',
+      ariaLabel: 'Password',
     },
   ]);
 
@@ -100,7 +104,7 @@
   {/if}
   <div class="flex flex-col items-center">
     <div class="avatar placeholder transition hover:brightness-125">
-      <div class="w-36 rounded-full bg-neutral text-neutral-content">
+      <div class="bg-neutral text-neutral-content w-36 rounded-full">
         <UserAvatarComponent />
       </div>
     </div>

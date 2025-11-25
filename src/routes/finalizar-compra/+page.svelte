@@ -43,6 +43,7 @@
       fullWidth: false,
       value: billingForm.first_name,
       placeholder: 'Nombre',
+      ariaLabel: 'Nombre',
     },
     {
       id: 'last_name',
@@ -53,6 +54,7 @@
       fullWidth: false,
       value: billingForm.last_name,
       placeholder: 'Apellidos',
+      ariaLabel: 'Apellidos',
     },
     {
       id: 'address_1',
@@ -63,6 +65,7 @@
       fullWidth: true,
       value: billingForm.address_1,
       placeholder: 'Dirección',
+      ariaLabel: 'Dirección',
     },
     {
       id: 'country',
@@ -73,6 +76,7 @@
       required: true,
       value: billingForm.country,
       placeholder: 'País',
+      ariaLabel: 'País',
     },
     {
       id: 'city',
@@ -82,6 +86,7 @@
       required: true,
       value: billingForm.city,
       placeholder: 'Ciudad',
+      ariaLabel: 'Ciudad',
     },
     {
       id: 'state',
@@ -91,6 +96,7 @@
       required: true,
       value: billingForm.state,
       placeholder: 'Provincia',
+      ariaLabel: 'Provincia',
     },
     {
       id: 'postcode',
@@ -100,6 +106,7 @@
       required: true,
       value: billingForm.postcode,
       placeholder: 'Código postal',
+      ariaLabel: 'Código Postal',
     },
     {
       id: 'email',
@@ -109,6 +116,7 @@
       required: true,
       value: billingForm.email,
       placeholder: 'Correo electrónico',
+      ariaLabel: 'Correo Electrónico',
     },
     {
       id: 'phone',
@@ -118,6 +126,7 @@
       required: true,
       value: billingForm.phone,
       placeholder: 'Número de teléfono',
+      ariaLabel: 'Teléfono',
     },
   ]);
 
@@ -171,8 +180,17 @@
           />
         </div>
         <div class="card bg-base-200 mt-6 rounded-lg p-3">
-          <h2 class="mb-6 text-xl font-bold">Opciones de pago</h2>
-          <div class="flex flex-col gap-3">
+          <h2
+            class="mb-6 text-xl font-bold"
+            id="payment-options-heading"
+          >
+            Opciones de pago
+          </h2>
+          <div
+            class="flex flex-col gap-3"
+            role="radiogroup"
+            aria-labelledby="payment-options-heading"
+          >
             {#each paymentMethods as method (method.id)}
               <div class="flex items-center gap-3 rounded-lg border bg-white p-3">
                 <input
@@ -207,10 +225,14 @@
           />
         </div>
       {:else}
-        <p class="text-center text-lg font-medium">
+        <p
+          class="text-center text-lg font-medium"
+          role="alert"
+        >
           Tu carrito está vacío. Vuelve a <a
             href="/"
-            class="text-primary font-bold">la tienda</a
+            class="text-primary font-bold"
+            aria-label="Volver a la tienda">la tienda</a
           >.
         </p>
       {/if}
