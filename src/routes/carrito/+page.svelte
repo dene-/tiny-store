@@ -24,37 +24,34 @@
 <div class="cart my-12 lg:my-24">
   <div class="flex flex-col gap-12 p-3 lg:flex-row">
     <div class="flex-grow">
-      <h1 class="mb-3 text-2xl font-bold">Carrito</h1>
       {#if !cartStore.cart.items || (cartStore.cart.items && !cartStore.cart.items.length)}
+        <h1 class="mb-3 text-2xl font-bold underline">Carrito</h1>
         <div class="flex w-full items-center">Tu carrito está vacío</div>
       {:else}
         <div class="flex flex-col gap-6 lg:flex-row">
-          <CartProductTable />
+          <div class="grow">
+            <h1 class="mb-3 text-2xl font-bold underline">Carrito</h1>
+            <CartProductTable />
+          </div>
+          <div class="bg-primary min-h-[2px] shrink-0 self-stretch lg:w-[2px]"></div>
           <div class="min-w-1/4">
-            <h1 class="mb-6 text-2xl font-bold">Resumen pedido</h1>
-            <div class="flex w-full flex-col gap-8">
-              <!-- <div class="flex items-center justify-between">
-            <h3 class="p-0">Subtotal</h3>
-            <div>
-              {cartStore.cart.totals.currency_prefix}{formatPrice(cartStore.cart.totals.total_items, cartStore.cart.totals)}{cartStore.cart.totals
-                .currency_suffix}
-            </div>
-          </div> -->
-              <div class="flex items-center justify-between text-2xl">
-                <div class="font-bold">Total:</div>
+            <h1 class="mb-6 text-2xl font-bold underline">Resumen pedido</h1>
+            <div class="flex w-full flex-col gap-3">
+              <div class="flex items-center justify-between text-xl">
+                <div class="font-bold">Subtotal:</div>
                 <ProductPrice
                   isTotalPrice={true}
                   totals={cartStore.cart.totals}
                 />
               </div>
-              <div class="flex items-center justify-between">
+              <!-- <div class="flex items-center justify-between">
                 <div class="font-bold">Pago:</div>
                 <div>En la entrega</div>
-              </div>
-              <div class="divider"></div>
+              </div> -->
+              <div class="divider divider-primary"></div>
               <div class="flex items-center justify-between">
                 <button
-                  class="btn btn-primary btn-lg w-full rounded-xl p-2 lg:w-full"
+                  class="btn btn-primary btn-lg mb-12 w-full rounded-xl p-2 lg:w-full"
                   onclick={() => goto('/finalizar-compra')}
                 >
                   <CheckoutIcon />

@@ -7,6 +7,7 @@
   import PlusIcon from '../Icons/PlusIcon.svelte';
   import ProductPrice from './ProductPrice.svelte';
   import ProductImage from './ProductImage.svelte';
+  import OnSaleBadge from './OnSaleBadge.svelte';
 
   import { capitalizeFirstLetter } from '@/lib/utils.lib';
 
@@ -14,8 +15,6 @@
   let quantity = $state(1);
 
   let isProductInCart = $derived(cartStore.cart.items.some(item => item.id === product.id));
-
-  $inspect(product);
 </script>
 
 <div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
@@ -29,14 +28,12 @@
     </ul>
   </div>
   <div class="flex flex-col items-stretch gap-6 lg:flex-row">
-    <figure class="mb-6 min-w-1/2">
+    <figure class="relative mb-6 min-w-1/2">
+      <OnSaleBadge {product} />
       <ProductImage image={product.images[0]} />
     </figure>
 
     <div class="flex flex-grow flex-col p-3 pb-0">
-      {#if product.on_sale}
-        <div class="badge badge-primary badge-lg mb-3">¡En oferta!</div>
-      {/if}
       <div class="prose">
         <h1 class="product-title text-primary">
           {product.name}

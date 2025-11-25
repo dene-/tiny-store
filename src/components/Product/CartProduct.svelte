@@ -32,26 +32,27 @@
 </div>
 <div class="grid-cell justify-end gap-2 md:flex-row">
   {#if cartItem.sold_individually}
-    {cartItem.quantity}
+    <span class="font-bold">
+      {cartItem.quantity}
+    </span>
   {:else}
     <div class="join">
       <button
         onclick={() => cartStore.updateItem(cartItem, cartItem.quantity - 1)}
-        class="btn btn-sm btn-secondary join-item aspect-square p-0 text-white"
+        class="btn btn-secondary btn-sm lg:btn-md join-item aspect-square p-0 text-white"
         disabled={cartItem.quantity === 1}
       >
         <MinusIcon />
       </button>
       <input
-        type="number"
-        min="1"
-        max={cartItem.low_stock_remaining}
+        type="text"
+        id="cart-quantity-input"
         bind:value={cartItem.quantity}
-        class="input input-sm join-item input-bordered input-secondary m-0 appearance-none text-right"
+        class="input join-item input-ghost input-sm lg:input-md pointer-events-none m-0 max-w-[40px] text-right font-bold select-none lg:max-w-[50px]"
       />
       <button
         onclick={() => cartStore.updateItem(cartItem, cartItem.quantity + 1)}
-        class="btn btn-sm btn-primary join-item aspect-square p-0"
+        class="btn btn-primary btn-sm lg:btn-md join-item aspect-square p-0"
         disabled={cartItem.sold_individually || cartItem.quantity === cartItem.low_stock_remaining}
       >
         <PlusIcon />
@@ -62,7 +63,7 @@
 <div class="grid-cell">
   <button
     onclick={() => cartStore.removeItem(cartItem)}
-    class="btn btn-sm btn-primary join-item aspect-square p-0 text-white"
+    class="btn btn-primary join-item btn-sm lg:btn-md aspect-square p-0 text-white"
   >
     <TrashBinIcon />
   </button>

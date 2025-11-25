@@ -1,14 +1,13 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
   import type { Product } from '@/interfaces/store.interfaces';
+  import OnSaleBadge from './OnSaleBadge.svelte';
 
   const { product }: { product: Product } = $props();
 </script>
 
-<div class="card border-base-300 relative flex-shrink-0 border bg-white">
-  {#if product.on_sale}
-    <div class="bg-primary absolute top-2 right-2 z-1 rounded-lg p-2 font-bold text-white select-none">¡EN OFERTA!</div>
-  {/if}
+<div class="card border-base-300 relative flex-shrink-0 border bg-white transition will-change-auto hover:scale-[101%]">
+  <OnSaleBadge {product} />
   <figure>
     <a href={`/producto/${product.slug}`}>
       <img

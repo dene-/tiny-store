@@ -50,8 +50,6 @@ export const getCart = query(getCartSchema, async (cartToken?: getCartParams) =>
 
     const cartToken = res.headers.get('Cart-Token');
 
-    cookies.set('cart_token', cartToken || '', { path: '/' });
-
     const cart = await res.json();
 
     if (!cart) {
