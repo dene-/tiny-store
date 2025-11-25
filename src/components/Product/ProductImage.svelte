@@ -16,7 +16,10 @@
     src={image.src}
     alt={image.alt}
     title={image.alt}
+    srcset={image.srcset}
+    sizes={image.sizes}
     class="lg:border-base-300 h-auto w-full bg-white lg:rounded-md lg:border lg:shadow-md"
+    loading="lazy"
   />
 </button>
 

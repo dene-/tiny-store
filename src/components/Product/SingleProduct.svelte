@@ -4,6 +4,8 @@
   import OnSaleBadge from './OnSaleBadge.svelte';
 
   const { product }: { product: Product } = $props();
+
+  $inspect(product);
 </script>
 
 <div class="card border-base-300 relative flex-shrink-0 border bg-white transition will-change-auto hover:scale-[101%]">
@@ -14,6 +16,9 @@
         src={product.images[0].src}
         alt={product.images[0].alt}
         title={product.images[0].alt}
+        srcset={product.images[0].srcset}
+        sizes={product.images[0].sizes}
+        loading="lazy"
       />
     </a>
   </figure>
