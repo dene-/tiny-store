@@ -60,20 +60,24 @@ class UseCartStore {
     }).showToast();
   }
 
-  removeItem = async (cartItem: CartItem) => {
+  removeItem = async (cartItem: CartItem, updateCart: boolean = true, showToast: boolean = true) => {
     const { cart, message } = await removeCartItem({
       key: cartItem.key,
       cartToken: this.cartToken,
     });
 
-    if (cart) {
+    if (cart && updateCart) {
       this.cart = cart;
     }
 
-    Toastify({
-      text: message || `"${cartItem.name}" eliminado del carrito`,
-      ...toastifyDefaults,
-    }).showToast();
+    if (showToast) {
+      Toastify({
+        text: message || `"${cartItem.name}" eliminado del carrito`,
+        ...toastifyDefaults,
+      }).showToast();
+    }
+
+    return cart;
   };
 
   updateItem = async (cartItem: CartItem, quantity: number) => {
@@ -97,17 +101,20 @@ class UseCartStore {
     }).showToast();
   };
 
-  async cartTokenNonceReady() {
-    return new Promise<void>(resolve => {
-      const checkReady = () => {
-        if (this.cartToken && this.cartNonce) {
-          resolve();
-        } else {
-          setTimeout(checkReady, 100);
-        }
-      };
-      checkReady();
-    });
+  async clearCart() {
+    const cartItems = this.cart.items || [];
+    let cart = {} as Cart;
+
+    for (const item of cartItems) {
+      cart = (await this.removeItem(item, false, false)) as Cart;
+    }
+
+    this.cart = cart;
+
+    Toastify({
+      text: `Carrito vaciado correctamente`,
+      ...toastifyDefaults,
+    }).showToast();
   }
 }
 

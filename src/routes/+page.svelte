@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import SingleProduct from '../components/Product/SingleProduct.svelte';
+  import ProductGrid from '@/components/Product/ProductGrid.svelte';
   import HeroComponent from '@/components/Hero/HeroComponent.svelte';
   import type { ListProductsResponse } from '@/interfaces/store.interfaces';
 
@@ -35,9 +35,5 @@
     ></span>
   </div>
 {:else}
-  <div class="grid w-full grid-cols-2 flex-wrap content-start items-start gap-3 p-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-    {#each itemStore.products as product (product.id)}
-      <SingleProduct {product} />
-    {/each}
-  </div>
+  <ProductGrid products={itemStore.products} />
 {/if}

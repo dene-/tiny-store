@@ -10,11 +10,16 @@
   import OnSaleBadge from './OnSaleBadge.svelte';
 
   import { capitalizeFirstLetter } from '@/lib/utils.lib';
+  import { getProduct } from '@/routes/api/products.remote';
+
+  import ProductGrid from './ProductGrid.svelte';
 
   const { product }: { product: Product } = $props();
   let quantity = $state(1);
 
   let isProductInCart = $derived(cartStore.cart.items.some(item => item.id === product.id));
+
+  $inspect(product);
 </script>
 
 <div class="mx-auto my-12 lg:my-24 lg:max-w-[900px]">
@@ -128,4 +133,20 @@
       </div>
     {/if}
   </div>
+  {#if product.extensions.product_suggestions.upsell_ids.length}
+    {@const recommendedProducts = await getProduct({ include: product.extensions.product_suggestions.upsell_ids.join(',') })}
+    <h1 class="mt-12 mb-3 p-3 text-2xl font-bold">También te recomendamos...</h1>
+    <ProductGrid
+      products={recommendedProducts}
+      size="medium"
+    />
+  {/if}
+  {#if product.extensions.product_suggestions.related_ids.length}
+    {@const relatedProducts = await getProduct({ include: product.extensions.product_suggestions.related_ids.join(',') })}
+    <h1 class="mt-12 mb-3 p-3 text-2xl font-bold">Productos relacionados</h1>
+    <ProductGrid
+      products={relatedProducts}
+      size="medium"
+    />
+  {/if}
 </div>

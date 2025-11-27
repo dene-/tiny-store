@@ -17,7 +17,7 @@
     class="flex flex-col gap-1 underline lg:flex-row lg:items-center lg:gap-3"
   >
     <img
-      class="w-[85px] rounded-xl bg-white lg:w-[150px]"
+      class="w-[85px] rounded-xl bg-white lg:w-[100px]"
       src={cartItem.images[0].src}
       alt={cartItem.images[0].alt}
       title={cartItem.images[0].alt}

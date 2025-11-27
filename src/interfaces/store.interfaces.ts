@@ -720,6 +720,15 @@ export interface AddToCart {
   single_text?: string;
 }
 
+interface ProductSuggestions {
+  related_ids: number[];
+  upsell_ids: number[];
+}
+
+interface ProductExtensions {
+  product_suggestions: ProductSuggestions;
+}
+
 /**
  * Main product object returned by the Products API. Reflects the structure
  * defined in ProductSchema and the API documentation. Some optional fields
@@ -784,7 +793,7 @@ export interface Product {
   /** Add to cart button definitions. */
   add_to_cart: AddToCart;
   /** Additional extension data keyed by plugin. */
-  extensions?: Record<string, unknown>;
+  extensions: ProductExtensions;
 }
 
 /* --------------------------------------------------------------------------

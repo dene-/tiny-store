@@ -61,7 +61,9 @@
       aria-label="Ver carrito de compras"
     >
       <div class="indicator pr-3">
-        <CartIcon />
+        <span class="mr-1">
+          <CartIcon />
+        </span>
         Carrito
         {#if cartStore.cart.items && cartStore.cart.items.length > 0}
           <div class="indicator-item badge badge-sm badge-primary font-mono">{cartStore.cart.items.length}</div>
@@ -104,7 +106,7 @@
   />
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
-    <div class="navbar bg-base-100 shadow-base-300/15 border-base-300 w-full justify-center border-b shadow-xl">
+    <div class="navbar bg-base-100 shadow-base-300/15 border-base-300 w-full justify-center border-b drop-shadow-xl">
       <div class="container flex items-center">
         <div class="flex-none lg:hidden">
           <label
@@ -146,7 +148,9 @@
           class="mr-3 flex shrink-0 lg:hidden"
           aria-label="Ver carrito de compras"
         >
-          <CartIcon />
+          <span class="mr-1">
+            <CartIcon />
+          </span>
           {#if cartStore.cart.items && cartStore.cart.items.length > 0}
             <div class="indicator">
               <div class="indicator-item badge badge-xs badge-primary self-start font-mono">{cartStore.cart.items.length}</div>

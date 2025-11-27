@@ -7,6 +7,16 @@
   import ProductPrice from '@/components/Product/ProductPrice.svelte';
 
   import { goto } from '$app/navigation';
+
+  let isClearingCart = $state(false);
+
+  async function clearCart() {
+    isClearingCart = true;
+
+    await cartStore.clearCart();
+
+    isClearingCart = false;
+  }
 </script>
 
 <svelte:head>
@@ -29,9 +39,22 @@
         <div class="flex w-full items-center">Tu carrito está vacío</div>
       {:else}
         <div class="flex flex-col gap-6 lg:flex-row">
-          <div class="grow">
+          <div class="flex grow flex-col">
             <h1 class="mb-3 text-2xl font-bold underline">Carrito</h1>
             <CartProductTable />
+            <button
+              class="btn btn-secondary my-3 self-end"
+              onclick={clearCart}
+              disabled={isClearingCart}
+            >
+              {#if isClearingCart}
+                <span
+                  class="loading loading-spinner loading-lg"
+                  aria-hidden="true"
+                ></span>
+              {/if}
+              Vacíar carrito
+            </button>
           </div>
           <div class="bg-primary min-h-[2px] shrink-0 self-stretch lg:w-[2px]"></div>
           <div class="min-w-1/4">

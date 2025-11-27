@@ -47,10 +47,11 @@ const getProductSchema = z.object({
   slug: z.string().min(1).optional(),
   tag: z.string().min(1).optional(),
   category: z.string().min(1).optional(),
+  include: z.string().min(1).optional(),
 });
 type GetProductsParams = z.infer<typeof getProductSchema>;
 
-export const getProduct = query(getProductSchema, async ({ slug, tag, category }: GetProductsParams) => {
+export const getProduct = query(getProductSchema, async ({ slug, tag, category, include }: GetProductsParams) => {
   try {
     const { fetch } = getRequestEvent();
 
@@ -59,6 +60,7 @@ export const getProduct = query(getProductSchema, async ({ slug, tag, category }
     if (slug) requestParams.append('slug', slug);
     if (tag) requestParams.append('tag', tag);
     if (category) requestParams.append('category', category);
+    if (include) requestParams.append('include', include);
 
     const res = await fetch(`${ENDPOINTS.PRODUCTS}/?${requestParams.toString()}`);
 

@@ -3,9 +3,9 @@
   import type { Product } from '@/interfaces/store.interfaces';
   import OnSaleBadge from './OnSaleBadge.svelte';
 
-  const { product }: { product: Product } = $props();
+  import ProductPrice from './ProductPrice.svelte';
 
-  $inspect(product);
+  const { product }: { product: Product } = $props();
 </script>
 
 <div class="border-base-300 relative row-span-4 grid flex-shrink-0 grid-rows-subgrid gap-0 border bg-white transition will-change-auto hover:scale-[101%]">
@@ -31,10 +31,13 @@
           {product.short_description}
         </p>
       {/if} -->
+  <div class="text-primary text-md flex items-center justify-center text-center font-bold">
+    <ProductPrice
+      {product}
+      showOfferBadge={false}
+    />
+  </div>
   <div class="card-actions justify-center p-3">
-    <!-- <div class="text-primary text-3xl font-bold">
-          {item.price} €
-        </div> -->
     <div class="text-center">
       <button
         onclick={() => goto(`/producto/${product.slug}`)}
