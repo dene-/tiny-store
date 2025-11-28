@@ -10,8 +10,11 @@
 
 <div class="border-base-300 relative row-span-4 grid flex-shrink-0 grid-rows-subgrid gap-0 border bg-white transition will-change-auto hover:scale-[101%]">
   <OnSaleBadge {product} />
-  <figure>
-    <a href={`/producto/${product.slug}`}>
+  <a
+    href={`/producto/${product.slug}`}
+    class="bg-base-300 flex items-center justify-center"
+  >
+    <figure>
       <img
         src={product.images[0].src}
         alt={product.images[0].alt}
@@ -20,17 +23,12 @@
         sizes={product.images[0].sizes}
         loading="lazy"
       />
-    </a>
-  </figure>
+    </figure>
+  </a>
 
   <h1 class="product-title card-title items-center justify-center p-3 text-center text-sm lg:text-xl">
     {product.name}
   </h1>
-  <!-- {#if product.short_description}
-        <p class="text-center text-xs lg:text-sm">
-          {product.short_description}
-        </p>
-      {/if} -->
   <div class="text-primary text-md flex items-center justify-center text-center font-bold">
     <ProductPrice
       {product}

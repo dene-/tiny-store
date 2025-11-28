@@ -38,7 +38,7 @@
   <div class="flex flex-col items-stretch gap-6 lg:flex-row">
     <figure class="relative mb-6 min-w-1/2">
       <OnSaleBadge {product} />
-      <ProductImage image={product.images[0]} />
+      <ProductImage images={product.images} />
     </figure>
 
     <div class="flex flex-grow flex-col p-3 pb-0">
@@ -135,6 +135,7 @@
   </div>
   {#if product.extensions.product_suggestions.upsell_ids.length}
     {@const recommendedProducts = await getProduct({ include: product.extensions.product_suggestions.upsell_ids.join(',') })}
+
     <h1 class="mt-12 mb-3 p-3 text-2xl font-bold">También te recomendamos...</h1>
     <ProductGrid
       products={recommendedProducts}
@@ -143,6 +144,7 @@
   {/if}
   {#if product.extensions.product_suggestions.related_ids.length}
     {@const relatedProducts = await getProduct({ include: product.extensions.product_suggestions.related_ids.join(',') })}
+
     <h1 class="mt-12 mb-3 p-3 text-2xl font-bold">Productos relacionados</h1>
     <ProductGrid
       products={relatedProducts}
