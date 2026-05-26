@@ -89,6 +89,7 @@
             src={img.thumbnail || img.src}
             alt={img.alt}
             class="h-full w-full object-cover"
+            loading="lazy"
           />
         </button>
       {/each}
