@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Cart, CartItem, CartTotals, OrderTotals, Product } from '@/interfaces/store.interfaces';
+  import type { CartItem, CartTotals, OrderTotals, Product } from '@/interfaces/store.interfaces';
   import { formatPrice } from '@/lib/utils.lib';
 
   const {

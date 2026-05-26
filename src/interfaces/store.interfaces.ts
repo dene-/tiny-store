@@ -264,7 +264,7 @@ export interface LineTotals extends CurrencyInfo {
 /**
  * Cart item as returned by the `/cart` and `/cart/items` endpoints.
  */
-export interface CartItem extends BaseItem {}
+export type CartItem = BaseItem;
 
 /**
  * Top‑level totals returned by the cart API. These correspond to the totals
@@ -351,7 +351,7 @@ export interface BaseAddress {
  * Shipping addresses do not include an email. All fields are optional
  * according to the update‑customer endpoint, allowing partial updates.
  */
-export interface ShippingAddress extends BaseAddress {}
+export type ShippingAddress = BaseAddress;
 
 /**
  * Billing addresses extend the base address to include an email.
@@ -500,7 +500,7 @@ export interface OrderTotals extends CurrencyInfo, Prices {
 /**
  * An item within an order. Shares munknown fields with cart items.
  */
-export interface OrderItem extends BaseItem {}
+export type OrderItem = BaseItem;
 
 /**
  * Order object returned by `/order/{id}`. Contains items, totals,
@@ -589,7 +589,7 @@ export interface ProductBrand extends Term {
 /**
  * A product tag uses the base term fields without additional properties.
  */
-export interface ProductTag extends Term {}
+export type ProductTag = Term;
 
 /**
  * Product attribute taxonomy. Defines a custom attribute (e.g. size, color) and
@@ -1035,6 +1035,8 @@ export interface PaymentGateway {
 /** List response helper for payment gateways if needed by the client. */
 export type PaymentGatewaysResponse = PaymentGateway[];
 
+export type PublicPaymentGateway = Pick<PaymentGateway, 'id' | 'title' | 'description'>;
+
 /**
  * Checkout status address types with "company" field as used by the endpoint.
  */
@@ -1051,7 +1053,7 @@ export interface CheckoutStatusBaseAddress {
   phone?: string;
 }
 
-export interface CheckoutStatusShippingAddress extends CheckoutStatusBaseAddress {}
+export type CheckoutStatusShippingAddress = CheckoutStatusBaseAddress;
 
 export interface CheckoutStatusBillingAddress extends CheckoutStatusBaseAddress {
   email?: string;
@@ -1096,9 +1098,9 @@ export interface CheckoutOrderPaymentResult {
   redirect_url?: string;
 }
 
-export interface CheckoutOrderBillingAddress extends CheckoutStatusBillingAddress {}
+export type CheckoutOrderBillingAddress = CheckoutStatusBillingAddress;
 
-export interface CheckoutOrderShippingAddress extends CheckoutStatusShippingAddress {}
+export type CheckoutOrderShippingAddress = CheckoutStatusShippingAddress;
 
 export interface CheckoutOrderResponse {
   order_id: number;

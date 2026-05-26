@@ -1,4 +1,6 @@
 type InputType = 'text' | 'number' | 'email' | 'password' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'tel';
+export type FormValue = string | number | boolean;
+export type FormDataRecord = Record<string, FormValue>;
 
 export interface InputField {
   id: string;
@@ -9,7 +11,7 @@ export interface InputField {
   name?: string;
   options?: { value: string; label: string; selected?: boolean }[];
   fullWidth?: boolean;
-  value?: unknown;
+  value?: FormValue;
   ariaLabel?: string;
   validation?: {
     pattern?: string;

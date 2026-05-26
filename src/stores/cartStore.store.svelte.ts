@@ -1,80 +1,79 @@
-import { addItemToCart } from '@/routes/api/cart.remote';
-import { removeCartItem } from '@/routes/api/cart.remote';
-import { updateCartItem } from '@/routes/api/cart.remote';
+import type { Cart, CartItem, Product } from '@/interfaces/store.interfaces';
+import {
+  applyCartResponse,
+  browserCartTokenStorage,
+  remoteCartGateway,
+  toastCartNotifier,
+  type CartGateway,
+  type CartNotifier,
+  type CartTokenStorage,
+} from './cart-store-deps';
 
-import { getCart } from '@/routes/api/cart.remote';
-
-import type { Product } from '@/interfaces/store.interfaces';
-import type { Cart } from '@/interfaces/store.interfaces';
-import type { CartItem } from '@/interfaces/store.interfaces';
-
-import Toastify from 'toastify-js';
-import { toastifyDefaults } from '@/constants/toastify.const';
+type CartGatewayResult = {
+  cart?: Cart;
+  cartToken?: string | null;
+};
 
 class UseCartStore {
-  // Add your store properties here
   cart = $state({}) as Cart;
   cartToken = $state('') as string;
-  cartNonce = $state('') as string;
-  minQuantity = 1;
-  maxQuantity = 99;
 
-  constructor() {
-    if (typeof window !== 'undefined') {
-      this.cartToken = localStorage.getItem('cart_token') || '';
+  constructor(
+    private readonly gateway: CartGateway = remoteCartGateway,
+    private readonly tokenStorage: CartTokenStorage = browserCartTokenStorage,
+    private readonly notifier: CartNotifier = toastCartNotifier,
+  ) {
+    this.cartToken = this.tokenStorage.read();
+  }
+
+  private syncCartToken(cartToken: string | null | undefined) {
+    if (!cartToken) return;
+
+    this.tokenStorage.write(cartToken);
+    this.cartToken = cartToken;
+  }
+
+  private applyCartResult(result: CartGatewayResult, updateCart = true) {
+    this.syncCartToken(result.cartToken);
+
+    if (updateCart) {
+      this.cart = applyCartResponse(this.cart, result.cart);
     }
+
+    return result.cart;
   }
 
   async getCart() {
-    let localCartToken = undefined;
+    const localCartToken = this.tokenStorage.read() || undefined;
+    const result = await this.gateway.getCart(localCartToken);
 
-    if (typeof window !== 'undefined') {
-      localCartToken = localStorage.getItem('cart_token') || undefined;
-    }
-
-    const { cart, cartToken } = await getCart(localCartToken);
-
-    if (typeof window !== 'undefined' && cartToken) {
-      localStorage.setItem('cart_token', cartToken);
-      cartStore.cartToken = cartToken;
-    }
-
-    this.cart = cart;
+    this.syncCartToken(result.cartToken);
+    this.cart = result.cart;
   }
 
-  // Add your store methods here
   async addItem(product: Product, quantity: number) {
-    const { cart } = await addItemToCart({
+    const result = await this.gateway.addItem({
       id: product.id,
       quantity,
       cartToken: this.cartToken,
     });
 
-    if (cart) {
-      this.cart = cart;
-    }
+    this.applyCartResult(result);
 
-    Toastify({
-      text: `"${product.name}" añadido al carrito`,
-      ...toastifyDefaults,
-    }).showToast();
+    this.notifier.success(`"${product.name}" añadido al carrito`);
   }
 
-  removeItem = async (cartItem: CartItem, updateCart: boolean = true, showToast: boolean = true) => {
-    const { cart, message } = await removeCartItem({
+  removeItem = async (cartItem: CartItem, options: { updateCart?: boolean; notify?: boolean } = {}) => {
+    const { updateCart = true, notify = true } = options;
+    const result = await this.gateway.removeItem({
       key: cartItem.key,
       cartToken: this.cartToken,
     });
 
-    if (cart && updateCart) {
-      this.cart = cart;
-    }
+    const cart = this.applyCartResult(result, updateCart);
 
-    if (showToast) {
-      Toastify({
-        text: message || `"${cartItem.name}" eliminado del carrito`,
-        ...toastifyDefaults,
-      }).showToast();
+    if (notify) {
+      this.notifier.success(result.message || `"${cartItem.name}" eliminado del carrito`);
     }
 
     return cart;
@@ -85,36 +84,30 @@ class UseCartStore {
       return this.removeItem(cartItem);
     }
 
-    const { cart, message } = await updateCartItem({
+    const result = await this.gateway.updateItem({
       key: cartItem.key,
       quantity,
       cartToken: this.cartToken,
     });
 
-    if (cart) {
-      this.cart = cart;
-    }
+    this.applyCartResult(result);
 
-    Toastify({
-      text: message || `"${cartItem.name}" actualizado en el carrito`,
-      ...toastifyDefaults,
-    }).showToast();
+    this.notifier.success(result.message || `"${cartItem.name}" actualizado en el carrito`);
   };
 
   async clearCart() {
     const cartItems = this.cart.items || [];
-    let cart = {} as Cart;
+    let nextCart: Cart | undefined;
 
     for (const item of cartItems) {
-      cart = (await this.removeItem(item, false, false)) as Cart;
+      nextCart = await this.removeItem(item, { updateCart: false, notify: false });
     }
 
-    this.cart = cart;
+    if (nextCart) {
+      this.cart = nextCart;
+    }
 
-    Toastify({
-      text: `Carrito vaciado correctamente`,
-      ...toastifyDefaults,
-    }).showToast();
+    this.notifier.success('Carrito vaciado correctamente');
   }
 }
 

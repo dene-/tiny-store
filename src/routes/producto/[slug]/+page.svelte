@@ -1,8 +1,9 @@
 <script lang="ts">
   import PageProduct from '@/components/Product/PageProduct.svelte';
-  import type { Product } from '@/interfaces/store.interfaces';
+  import type { PageData } from './$types';
 
-  const { data: product }: { data: Product } = $props();
+  const { data }: { data: PageData } = $props();
+  const product = $derived(data.product);
 </script>
 
 <svelte:head>

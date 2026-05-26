@@ -4,6 +4,7 @@
   import { onNavigate } from '$app/navigation';
   import type { Snippet } from 'svelte';
   import NavbarComponent from '@/components/NavbarComponent.svelte';
+  import { runViewTransition } from '@/lib/view-transition';
 
   interface Props {
     children: Snippet;
@@ -11,16 +12,7 @@
 
   const { children }: Props = $props();
 
-  onNavigate(navigation => {
-    if (!document.startViewTransition) return;
-
-    return new Promise(resolve => {
-      document.startViewTransition(async () => {
-        resolve();
-        await navigation.complete;
-      });
-    });
-  });
+  onNavigate(navigation => runViewTransition(document, navigation));
 </script>
 
 <NavbarComponent />

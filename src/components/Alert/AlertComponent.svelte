@@ -8,7 +8,7 @@
     type: 'info' | 'warning' | 'error' | 'success';
     message: string;
     classes?: string;
-    action?: () => any;
+    action?: () => void;
     actionText?: string;
   }
 

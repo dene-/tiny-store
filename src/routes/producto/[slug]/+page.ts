@@ -1,10 +1,12 @@
 import { getProduct } from '@/routes/api/products.remote.js';
-import type { Product } from '@/interfaces/store.interfaces.js';
+import type { PageLoad } from './$types';
 
-export async function load({ params }): Promise<Product | undefined> {
+export const load: PageLoad = async ({ params }) => {
   const { slug } = params;
 
   const products = await getProduct({ slug });
 
-  return products[0];
-}
+  return {
+    product: products[0],
+  };
+};

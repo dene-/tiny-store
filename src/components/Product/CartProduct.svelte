@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import { cartStore } from '@/stores/cartStore.store.svelte';
 
   import TrashBinIcon from '../Icons/TrashBinIcon.svelte';
@@ -9,11 +10,12 @@
   import type { CartItem } from '@/interfaces/store.interfaces';
 
   const { item: cartItem }: { item: CartItem } = $props();
+  const productSlug = $derived(new URL(cartItem.permalink).pathname.split('/').filter(Boolean).at(-1) || String(cartItem.id));
 </script>
 
 <div class="grid-cell w-full text-left lg:w-auto">
   <a
-    href={`${new URL(cartItem.permalink).pathname}`}
+    href={resolve('/producto/[slug]', { slug: productSlug })}
     class="flex flex-col gap-1 underline lg:flex-row lg:items-center lg:gap-3"
   >
     <img

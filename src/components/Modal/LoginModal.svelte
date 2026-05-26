@@ -1,13 +1,24 @@
 <script lang="ts">
+  import type { Attachment } from 'svelte/attachments';
+  import AuthFields from './AuthFields.svelte';
+  import AuthModalActions from './AuthModalActions.svelte';
   import { loginModalStore } from '@/stores/loginModal.store.svelte';
-  import { onMount } from 'svelte';
 
   let email = $state('');
   let password = $state('');
   let name = $state('');
-  let username = $state('');
 
   let isRegistering = $state(false);
+
+  const captureLoginModal: Attachment<HTMLDialogElement> = element => {
+    loginModalStore.modal = element;
+
+    return () => {
+      if (loginModalStore.modal === element) {
+        loginModalStore.modal = null;
+      }
+    };
+  };
 
   function clearInputs() {
     email = password = name = '';
@@ -26,65 +37,12 @@
       clearInputs();
     }
   }
-
-  onMount(() => {
-    loginModalStore.modal = document.getElementById('loginModal') as HTMLDialogElement;
-  });
 </script>
-
-{#snippet loginForm()}
-  <input
-    type="email"
-    class="input input-bordered mb-3 w-full {loginModalStore.error && 'input-error'}"
-    placeholder="Email..."
-    bind:value={email}
-  />
-  <br />
-  <input
-    type="password"
-    class="input input-bordered w-full {loginModalStore.error && 'input-error'}"
-    placeholder="Password..."
-    bind:value={password}
-  />
-  {#if loginModalStore.error}
-    <span class="mt-5 text-sm text-error">{loginModalStore.error}</span>
-  {/if}
-{/snippet}
-
-{#snippet registerForm()}
-  <input
-    type="text"
-    class="input input-bordered mb-3 w-full {loginModalStore.error && 'input-error'}"
-    placeholder="Name..."
-    bind:value={username}
-  />
-  <input
-    type="text"
-    class="input input-bordered mb-3 w-full {loginModalStore.error && 'input-error'}"
-    placeholder="Name..."
-    bind:value={name}
-  />
-  <input
-    type="email"
-    class="input input-bordered mb-3 w-full {loginModalStore.error && 'input-error'}"
-    placeholder="Email..."
-    bind:value={email}
-  />
-  <br />
-  <input
-    type="password"
-    class="input input-bordered w-full {loginModalStore.error && 'input-error'}"
-    placeholder="Password..."
-    bind:value={password}
-  />
-  {#if loginModalStore.error}
-    <span class="mt-5 text-sm text-error">{loginModalStore.error}</span>
-  {/if}
-{/snippet}
 
 <dialog
   id="loginModal"
   class="modal sm:modal-middle"
+  {@attach captureLoginModal}
 >
   <div class="modal-box">
     <h3 class="mb-5 text-lg font-bold">
@@ -95,36 +53,19 @@
       {/if}
     </h3>
     <p class="pb-5">
-      {#if isRegistering}
-        {@render registerForm()}
-      {:else}
-        {@render loginForm()}
-      {/if}
+      <AuthFields
+        {isRegistering}
+        error={loginModalStore.error}
+        bind:name
+        bind:email
+        bind:password
+      />
     </p>
-    <div class="modal-action mt-0 gap-3 border-t border-primary pt-5">
-      {#if !isRegistering}
-        <button
-          class="btn"
-          onclick={() => (isRegistering = true)}
-        >
-          Register
-        </button>
-      {/if}
-      <div class="flex-grow"></div>
-      <button
-        class="btn border-0 bg-transparent"
-        onclick={() => loginModalStore.close()}>Close</button
-      >
-      <button
-        class="btn btn-primary"
-        onclick={handleButton}
-      >
-        {#if isRegistering}
-          Register
-        {:else}
-          Log in
-        {/if}
-      </button>
-    </div>
+    <AuthModalActions
+      {isRegistering}
+      onRegisterMode={() => (isRegistering = true)}
+      onClose={() => loginModalStore.close()}
+      onSubmit={handleButton}
+    />
   </div>
 </dialog>

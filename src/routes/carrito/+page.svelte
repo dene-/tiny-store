@@ -7,6 +7,7 @@
   import ProductPrice from '@/components/Product/ProductPrice.svelte';
 
   import { goto } from '$app/navigation';
+  import { resolve } from '$app/paths';
 
   let isClearingCart = $state(false);
 
@@ -75,7 +76,7 @@
               <div class="flex items-center justify-between">
                 <button
                   class="btn btn-primary btn-lg mb-12 w-full rounded-xl p-2 lg:w-full"
-                  onclick={() => goto('/finalizar-compra')}
+                  onclick={() => goto(resolve('/finalizar-compra'))}
                 >
                   <CheckoutIcon />
                   Finalizar compra

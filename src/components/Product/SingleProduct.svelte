@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { resolve } from '$app/paths';
   import type { Product } from '@/interfaces/store.interfaces';
   import OnSaleBadge from './OnSaleBadge.svelte';
 
@@ -11,7 +12,7 @@
 <div class="border-base-300 relative row-span-4 grid flex-shrink-0 grid-rows-subgrid gap-0 border bg-white transition will-change-auto hover:scale-[101%]">
   <OnSaleBadge {product} />
   <a
-    href={`/producto/${product.slug}`}
+    href={resolve(`/producto/${product.slug}`)}
     class="bg-base-300 flex items-center justify-center"
   >
     <figure>
@@ -38,7 +39,7 @@
   <div class="card-actions justify-center p-3">
     <div class="text-center">
       <button
-        onclick={() => goto(`/producto/${product.slug}`)}
+        onclick={() => goto(resolve(`/producto/${product.slug}`))}
         class="btn btn-primary w-full rounded-xl text-xs uppercase lg:text-sm"
       >
         Ver producto

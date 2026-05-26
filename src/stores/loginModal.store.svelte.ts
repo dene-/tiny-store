@@ -3,42 +3,31 @@ import { sessionStore } from './sessionStore.store.svelte';
 import { Modal } from '@/lib/modal.lib.svelte';
 
 class UseLoginModalStore extends Modal {
-  async logIn(email: string, password: string) {
+  private async runAuthAction(action: () => Promise<{ ok: true } | { ok: false; error: string }>) {
     this.isLoading = true;
     this.error = '';
 
-    const loginResult = await userStore.logIn(email, password);
+    const result = await action();
 
     this.isLoading = false;
 
-    if (loginResult !== 'success') {
-      this.error = loginResult;
+    if (!result.ok) {
+      this.error = result.error;
       return 'error';
     }
 
-    sessionStore.getAccount();
+    await sessionStore.getAccount();
     this.close();
 
-    return loginResult;
+    return 'success';
+  }
+
+  async logIn(email: string, password: string) {
+    return this.runAuthAction(() => userStore.logIn(email, password));
   }
 
   async register(name: string, email: string, password: string) {
-    this.isLoading = true;
-    this.error = '';
-
-    const registerResult = await userStore.register(name, email, password);
-
-    this.isLoading = false;
-
-    if (registerResult !== 'success') {
-      this.error = registerResult;
-      return 'error';
-    }
-
-    sessionStore.getAccount();
-    this.close();
-
-    return registerResult;
+    return this.runAuthAction(() => userStore.register(name, email, password));
   }
 }
 

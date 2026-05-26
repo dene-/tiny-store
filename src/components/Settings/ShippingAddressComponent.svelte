@@ -1,9 +1,11 @@
 <script lang="ts">
   import FormGenerator from '../Form/FormGenerator.svelte';
-  import type { InputField } from '@/interfaces/forms.interfaces';
+  import type { FormDataRecord, InputField } from '@/interfaces/forms.interfaces';
   import { countries } from '@/constants/countries.const';
 
   import { sessionStore } from '@/stores/sessionStore.store.svelte';
+  import { userStore } from '@/stores/userStore.store.svelte';
+  import { toShippingAddressPreference } from '@/features/account/shipping-address.mapper';
 
   const shippingAddressFormFields: InputField[] = [
     {
@@ -78,9 +80,10 @@
     },
   ];
 
-  function handleFormSubmit(formData: Record<string, any>) {
-    console.log('Form submitted:', formData.name);
-    // Handle form submission
+  async function handleFormSubmit(formData: FormDataRecord) {
+    await userStore.updatePrefs({
+      shippingAddress: toShippingAddressPreference(formData),
+    });
   }
 </script>
 

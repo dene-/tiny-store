@@ -1,5 +1,7 @@
 import { query, getRequestEvent } from '$app/server';
 import { ENDPOINTS } from './config.const';
+import { failRemote, fetchJson, rethrowHttpOrFail } from './remote-utils';
+import { publicCategories } from '@/features/products/product.mapper';
 
 import type { Category } from '@/interfaces/store.interfaces';
 
@@ -7,23 +9,14 @@ export const getCategories = query(async () => {
   try {
     const { fetch } = getRequestEvent();
 
-    const res = await fetch(`${ENDPOINTS.CATEGORIES}`);
+    const data = await fetchJson<Category[]>(fetch, ENDPOINTS.CATEGORIES);
 
-    if (!res.ok) {
-      console.error('Error fetching categories:', res.statusText);
-      return [];
+    if (!data) {
+      failRemote('Unable to fetch categories');
     }
 
-    const data = (await res.json()) as Category[];
-
-    // delete permalink from each category
-    data.forEach(category => {
-      delete category.permalink;
-    });
-
-    return data;
+    return publicCategories(data);
   } catch (err) {
-    console.error(err);
-    return [];
+    rethrowHttpOrFail(err, 'Unable to fetch categories');
   }
 });

@@ -1,28 +1,52 @@
 # Tiny Store: Lightweight Svelte 5 Storefront
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Tiny Store is a SvelteKit storefront using WooCommerce for commerce data and Appwrite for account/session/profile flows.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `yarn install` (or `pnpm install` or `yarn`), start a development server:
+Install dependencies:
 
 ```bash
-yarn dev
-
-# or start the server and open the app in a new browser tab
-yarn dev -- --open
+rtk yarn install
 ```
 
-Project uses Appwrite as the backend. And this will only work if you set up everything correctly. More on that on the future (maybe).
+Start a development server:
 
-This SvelteKit project uses `adapter-auto`.
+```bash
+rtk yarn dev
+```
+
+Run the main checks:
+
+```bash
+rtk yarn test
+rtk yarn run check
+rtk yarn build
+```
+
+## Architecture
+
+Tiny Store uses:
+
+- SvelteKit 2 and Svelte 5 runes
+- WooCommerce Store API for storefront commerce
+- Appwrite for account/session/profile/avatar flows
+- SvelteKit remote functions for server-side API calls
+- Vitest for unit coverage
+
+Read [docs/architecture.md](docs/architecture.md) before making structural changes.
+Read [docs/agent-notes.md](docs/agent-notes.md) before handing the repo to another coding agent.
 
 ## Building
 
-To create a production version of your app:
+Create a production build:
 
 ```bash
-yarn build
+rtk yarn build
 ```
 
-You can preview the production build with `yarn preview`.
+Preview the production build:
+
+```bash
+rtk yarn preview
+```

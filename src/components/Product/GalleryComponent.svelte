@@ -1,16 +1,29 @@
 <script lang="ts">
+  import type { Attachment } from 'svelte/attachments';
+
   let { images = [] } = $props<{ images: string[] }>();
-  let selectedImage = $state(images[0] || '');
-  let carouselRef: HTMLDivElement;
+  let selectedImageOverride = $state<string | null>(null);
+  let selectedImage = $derived(selectedImageOverride && images.includes(selectedImageOverride) ? selectedImageOverride : images[0] || '');
+  let carouselRef: HTMLDivElement | undefined;
+  const carouselScrollAmount = 200;
+
+  const captureCarousel: Attachment<HTMLDivElement> = element => {
+    carouselRef = element;
+
+    return () => {
+      if (carouselRef === element) {
+        carouselRef = undefined;
+      }
+    };
+  };
 
   function selectImage(image: string) {
-    selectedImage = image;
+    selectedImageOverride = image;
   }
 
   function scrollCarousel(direction: 'left' | 'right') {
     if (carouselRef) {
-      const scrollAmount = 200; // Adjust this value to control scroll distance
-      const newScrollPosition = direction === 'left' ? carouselRef.scrollLeft - scrollAmount : carouselRef.scrollLeft + scrollAmount;
+      const newScrollPosition = direction === 'left' ? carouselRef.scrollLeft - carouselScrollAmount : carouselRef.scrollLeft + carouselScrollAmount;
 
       carouselRef.scrollTo({
         left: newScrollPosition,
@@ -18,14 +31,6 @@
       });
     }
   }
-
-  $effect(() => {
-    if (images.length && !selectedImage) {
-      selectedImage = images[0];
-    }
-
-    console.log('Effect');
-  });
 </script>
 
 {#if !images.length}
@@ -56,10 +61,10 @@
       </button>
 
       <div
-        bind:this={carouselRef}
+        {@attach captureCarousel}
         class="hide-scrollbar flex snap-proximity gap-2 overflow-x-auto scroll-smooth"
       >
-        {#each images as image}
+        {#each images as image (image)}
           <div
             class="h-24 w-24 flex-none cursor-pointer transition-all duration-200 hover:brightness-75"
             onclick={() => selectImage(image)}

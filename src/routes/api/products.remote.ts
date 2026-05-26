@@ -3,43 +3,22 @@ import { error } from '@sveltejs/kit';
 import { ENDPOINTS } from './config.const';
 import type { Product } from '@/interfaces/store.interfaces';
 import z from 'zod';
-
-import { oauth } from './config.const';
+import { buildEndpoint, failRemote, fetchJson, rethrowHttpOrFail } from './remote-utils';
+import { inStockProducts } from '@/features/products/product.mapper';
 
 export const getProducts = query(async () => {
   try {
     const { fetch } = getRequestEvent();
 
-    // Generate OAuth params
-    const oauthParams = oauth.authorize({
-      url: ENDPOINTS.PRODUCTSV3,
-      method: 'GET',
-    });
+    const products = await fetchJson<Product[]>(fetch, ENDPOINTS.PRODUCTS);
 
-    // Create the Authorization header
-    const authHeader = oauth.toHeader(oauthParams);
-
-    const res = await fetch(ENDPOINTS.PRODUCTS, {
-      headers: {
-        ...authHeader,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    let data = (await res.json()) as Product[];
-
-    if (!data) {
-      console.error('No response from server');
-      return [];
+    if (!products) {
+      failRemote('Unable to fetch products');
     }
 
-    data = data.filter(product => product.is_in_stock);
-
-    return data;
+    return inStockProducts(products);
   } catch (err) {
-    console.error(err);
-
-    return [];
+    rethrowHttpOrFail(err, 'Unable to fetch products');
   }
 });
 
@@ -52,6 +31,8 @@ const getProductSchema = z.object({
 type GetProductsParams = z.infer<typeof getProductSchema>;
 
 export const getProduct = query(getProductSchema, async ({ slug, tag, category, include }: GetProductsParams) => {
+  let products: Product[] = [];
+
   try {
     const { fetch } = getRequestEvent();
 
@@ -62,18 +43,20 @@ export const getProduct = query(getProductSchema, async ({ slug, tag, category, 
     if (category) requestParams.append('category', category);
     if (include) requestParams.append('include', include);
 
-    const res = await fetch(`${ENDPOINTS.PRODUCTS}/?${requestParams.toString()}`);
+    const data = await fetchJson<Product[]>(fetch, buildEndpoint(ENDPOINTS.PRODUCTS, Object.fromEntries(requestParams)));
 
-    let products = (await res.json()) as Product[];
+    if (!data) {
+      failRemote('Unable to fetch product');
+    }
 
-    if (!products || products.length === 0) throw error(404, 'Product not found');
-
-    products = products.filter(product => product.is_in_stock);
-
-    return products;
+    products = inStockProducts(data);
   } catch (err) {
-    console.error(err);
-
-    return [];
+    rethrowHttpOrFail(err, 'Unable to fetch product');
   }
+
+  if (products.length === 0) {
+    error(404, 'Product not found');
+  }
+
+  return products;
 });

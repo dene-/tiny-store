@@ -1,29 +1,22 @@
 <script lang="ts">
-  import { page } from '$app/state';
   import ProductGrid from '@/components/Product/ProductGrid.svelte';
-  import type { Product } from '@/interfaces/store.interfaces';
-
   import { capitalizeFirstLetter } from '@/lib/utils.lib';
+  import type { PageData } from './$types';
 
-  interface ProductsResponse {
-    products: Product[];
-  }
-
-  const { data }: { data: ProductsResponse } = $props();
+  const { data }: { data: PageData } = $props();
+  const categoryLabel = $derived(capitalizeFirstLetter(data.category));
 </script>
 
 <svelte:head>
-  <title>{page.params.category} | Tienda Mami Crafts</title>
+  <title>{data.category} | Tienda Mami Crafts</title>
   <meta
     name="description"
-    content="Explora los productos en la categoría {capitalizeFirstLetter(
-      page.params.category as string,
-    )} de Mami Crafts. Encuentra artículos únicos y hechos a mano que se adaptan a tus necesidades."
+    content="Explora los productos en la categoría {categoryLabel} de Mami Crafts. Encuentra artículos únicos y hechos a mano que se adaptan a tus necesidades."
   />
 </svelte:head>
 
 <div class="my-12 lg:my-24">
-  <h1 class="mb-3 p-3 text-2xl font-bold">Categoría: {capitalizeFirstLetter(page.params.category as string)}</h1>
+  <h1 class="mb-3 p-3 text-2xl font-bold">Categoría: {categoryLabel}</h1>
   {#if data.products.length}
     <ProductGrid products={data.products} />
   {:else}

@@ -38,8 +38,6 @@
   --noise: 0;
 }
 
-@import './variables.scss';
-
 :root {
   --default-font-family: 'Quicksand', serif;
 }
