@@ -1,3 +1,7 @@
+<script lang="ts">
+  import { resolve } from '$app/paths';
+</script>
+
 <div class="relative h-[50dvh] w-full overflow-hidden bg-[url('/images/hero_bg.svg')] bg-cover bg-center lg:h-[30dvh]">
   <div class="absolute top-0 flex h-full w-full flex-col items-center justify-center pb-[76px] lg:flex-row-reverse">
     <div class="flex flex-col gap-6 p-3 text-center lg:text-left">
@@ -20,7 +24,7 @@
       Encuadernaciones <br /> y Scrap
     </div>
     <div class="outline-base-300 flex items-center justify-center text-center outline">
-      <a href="/categoria/libretas">
+      <a href={resolve('/categoria/libretas')}>
         Libretas <br /> y agendas
       </a>
     </div>

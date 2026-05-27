@@ -23,6 +23,10 @@ Key integrations:
 - Use `apply_patch` for manual file edits.
 - Keep changes scoped to the request. Do not perform broad refactors while touching nearby code unless they are required for correctness.
 - Do not commit, push, or open PRs unless explicitly asked.
+- When asked to commit, push, or open a PR, use conventional commit/PR naming and include an appropriate gitmoji in the PR title.
+  - Commit format: `<type>: <short imperative summary>`, for example `refactor: improve account boundaries`.
+  - PR title format: `<gitmoji> <type>: <short imperative summary>`, for example `♻️ refactor: improve project architecture`.
+  - Use conventional branch names without tool/vendor prefixes, for example `refactor-solid-clean-architecture`, `fix-checkout-validation`, or `feat-product-search`.
 
 ## Commands
 
@@ -121,6 +125,11 @@ Run the narrowest useful verification first, then broaden based on risk. For mos
 - For Svelte, route, or TypeScript changes, run `rtk yarn check`.
 - For formatting or lint-sensitive changes, run `rtk yarn lint`.
 - For deployment-sensitive or integration changes, run `rtk yarn build`.
+- CI/CD expectations for PR-ready work:
+  1. Run the narrowest relevant checks while iterating.
+  2. Before opening or updating a PR, run `rtk yarn test`, `rtk yarn check`, `rtk yarn lint`, and `rtk yarn build` unless the change is documentation-only.
+  3. If CI fails after the PR is opened, inspect the failing job, reproduce locally when possible, fix on the same branch, and push the fix.
+  4. Do not mark a PR ready for review while required local checks or remote CI checks are failing.
 - If verification cannot be run, say exactly which command was skipped and why.
 
 ## Common Change Patterns

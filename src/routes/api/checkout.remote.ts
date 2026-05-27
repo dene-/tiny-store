@@ -1,37 +1,28 @@
-import { query, getRequestEvent } from '$app/server';
+import { command, query, getRequestEvent } from '$app/server';
 import z from 'zod';
 
 import { ENDPOINTS, oauth } from './config.const';
+import { toPublicPaymentGateways } from './payment-gateways';
+import { createCartHeaders, failRemote, fetchJson, rethrowHttpOrFail } from './remote-utils';
 
-import type { CheckoutStatus, PaymentGatewaysResponse, CheckoutOrderResponse } from '@/interfaces/store.interfaces';
+import type { CheckoutStatus, CheckoutOrderResponse, PaymentGatewaysResponse } from '@/interfaces/store.interfaces';
 
 export const getCheckoutStatus = query(z.string().optional(), async (cartToken?: string) => {
   const { fetch } = getRequestEvent();
 
-  const headers = new Headers();
-
-  if (cartToken) {
-    headers.append('Cart-Token', cartToken);
-  }
-
   try {
-    const res = await fetch(`${ENDPOINTS.CHECKOUT}`, {
+    const data = await fetchJson<CheckoutStatus>(fetch, ENDPOINTS.CHECKOUT, {
       method: 'GET',
-      headers,
+      headers: createCartHeaders(cartToken),
     });
 
-    if (!res.ok) {
-      console.error('Error fetching checkout status:', res.statusText);
-      return {} as CheckoutStatus;
+    if (!data) {
+      failRemote('Unable to fetch checkout status');
     }
-
-    const data = (await res.json()) as CheckoutStatus;
 
     return data;
   } catch (err) {
-    console.error(err);
-
-    return {} as CheckoutStatus;
+    rethrowHttpOrFail(err, 'Unable to fetch checkout status');
   }
 });
 
@@ -48,27 +39,20 @@ export const getPaymentGateways = query(async () => {
     // Create the Authorization header
     const authHeader = oauth.toHeader(oauthParams);
 
-    const res = await fetch(`${ENDPOINTS.PAYMENT_GATEWAYS}`, {
+    const data = await fetchJson<PaymentGatewaysResponse>(fetch, ENDPOINTS.PAYMENT_GATEWAYS, {
       headers: {
         ...authHeader,
         'Content-Type': 'application/json',
       },
     });
 
-    if (!res.ok) {
-      console.error('Error fetching payment methods:', res.statusText);
-      return [];
+    if (!data) {
+      failRemote('Unable to fetch payment methods');
     }
 
-    let data = (await res.json()) as PaymentGatewaysResponse;
-
-    data = data.filter(gateway => gateway.enabled);
-
-    return data;
+    return toPublicPaymentGateways(data);
   } catch (err) {
-    console.error(err);
-
-    return [];
+    rethrowHttpOrFail(err, 'Unable to fetch payment methods');
   }
 });
 
@@ -96,38 +80,30 @@ const CheckoutSchema = z.object({
   customer_note: z.string().optional().default(''),
   create_account: z.boolean().optional(),
   cart_token: z.string(),
-  payment_data: z.array(z.any()).optional().default([]),
+  payment_data: z.array(z.unknown()).optional().default([]),
   customer_password: z.string().optional().default(''),
 });
 
 type CheckoutParams = z.infer<typeof CheckoutSchema>;
 
-export const checkoutOrder = query(CheckoutSchema, async (checkoutData: CheckoutParams) => {
+export const checkoutOrder = command(CheckoutSchema, async (checkoutData: CheckoutParams) => {
   try {
     const { fetch } = getRequestEvent();
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-
-    if (checkoutData.cart_token) {
-      headers.append('Cart-Token', checkoutData.cart_token);
-    }
-
-    const response = await fetch(`${ENDPOINTS.CHECKOUT}`, {
+    const data = await fetchJson<CheckoutOrderResponse>(fetch, ENDPOINTS.CHECKOUT, {
       method: 'POST',
-      headers,
+      headers: createCartHeaders(checkoutData.cart_token, {
+        'Content-Type': 'application/json',
+      }),
       body: JSON.stringify(checkoutData),
     });
 
-    if (!response.ok) {
-      console.error('Error during checkout:', response.statusText);
-      return {} as CheckoutOrderResponse;
+    if (!data) {
+      failRemote('Unable to complete checkout');
     }
 
-    const data = (await response.json()) as CheckoutOrderResponse;
     return data;
   } catch (err) {
-    console.error('Error during checkout:', err);
-    return {} as CheckoutOrderResponse;
+    rethrowHttpOrFail(err, 'Unable to complete checkout');
   }
 });

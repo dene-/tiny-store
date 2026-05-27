@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { resolve } from '$app/paths';
   import type { CartItem, OrderItem, Product, CartTotals, OrderTotals } from '@/interfaces/store.interfaces';
   import ProductPrice from './ProductPrice.svelte';
 
@@ -9,6 +10,10 @@
   }
 
   let { items, showTotal, totals }: Props = $props();
+
+  function productSlugFromPermalink(permalink: string, fallbackId: number) {
+    return new URL(permalink).pathname.split('/').filter(Boolean).at(-1) || String(fallbackId);
+  }
 </script>
 
 <div class="border-primary overflow-x-auto rounded-lg border bg-white">
@@ -30,7 +35,7 @@
                 alt={item.name}
               />
               <a
-                href={`${new URL(item.permalink).pathname}`}
+                href={resolve('/producto/[slug]', { slug: productSlugFromPermalink(item.permalink, item.id) })}
                 target="_blank"
                 class="hover:text-primary font-semibold underline"
               >

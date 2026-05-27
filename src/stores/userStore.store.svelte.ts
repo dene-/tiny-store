@@ -1,105 +1,115 @@
-import type { AppwriteException } from 'appwrite';
-import { ID } from 'appwrite';
-import { account, storage, ids } from '@/lib/appwrite.lib';
-import { sessionStore } from './sessionStore.store.svelte';
-import Toastify from 'toastify-js';
+import {
+  sessionAccountStore,
+  accountNotifier,
+  appwriteAccountGateway,
+  appwriteAvatarStorageGateway,
+  toFailure,
+  type AccountSessionStore,
+  type AccountGateway,
+  type AccountNotifier,
+  type AvatarStorageGateway,
+  type StoreResult,
+} from './user-store-deps';
+import { toAccountUser, toAppwritePrefs } from '@/features/account/account.mapper';
+import type { AccountPreferences, AccountUpdateInput } from '@/features/account/account.types';
 
-class UseUserStore {
-  async logIn(email: string, password: string) {
+export class UseUserStore {
+  constructor(
+    private readonly accountGateway: AccountGateway = appwriteAccountGateway,
+    private readonly avatarStorage: AvatarStorageGateway = appwriteAvatarStorageGateway,
+    private readonly accountSession: AccountSessionStore = sessionAccountStore,
+    private readonly notifier: AccountNotifier = accountNotifier,
+  ) {}
+
+  async logIn(email: string, password: string): Promise<StoreResult> {
     try {
-      await account.createEmailPasswordSession(email, password);
-      return 'success';
+      await this.accountGateway.createEmailPasswordSession(email, password);
+      return { ok: true, value: undefined };
     } catch (error) {
-      console.error(error);
-      return (error as AppwriteException).message;
+      return toFailure(error);
     }
   }
 
-  async register(name: string, email: string, password: string) {
+  async register(name: string, email: string, password: string): Promise<StoreResult> {
     try {
-      await account.create(ID.unique(), email, password, name);
-      return 'success';
+      await this.accountGateway.createAccount(name, email, password);
+      return { ok: true, value: undefined };
     } catch (error) {
-      console.error(error);
-      return (error as AppwriteException).message;
+      return toFailure(error);
     }
   }
 
-  async verifyEmail(userId: string, secret: string) {
+  async verifyEmail(userId: string, secret: string): Promise<StoreResult> {
     try {
-      await account.updateVerification(userId, secret);
+      await this.accountGateway.updateVerification(userId, secret);
+      return { ok: true, value: undefined };
     } catch (error) {
-      console.error(error);
+      return toFailure(error);
     }
   }
 
-  async updatPrefs() {
+  async updatePrefs(prefs: AccountPreferences = {}): Promise<StoreResult> {
     try {
-      await account.updatePrefs(sessionStore.user?.prefs || {});
-      sessionStore.user = await account.get();
+      const currentUser = this.accountSession.currentUser();
+
+      await this.accountGateway.updatePrefs(
+        toAppwritePrefs({
+          ...currentUser?.prefs,
+          ...prefs,
+        }),
+      );
+      this.accountSession.replaceUser(toAccountUser(await this.accountGateway.getAccount()));
+      return { ok: true, value: undefined };
     } catch (error) {
-      console.error(error);
+      return toFailure(error);
     }
   }
 
-  async updateAccount(name: string, email: string, password: string, prefs: Record<string, unknown>) {
+  async updateAccount({ name, email, password, prefs }: AccountUpdateInput): Promise<StoreResult> {
     try {
-      if (email !== sessionStore.user?.email) {
-        await account.updateEmail(email, password);
+      const currentUser = this.accountSession.currentUser();
+
+      if (email !== currentUser?.email) {
+        await this.accountGateway.updateEmail(email, password);
       }
 
-      await account.updateName(name);
-      await account.updatePrefs({
-        ...sessionStore.user?.prefs,
-        ...prefs,
-      });
+      await this.accountGateway.updateName(name);
+      await this.accountGateway.updatePrefs(
+        toAppwritePrefs({
+          ...currentUser?.prefs,
+          ...prefs,
+        }),
+      );
 
-      sessionStore.user = await account.get();
-
-      Toastify({
-        text: 'Account updated!',
-        duration: 3000,
-        gravity: 'bottom',
-        position: 'right',
-        stopOnFocus: true,
-        backgroundColor: 'oklch(0.4598 0.248 305.03)',
-      }).showToast();
+      this.accountSession.replaceUser(toAccountUser(await this.accountGateway.getAccount()));
+      this.notifier.success('Account updated!');
+      return { ok: true, value: undefined };
     } catch (error) {
-      console.error(error);
+      return toFailure(error);
     }
   }
 
-  async uploadAvatar(file: File) {
+  async uploadAvatar(file: File): Promise<StoreResult> {
     try {
-      if (!sessionStore.user) {
+      const currentUser = this.accountSession.currentUser();
+
+      if (!currentUser) {
         throw new Error('User not found');
       }
 
-      const fileExt = file.name.split('.').pop();
-      const newFile = new File([file], `${sessionStore.user?.name}_avatar.${fileExt}`, {
-        type: file.type,
-      });
+      const avatarLink = await this.avatarStorage.uploadAvatar(currentUser, file);
 
-      const avatarBucketUpload = await storage.createFile(ids.buckets.avatars, ID.unique(), newFile);
+      await this.accountGateway.updatePrefs(
+        toAppwritePrefs({
+          ...currentUser.prefs,
+          avatar: avatarLink,
+        }),
+      );
 
-      if (!avatarBucketUpload.$id) {
-        throw new Error('Error uploading file');
-      }
-
-      const avatarLink = await storage.getFileView(ids.buckets.avatars, avatarBucketUpload.$id);
-
-      if (!avatarLink) {
-        throw new Error('Error getting file download link');
-      }
-
-      await account.updatePrefs({
-        ...sessionStore.user.prefs,
-        avatar: avatarLink,
-      });
-
-      sessionStore.user.prefs.avatar = avatarLink;
+      this.accountSession.patchPrefs({ avatar: avatarLink });
+      return { ok: true, value: undefined };
     } catch (error) {
-      console.error(error);
+      return toFailure(error);
     }
   }
 }

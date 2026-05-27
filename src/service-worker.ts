@@ -30,7 +30,7 @@ sw.addEventListener('activate', event => {
 sw.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  if (event.request.method === 'GET' && (url.href.startsWith(IMAGE_DOMAIN) || (url.origin === location.origin && event.request.destination === 'image'))) {
+  if (event.request.method === 'GET' && (url.href.startsWith(IMAGE_DOMAIN) || (url.origin === sw.location.origin && event.request.destination === 'image'))) {
     event.respondWith(
       caches.open(CACHE_NAME).then(async cache => {
         const cachedResponse = await cache.match(event.request);

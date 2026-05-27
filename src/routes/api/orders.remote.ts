@@ -1,6 +1,8 @@
 import { query, getRequestEvent } from '$app/server';
+import { error } from '@sveltejs/kit';
 import z from 'zod';
 import { ENDPOINTS } from './config.const';
+import { buildEndpoint, fetchJson, rethrowHttpOrFail } from './remote-utils';
 
 import type { Order } from '@/interfaces/store.interfaces';
 
@@ -15,24 +17,20 @@ export const getOrder = query(getOrderSchema, async ({ order_id, key, billing_em
   try {
     const { fetch } = getRequestEvent();
 
-    const response = await fetch(`${ENDPOINTS.ORDERS}/${order_id}/?key=${key}&billing_email=${billing_email}`);
+    const order = await fetchJson<Order>(
+      fetch,
+      buildEndpoint(`${ENDPOINTS.ORDERS}/${order_id}`, {
+        key,
+        billing_email,
+      }),
+    );
 
-    if (!response.ok) {
-      return {
-        error: true,
-        status: response.status,
-        message: 'Order not found',
-      };
+    if (!order) {
+      error(404, 'Order not found');
     }
 
-    const order = (await response.json()) as Order;
     return order;
   } catch (err) {
-    console.error('Error fetching order:', err);
-    return {
-      error: true,
-      status: 500,
-      message: 'Internal Server Error',
-    };
+    rethrowHttpOrFail(err, 'Unable to fetch order');
   }
 });

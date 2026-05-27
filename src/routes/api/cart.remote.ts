@@ -1,166 +1,111 @@
-import { query, getRequestEvent } from '$app/server';
+import { command, query, getRequestEvent } from '$app/server';
+import { error } from '@sveltejs/kit';
 import { ENDPOINTS } from './config.const';
 import z from 'zod';
 import type { Cart } from '@/interfaces/store.interfaces';
+import { buildEndpoint, createCartHeaders, parseCartResponse, rethrowHttpOrFail } from './remote-utils';
 
 const getCartSchema = z.string().optional();
-type getCartParams = z.infer<typeof getCartSchema>;
+type GetCartParams = z.infer<typeof getCartSchema>;
 
-const parseCartResponse = async (response: Response) => {
-  const responseJson = await response.json();
-
-  if (responseJson.hasOwnProperty('items')) {
-    return {
-      cart: responseJson as Cart,
-    };
-  }
-
-  if (responseJson.hasOwnProperty('message') && responseJson.hasOwnProperty('data')) {
-    if (responseJson.data.hasOwnProperty('cart')) {
-      return {
-        message: responseJson.message,
-        cart: responseJson.data.cart as Cart,
-      };
-    }
-
-    return {
-      message: responseJson.message,
-    };
-  }
-
-  console.error('Invalid response from server');
-  return {
-    cart: {} as Cart,
-  };
+type CartRequestOptions = {
+  cartToken?: string;
+  endpoint: string;
+  method?: 'GET' | 'POST';
 };
 
-export const getCart = query(getCartSchema, async (cartToken?: getCartParams) => {
-  const { fetch, cookies } = getRequestEvent();
+async function requestCart({ cartToken, endpoint, method = 'GET' }: CartRequestOptions) {
+  const { fetch } = getRequestEvent();
 
-  const headers = new Headers();
+  const response = await fetch(endpoint, {
+    method,
+    headers: createCartHeaders(cartToken),
+  });
 
-  if (cartToken) {
-    headers.append('Cart-Token', cartToken);
+  const result = await parseCartResponse(response);
+
+  return {
+    ...result,
+    cartToken: response.headers.get('Cart-Token'),
+  };
+}
+
+function requireCart(cart: Cart | undefined, message: string): Cart {
+  if (!cart) {
+    error(502, message);
   }
 
+  return cart;
+}
+
+export const getCart = query(getCartSchema, async (cartToken?: GetCartParams) => {
   try {
-    const res = await fetch(ENDPOINTS.CART, {
-      headers,
+    const result = await requestCart({
+      cartToken,
+      endpoint: ENDPOINTS.CART,
     });
 
-    const cartToken = res.headers.get('Cart-Token');
-
-    const cart = await res.json();
-
-    if (!cart) {
-      console.error('No response from server');
-      return {
-        cart: {} as Cart,
-        cartToken: null,
-      };
-    }
-
     return {
-      cart,
-      cartToken,
+      cart: requireCart(result.cart, 'No cart response from server'),
+      cartToken: result.cartToken,
     };
   } catch (err) {
-    console.error('Error fetching cart data:', err);
-    return {
-      cart: {} as Cart,
-      cartToken: null,
-    };
+    rethrowHttpOrFail(err, 'Unable to fetch cart');
   }
 });
 
-export const addItemToCart = query(
+export const addItemToCart = command(
   z.object({
     cartToken: z.string().min(1).optional(),
     id: z.number().min(1),
     quantity: z.number().min(1).max(999).optional().default(1),
   }),
   async ({ cartToken, id, quantity }) => {
-    const { fetch } = getRequestEvent();
-
-    const headers = new Headers();
-
-    if (cartToken) {
-      headers.append('Cart-Token', cartToken);
-    }
-
     try {
-      const res = await fetch(`${ENDPOINTS.CART}/add-item?id=${id}&quantity=${quantity}`, {
+      return await requestCart({
+        cartToken,
+        endpoint: buildEndpoint(`${ENDPOINTS.CART}/add-item`, { id, quantity }),
         method: 'POST',
-        headers,
       });
-
-      return parseCartResponse(res);
     } catch (err) {
-      console.error('Error adding item to cart:', err);
-      return {
-        cart: {} as Cart,
-      };
+      rethrowHttpOrFail(err, 'Unable to add item to cart');
     }
   },
 );
 
-export const updateCartItem = query(
+export const updateCartItem = command(
   z.object({
     cartToken: z.string().min(1).optional(),
     key: z.string(),
     quantity: z.number().min(0).max(999).optional().default(1),
   }),
   async ({ cartToken, key, quantity }) => {
-    const { fetch } = getRequestEvent();
-
-    const headers = new Headers();
-
-    if (cartToken) {
-      headers.append('Cart-Token', cartToken);
-    }
-
     try {
-      const res = await fetch(`${ENDPOINTS.CART}/update-item?key=${key}&quantity=${quantity}`, {
+      return await requestCart({
+        cartToken,
+        endpoint: buildEndpoint(`${ENDPOINTS.CART}/update-item`, { key, quantity }),
         method: 'POST',
-        headers,
       });
-
-      return parseCartResponse(res);
     } catch (err) {
-      console.error('Error updating item in cart:', err);
-      return {
-        cart: {} as Cart,
-      };
+      rethrowHttpOrFail(err, 'Unable to update cart item');
     }
   },
 );
 
-export const removeCartItem = query(
+export const removeCartItem = command(
   z.object({
     cartToken: z.string().min(1).optional(),
     key: z.string(),
   }),
   async ({ cartToken, key }) => {
-    const { fetch } = getRequestEvent();
-
-    const headers = new Headers();
-
-    if (cartToken) {
-      headers.append('Cart-Token', cartToken);
-    }
-
     try {
-      const res = await fetch(`${ENDPOINTS.CART}/remove-item?key=${key}`, {
+      return await requestCart({
+        cartToken,
+        endpoint: buildEndpoint(`${ENDPOINTS.CART}/remove-item`, { key }),
         method: 'POST',
-        headers,
       });
-
-      return parseCartResponse(res);
     } catch (err) {
-      console.error('Error removing item from cart:', err);
-      return {
-        cart: {} as Cart,
-      };
+      rethrowHttpOrFail(err, 'Unable to remove cart item');
     }
   },
 );

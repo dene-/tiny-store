@@ -1,13 +1,10 @@
 <script lang="ts">
-  import type { Order } from '@/interfaces/store.interfaces';
   import ProductTable from '@/components/Product/ProductTable.svelte';
   import { page } from '$app/state';
+  import SuccessIcon from '@/components/Icons/SuccessIcon.svelte';
+  import type { PageData } from './$types';
 
-  interface OrderResponse {
-    order: Order;
-  }
-
-  const { data }: { data: OrderResponse } = $props();
+  const { data }: { data: PageData } = $props();
 
   const STATUSES: Record<string, string> = {
     pending: 'Pendiente de pago',
@@ -37,14 +34,19 @@
   <div class="flex flex-col gap-12 p-3 lg:flex-row">
     <div class="flex-grow">
       <h1 class="mb-3 flex items-center gap-3 text-2xl font-bold">
-        <span class="text-primary">✅</span>
+        <span class="text-primary"><SuccessIcon /></span>
         Pedido recibido
       </h1>
       <p class="mb-6 text-lg">
-        ¡Gracias por tu compra! Tu pedido ha sido recibido y está siendo procesado. Guarda este <a
+        ¡Gracias por tu compra! Tu pedido ha sido recibido y está siendo procesado. Guarda este
+        <!-- eslint-disable svelte/no-navigation-without-resolve -- current absolute URL preserves private order query parameters -->
+        <a
           href={page.url.href}
+          data-sveltekit-reload
           class="font-bold underline">enlace</a
-        > para poder acceder a los datos del pedido y el estado.
+        >
+        para poder acceder a los datos del pedido y el estado.
+        <!-- eslint-enable svelte/no-navigation-without-resolve -->
       </p>
       <div class="mt-6">
         <h2 class="mb-6 text-xl font-bold">Estado del pedido</h2>
